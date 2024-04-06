@@ -1,6 +1,8 @@
 package model;
 
-public record Notas (
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public record Notas(
         String codigoDisciplina,
         String nomeDisciplina,
         String primeiraUnidade,
@@ -9,5 +11,5 @@ public record Notas (
         String notaFinal,
         String numeroFaltas,
         String situacao
-){
+) {
 }

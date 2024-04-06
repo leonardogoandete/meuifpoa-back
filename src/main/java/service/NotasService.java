@@ -1,83 +1,97 @@
 package service;
 
+import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
+import controller.NotasController;
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Login;
 import model.Notas;
 import model.Usuario;
 
-import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class NotasService {
 
-    public List<Notas> obterNotas(Login login){
+    private static final Logger logger = Logger.getLogger(NotasService.class.getName());
+    private RedisService redisService;
+
+    public NotasService() {
+        this.redisService = new RedisService();
+    }
+
+    public List<Notas> obterNotas(Login login) {
         List<Notas> notas = new ArrayList<>();
+
         try (Playwright playwright = Playwright.create()) {
-            // Inicia o navegador
-            //Sem exibir
             Browser browser = playwright.firefox().launch();
-            //Para exibir o navegador
-            //Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
             BrowserContext context = browser.newContext();
-            // Abre uma nova página
             Page page = context.newPage();
-            // Navega até a página de login do SIGAA e aguarda o carregamento completo
+
             page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
 
             // Preenche o formulário de login
             page.fill("input[name='user.login']", login.login());
             page.fill("input[name='user.senha']", login.senha());
 
-            // Clica no botão "Entrar"
+            // Clicar no botão de envio do formulário de login
             page.click("input[type='submit']");
 
-            // Clica na opção "Ensino" no menu
-            page.click("td.ThemeOfficeMainItem:nth-child(1)");
+            // Esperar até que a página seja completamente carregada
+            page.waitForLoadState(LoadState.NETWORKIDLE);
 
-            // Aguarda o submenu "Ensino" aparecer
-            page.waitForSelector("#cmSubMenuID1");
+            // Verificar se o elemento de erro de login está presente
+            boolean loginError = page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
 
-            // Clica na opção "Consultar Minhas Notas" no submenu "Ensino"
-            page.click("tr.ThemeOfficeMenuItem:nth-child(1)");
+            if (loginError) {
+                // Ocorreu um erro de login
+                throw new RuntimeException("Usuário e/ou senha inválidos");
+            } else {
 
-            // Aguarda até que a tabela esteja carregada na página
-            page.waitForSelector("table.tabelaRelatorio");
+                // Verifica se o valor está disponível no Redis
+                String redisValue = redisService.getValue(login.login());
+                if (redisValue != null) {
+                    logger.info("Valor "+ login.login() +" recuperado do Redis");
+                    Gson gson = new Gson();
+                    Notas[] notasArray = gson.fromJson(redisValue, Notas[].class);
+                    notas.addAll(Arrays.asList(notasArray));
 
-            // Encontra todas as tabelas na página
-            List<ElementHandle> tabelas = page.querySelectorAll("table.tabelaRelatorio");
+                }else {
+                    logger.info("Valor "+ login.login() +" não encontrado no Redis");
+                    // O login foi bem-sucedido, continue obtendo as notas
+                    page.click("td.ThemeOfficeMainItem:nth-child(1)");
+                    page.waitForSelector("#cmSubMenuID1");
+                    page.click("tr.ThemeOfficeMenuItem:nth-child(1)");
+                    page.waitForSelector("table.tabelaRelatorio");
 
-            // Itera sobre cada tabela
-            for (ElementHandle tabela : tabelas) {
-                // Verifica se a tabela é referente ao ano de 2024.1
-                String caption = tabela.querySelector("caption").innerText();
-                //if (caption.equals("2024.1")) {
-                    // Encontra todas as linhas da tabela
-                    List<ElementHandle> linhas = tabela.querySelectorAll("tbody tr");
-                    // Itera sobre cada linha
-                    for (ElementHandle linha : linhas) {
-                        // Extrai e exibe o código, a disciplina, as notas e a situação
-                        String codigo = linha.querySelector("td:nth-child(1)").innerText();
-                        String disciplina = linha.querySelector("td:nth-child(2)").innerText();
-                        String unidade1 = linha.querySelector("td:nth-child(3)").innerText();
-                        String unidade2 = linha.querySelector("td:nth-child(4)").innerText();
-                        String recuperacao = linha.querySelector("td:nth-child(5)").innerText();
-                        String resultado = linha.querySelector("td:nth-child(6)").innerText();
-                        String faltas = linha.querySelector("td:nth-child(7)").innerText();
-                        String situacao = linha.querySelector("td:nth-child(8)").innerText();
+                    List<ElementHandle> tabelas = page.querySelectorAll("table.tabelaRelatorio");
+                    for (ElementHandle tabela : tabelas) {
+                        List<ElementHandle> linhas = tabela.querySelectorAll("tbody tr");
+                        for (ElementHandle linha : linhas) {
+                            String codigo = linha.querySelector("td:nth-child(1)").innerText();
+                            String disciplina = linha.querySelector("td:nth-child(2)").innerText();
+                            String unidade1 = linha.querySelector("td:nth-child(3)").innerText();
+                            String unidade2 = linha.querySelector("td:nth-child(4)").innerText();
+                            String recuperacao = linha.querySelector("td:nth-child(5)").innerText();
+                            String resultado = linha.querySelector("td:nth-child(6)").innerText();
+                            String faltas = linha.querySelector("td:nth-child(7)").innerText();
+                            String situacao = linha.querySelector("td:nth-child(8)").innerText();
 
-                        notas.add(new Notas(codigo,disciplina,unidade1,unidade2,recuperacao,resultado,faltas,situacao));
-
+                            Notas nota = new Notas(codigo, disciplina, unidade1, unidade2, recuperacao, resultado, faltas, situacao);
+                            notas.add(nota);
+                            Gson gson = new Gson();
+                            String json = gson.toJson(notas);
+                            redisService.setKey(login.login(), json);
+                        }
                     }
-                //}
+                }
             }
-
-            //Limpando cookies
             context.clearCookies();
-            // Fecha o navegador
             browser.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,30 +100,20 @@ public class NotasService {
     }
 
     public Usuario obterDadosUsuario(Login login) {
-        Usuario u = null;
+        Usuario usuario = null;
         try (Playwright playwright = Playwright.create()) {
-            //Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-            //Sem exibir
             Browser browser = playwright.firefox().launch();
-            //Page page = browser.newPage();
             BrowserContext context = browser.newContext();
-            // Abre uma nova página
             Page page = context.newPage();
 
             page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
-
-            // Espera até que os seletores estejam prontos para interação
             page.waitForLoadState(LoadState.DOMCONTENTLOADED);
-
-            // Preenche o formulário de login e aguarda o redirecionamento para a página principal
             page.fill("input[name='user.login']", login.login());
             page.fill("input[name='user.senha']", login.senha());
             page.click("input[type='submit']");
 
-            // Espera até que os dados do usuário sejam carregados
             page.waitForSelector(".info-docente .nome");
 
-            // Obtém dados do usuário
             String nomeDocente = page.textContent(".info-docente .nome").trim();
             String matricula = page.textContent("td:has-text(\"Matrícula:\") + td").trim();
             String curso = page.textContent("td:has-text(\"Curso:\") + td").replaceAll("\\s+", " ").trim();
@@ -117,14 +121,12 @@ public class NotasService {
             String status = page.textContent("td:has-text(\"Status:\") + td").trim();
             String entrada = page.textContent("td:has-text(\"Entrada:\") + td").trim();
 
-            // Cria o objeto de usuário
-            u = new Usuario(nomeDocente, matricula, curso, nivel, status, entrada);
+            usuario = new Usuario(nomeDocente, matricula, curso, nivel, status, entrada);
             context.clearCookies();
-            // Fecha o navegador
             browser.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return u;
+        return usuario;
     }
 }
