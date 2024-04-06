@@ -18,11 +18,11 @@ public class NotasService {
         List<Notas> notas = new ArrayList<>();
         try (Playwright playwright = Playwright.create()) {
             // Inicia o navegador
-            //Para exibir o navegador
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-            BrowserContext context = browser.newContext();
             //Sem exibir
-            //Browser browser = playwright.firefox().launch();
+            Browser browser = playwright.firefox().launch();
+            //Para exibir o navegador
+            //Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            BrowserContext context = browser.newContext();
             // Abre uma nova página
             Page page = context.newPage();
             // Navega até a página de login do SIGAA e aguarda o carregamento completo
@@ -75,9 +75,6 @@ public class NotasService {
                 //}
             }
 
-            // Tira uma captura de tela (opcional)
-            //page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("exemplo.png")));
-
             //Limpando cookies
             context.clearCookies();
             // Fecha o navegador
@@ -91,9 +88,14 @@ public class NotasService {
     public Usuario obterDadosUsuario(Login login) {
         Usuario u = null;
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-            //Browser browser = playwright.firefox().launch();
-            Page page = browser.newPage();
+            //Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            //Sem exibir
+            Browser browser = playwright.firefox().launch();
+            //Page page = browser.newPage();
+            BrowserContext context = browser.newContext();
+            // Abre uma nova página
+            Page page = context.newPage();
+
             page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
 
             // Espera até que os seletores estejam prontos para interação
@@ -115,12 +117,9 @@ public class NotasService {
             String status = page.textContent("td:has-text(\"Status:\") + td").trim();
             String entrada = page.textContent("td:has-text(\"Entrada:\") + td").trim();
 
-            // Captura de tela (opcional)
-            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("exemplo.png")));
-
             // Cria o objeto de usuário
             u = new Usuario(nomeDocente, matricula, curso, nivel, status, entrada);
-
+            context.clearCookies();
             // Fecha o navegador
             browser.close();
         } catch (Exception e) {
