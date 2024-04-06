@@ -3,6 +3,8 @@ package controller;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.*;
 import model.Noticia;
 import service.NoticiaService;
@@ -23,8 +25,8 @@ public class NoticiaController {
     }
 
     @GET
-    public Response obterNoticias(){
-        List<Noticia> noticias = noticiaService.obterNoticias();
+    public Response obterNoticias(@QueryParam("limit") int limit){
+        List<Noticia> noticias = noticiaService.obterNoticias(limit);
         logger.log(Level.INFO, "Consultando notícias");
         return Response.status(Response.Status.OK)
                 .entity(noticias)

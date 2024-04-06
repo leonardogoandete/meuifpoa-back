@@ -75,12 +75,12 @@ import java.util.List;
 
 @ApplicationScoped
 public class NoticiaService {
-    public List<Noticia> obterNoticias() {
+    public List<Noticia> obterNoticias(int limit) {
         List<Noticia> noticias = new ArrayList<>();
         try {
             // Realiza a solicitação POST para obter o conteúdo da página desejada
             String url = "https://poa.ifrs.edu.br/index.php/ultimas-noticias/noticias-principais";
-            String postData = "limit=100"; // Se houver dados a serem enviados no corpo da solicitação POST, adicione aqui
+            String postData = "limit="+limit; // Se houver dados a serem enviados no corpo da solicitação POST, adicione aqui
             String contentType = "application/x-www-form-urlencoded";
 
             HttpClient httpClient = HttpClient.newHttpClient();
