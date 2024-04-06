@@ -14,43 +14,6 @@ import java.util.List;
 public class NoticiaService {
         public List<Noticia> obterNoticias() {
             List<Noticia> noticias = new ArrayList<>();
-//        try (Playwright playwright = Playwright.create()) {
-//            // Inicia o navegador
-//            //Para exibir o navegador
-//            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-//            //Sem exibir
-//            //Browser browser = playwright.firefox().launch();
-//            // Abre uma nova página
-//            Page page = browser.newPage();
-//            // Navega até a página de login do SIGAA e aguarda o carregamento completo
-//            page.navigate("https://poa.ifrs.edu.br/index.php/ultimas-noticias/noticias-principais");
-//
-//            List<ElementHandle> noticias = page.querySelectorAll("div.tileItem");
-//            for (ElementHandle noticia : noticias) {
-//                // Extrai o título e o resumo da notícia
-//                String titulo = noticia.querySelector("h2.tileHeadline > a").innerText();
-//                String resumo = noticia.querySelector("span.description > p").innerText();
-//
-//                // Extrai a data e a hora da publicação
-//                String dataPublicacao = noticia.querySelector("div.span2.tileInfo > ul > li:nth-child(3)").innerText();
-//                String horaPublicacao = noticia.querySelector("div.span2.tileInfo > ul > li:nth-child(4)").innerText();
-//
-//                System.out.println("Título: " + titulo);
-//                System.out.println("Resumo: " + resumo);
-//                System.out.println("Data da publicação: " + dataPublicacao);
-//                System.out.println("Hora da publicação: " + horaPublicacao);
-//                System.out.println();
-//
-//            }
-//
-//            // Tira uma captura de tela (opcional)
-//            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("exemplo.png")));
-//
-//            // Fecha o navegador
-//            browser.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
             try (Playwright playwright = Playwright.create()) {
                 // Inicia o navegador
                 Browser browser = playwright.firefox().launch();
@@ -95,10 +58,6 @@ public class NoticiaService {
                                     horaPublicacao));
                 }
 
-                // Tira uma captura de tela (opcional)
-                //page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("exemplo.png")));
-
-                // Fecha o navegador
                 browser.close();
             } catch (Exception e) {
                 e.printStackTrace();
