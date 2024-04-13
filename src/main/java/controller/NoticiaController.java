@@ -25,8 +25,8 @@ public class NoticiaController {
     }
 
     @GET
-    public Response obterNoticias(@QueryParam("limit") int limit){
-        List<Noticia> noticias = noticiaService.obterNoticias(limit);
+    public Response obterNoticias(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
+        List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
         logger.log(Level.INFO, "Consultando notícias");
         return Response.status(Response.Status.OK)
                 .entity(noticias)
