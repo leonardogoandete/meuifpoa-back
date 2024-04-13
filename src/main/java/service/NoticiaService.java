@@ -80,7 +80,7 @@ public class NoticiaService {
         try {
             // Realiza a solicitação POST para obter o conteúdo da página desejada
             String url = "https://poa.ifrs.edu.br/index.php/ultimas-noticias/noticias-principais";
-            String postData = "filter-search="+filterSearch+"&limit="+limit; // Se houver dados a serem enviados no corpo da solicitação POST, adicione aqui
+            String postData = configuraFiltroNoticia(limit,filterSearch); // Se houver dados a serem enviados no corpo da solicitação POST, adicione aqui
             String contentType = "application/x-www-form-urlencoded";
 
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -116,5 +116,12 @@ public class NoticiaService {
             e.printStackTrace();
         }
         return noticias;
+    }
+
+    private String configuraFiltroNoticia(int limit, String filterSearch) {
+        if (filterSearch == null) {
+            filterSearch = "";
+        }
+        return "filter-search="+filterSearch+"&limit="+limit;
     }
 }
