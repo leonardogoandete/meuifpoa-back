@@ -31,12 +31,4 @@ public class NotasController {
         return Response.status(jakarta.ws.rs.core.Response.Status.OK).entity(notas).build();
     }
 
-    @POST()
-    @Path("/usuario")
-    @Produces
-    public Response dadosUsuario(Login login){
-        Usuario u = notasService.obterDadosUsuario(login);
-        logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
-        return Response.status(jakarta.ws.rs.core.Response.Status.OK).entity(u).build();
-    }
 }
