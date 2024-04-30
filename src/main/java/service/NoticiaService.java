@@ -38,7 +38,8 @@ public class NoticiaService {
 
     private static HttpResponse<String> configuraConexao(String url, String contentType, String postData) throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response;
-        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+        try{
+            HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .header("Content-Type", contentType)
@@ -46,6 +47,8 @@ public class NoticiaService {
                     .build();
 
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        }catch (Exception e){
+            response = null;
         }
         return response;
     }

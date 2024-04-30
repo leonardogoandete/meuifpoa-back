@@ -8,7 +8,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Login;
-import model.Usuario;
+import model.DadosUsuario;
 
 import java.util.logging.Logger;
 
@@ -21,8 +21,8 @@ public class UsuarioService {
         this.redisService = new RedisService();
     }
 
-    public Usuario obterDadosUsuario(Login login) {
-        Usuario usuario = null;
+    public DadosUsuario obterDadosUsuario(Login login) {
+        DadosUsuario dadosUsuario = null;
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.firefox().launch();
             BrowserContext context = browser.newContext();
@@ -48,7 +48,7 @@ public class UsuarioService {
                 if (redisValue != null) {
                     logger.info("Dados usuario "+ login.login() +" recuperado do Redis");
                     Gson gson = new Gson();
-                    usuario = gson.fromJson(redisValue, Usuario.class);
+                    dadosUsuario = gson.fromJson(redisValue, DadosUsuario.class);
 
                 }else {
                     logger.info("Valor " + login.login() + " não encontrado no Redis");
@@ -61,9 +61,9 @@ public class UsuarioService {
                     String status = page.textContent("td:has-text(\"Status:\") + td").trim();
                     String entrada = page.textContent("td:has-text(\"Entrada:\") + td").trim();
 
-                    usuario = new Usuario(nomeDocente, matricula, curso, nivel, status, entrada);
+                    dadosUsuario = new DadosUsuario(nomeDocente, matricula, curso, nivel, status, entrada);
                     Gson gson = new Gson();
-                    String json = gson.toJson(usuario);
+                    String json = gson.toJson(dadosUsuario);
                     redisService.setKey(login.login()+"-dados-usuario", json);
 
                     context.clearCookies();
@@ -73,6 +73,6 @@ public class UsuarioService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return usuario;
+        return dadosUsuario;
     }
 }

@@ -3,13 +3,10 @@ package service;
 import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
-import controller.NotasController;
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Login;
 import model.Notas;
-import model.Usuario;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

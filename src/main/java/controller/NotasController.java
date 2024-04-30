@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.*;
 import java.util.List;
 import model.Login;
 import model.Notas;
-import model.Usuario;
 import service.NotasService;
 
 

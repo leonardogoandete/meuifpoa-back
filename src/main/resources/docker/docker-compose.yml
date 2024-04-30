@@ -2,5 +2,13 @@ services:
   redis:
     image: redis
     container_name: redis
-    ports:
-    - "6379:6379"
+    network_mode: host
+
+  db:
+    image: postgres:latest
+    container_name: hibernate
+    environment:
+      POSTGRES_PASSWORD: hibernate
+      POSTGRES_USER: hibernate
+      POSTGRES_DB: hibernate
+    network_mode: host

@@ -1,8 +1,9 @@
 package service;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import redis.clients.jedis.Jedis;
 
-
+@ApplicationScoped
 public class RedisService {
 
     private final Jedis jedis;
