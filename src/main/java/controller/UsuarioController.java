@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Path("/usuario")
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UsuarioController {
 
@@ -29,6 +28,6 @@ public class UsuarioController {
     public Response dadosUsuario(Login login){
         DadosUsuario u = usuarioService.obterDadosUsuario(login);
         logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
-        return Response.status(jakarta.ws.rs.core.Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).entity(u).build();
     }
 }

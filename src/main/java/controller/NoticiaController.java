@@ -1,10 +1,7 @@
 package controller;
 
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import model.Noticia;
 import service.NoticiaService;
@@ -24,7 +21,7 @@ public class NoticiaController {
         this.noticiaService = noticiaService;
     }
 
-    @GET
+    @POST
     public Response obterNoticias(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
         List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
         logger.log(Level.INFO, "Consultando notícias");
