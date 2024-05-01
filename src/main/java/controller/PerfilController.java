@@ -3,30 +3,29 @@ package controller;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.Login;
-import model.DadosUsuario;
-import service.UsuarioService;
+import model.Perfil;
+import service.PerfilService;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Path("/usuario")
+@Path("/perfil")
 @Consumes(MediaType.APPLICATION_JSON)
-public class UsuarioController {
+public class PerfilController {
 
-    private static final Logger logger = Logger.getLogger(UsuarioController.class.getName());
-    private final UsuarioService usuarioService;
+    private static final Logger logger = Logger.getLogger(PerfilController.class.getName());
+    private final PerfilService perfilService;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public PerfilController(PerfilService perfilService) {
+        this.perfilService = perfilService;
     }
 
     @POST()
     public Response dadosUsuario(Login login){
-        DadosUsuario u = usuarioService.obterDadosUsuario(login);
+        Perfil u = perfilService.obterDadosUsuario(login);
         logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
         return Response.status(Response.Status.OK).entity(u).build();
     }

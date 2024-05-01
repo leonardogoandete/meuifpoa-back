@@ -8,21 +8,21 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Login;
-import model.DadosUsuario;
+import model.Perfil;
 
 import java.util.logging.Logger;
 
 @ApplicationScoped
-public class UsuarioService {
-    private static final Logger logger = Logger.getLogger(UsuarioService.class.getName());
+public class PerfilService {
+    private static final Logger logger = Logger.getLogger(PerfilService.class.getName());
     private RedisService redisService;
 
-    public UsuarioService() {
+    public PerfilService() {
         this.redisService = new RedisService();
     }
 
-    public DadosUsuario obterDadosUsuario(Login login) {
-        DadosUsuario dadosUsuario = null;
+    public Perfil obterDadosUsuario(Login login) {
+        Perfil dadosUsuario = null;
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.firefox().launch();
             BrowserContext context = browser.newContext();
@@ -48,7 +48,7 @@ public class UsuarioService {
                 if (redisValue != null) {
                     logger.info("Dados usuario "+ login.login() +" recuperado do Redis");
                     Gson gson = new Gson();
-                    dadosUsuario = gson.fromJson(redisValue, DadosUsuario.class);
+                    dadosUsuario = gson.fromJson(redisValue, Perfil.class);
 
                 }else {
                     logger.info("Valor " + login.login() + " não encontrado no Redis");
@@ -61,7 +61,7 @@ public class UsuarioService {
                     String status = page.textContent("td:has-text(\"Status:\") + td").trim();
                     String entrada = page.textContent("td:has-text(\"Entrada:\") + td").trim();
 
-                    dadosUsuario = new DadosUsuario(nomeDocente, matricula, curso, nivel, status, entrada);
+                    dadosUsuario = new Perfil(nomeDocente, matricula, curso, nivel, status, entrada);
                     Gson gson = new Gson();
                     String json = gson.toJson(dadosUsuario);
                     redisService.setKey(login.login()+"-dados-usuario", json);
