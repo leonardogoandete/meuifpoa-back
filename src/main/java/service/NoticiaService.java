@@ -1,6 +1,7 @@
 package service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
 import model.Noticia;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @ApplicationScoped
 public class NoticiaService {
     public List<Noticia> obterNoticias(int limit, String filterSearch) {
@@ -80,6 +82,9 @@ public class NoticiaService {
     private String configuraFiltroNoticia(int limit, String filterSearch) {
         if (filterSearch == null) {
             filterSearch = "";
+        }
+        if (limit <= 0) {
+            limit = 50;
         }
         return "filter-search="+filterSearch+"&limit="+limit;
     }
