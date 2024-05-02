@@ -15,13 +15,14 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PerfilService {
     private static final Logger logger = Logger.getLogger(PerfilService.class.getName());
-    private RedisService redisService;
+    private final RedisService redisService;
 
     public PerfilService() {
         this.redisService = new RedisService();
     }
 
     public Perfil obterDadosUsuario(Login login) {
+
         Perfil dadosUsuario = null;
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.firefox().launch();
