@@ -26,7 +26,7 @@ public class NotasService {
         List<Notas> notas = new ArrayList<>();
 
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch();
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 

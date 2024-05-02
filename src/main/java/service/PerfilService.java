@@ -1,10 +1,7 @@
 package service;
 
 import com.google.gson.Gson;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Login;
@@ -25,7 +22,7 @@ public class PerfilService {
 
         Perfil dadosUsuario = null;
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch();
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
