@@ -23,11 +23,17 @@ public class NoticiaController {
 
     @POST
     public Response obterNoticias(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
-        List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
-        logger.log(Level.INFO, "Consultando notícias");
-        return Response.status(Response.Status.OK)
-                .entity(noticias)
-                .build();
+        try{
+            List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
+            logger.log(Level.INFO, "Consultando notícias");
+            return Response.status(Response.Status.OK)
+                    .entity(noticias)
+                    .build();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Erro ao consultar notícias: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao consultar notícias!")
+                    .build();
+        }
     }
-
 }

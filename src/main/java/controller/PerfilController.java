@@ -27,18 +27,23 @@ public class PerfilController {
     }
 
     @POST()
-    public Response dadosUsuario(@HeaderParam("Authorization") String mToken) throws FirebaseAuthException {
-        logger.log(Level.INFO,"Token:"+ mToken);
-
-
-        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
-        String uid = decodedToken.getUid();
-
-
-        logger.log(Level.INFO, "UUID: " + decodedToken.getUid());
-
-        Perfil u = perfilService.obterDadosUsuario(uid);
-        logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
-        return Response.status(Response.Status.OK).entity(u).build();
+    public Response dadosUsuario(@HeaderParam("Authorization") String mToken) {
+        if (mToken == null || mToken.isEmpty()) {
+            logger.log(Level.WARNING, "Token de autenticação não fornecido!");
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
+        }
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
+            String uid = decodedToken.getUid();
+            Perfil u = perfilService.obterDadosUsuario(uid);
+            logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
+            return Response.status(Response.Status.OK).entity(u).build();
+        }catch (FirebaseAuthException e){
+            logger.log(Level.WARNING, "Erro ao decodificar o token de autenticação: " + e.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Erro ao decodificar token!").build();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Erro ao consultar informações do usuario: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao consultar informações do usuario!").build();
+        }
     }
 }
