@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 @Path("/perfil")
 @Consumes(MediaType.APPLICATION_JSON)
-@SecurityScheme(scheme = "Bearer", type = SecuritySchemeType.HTTP, bearerFormat = "JWT")
+//@SecurityScheme(scheme = "Bearer", type = SecuritySchemeType.HTTP, bearerFormat = "JWT")
 public class PerfilController {
 
     private static final Logger logger = Logger.getLogger(PerfilController.class.getName());
@@ -29,9 +29,13 @@ public class PerfilController {
     }
 
     @POST()
-    @RolesAllowed("USUARIO")
+    @PermitAll()
+    //@RolesAllowed("USUARIO")
+    //public Response dadosUsuario(Login login){
+    //    Perfil u = perfilService.obterDadosUsuario(login);
     public Response dadosUsuario(Login login){
-        Perfil u = perfilService.obterDadosUsuario(login);
+        String cpf = "xxx";
+        Perfil u = perfilService.obterDadosUsuario(cpf);
         logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
         return Response.status(Response.Status.OK).entity(u).build();
     }
