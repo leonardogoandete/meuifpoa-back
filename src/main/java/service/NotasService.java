@@ -1,5 +1,6 @@
 package service;
 
+import com.google.firebase.database.*;
 import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
@@ -10,6 +11,7 @@ import model.Notas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -17,15 +19,43 @@ public class NotasService {
 
     private static final Logger logger = Logger.getLogger(NotasService.class.getName());
     private RedisService redisService;
+    private String cpf = "";
+    private String senha = "";
 
     public NotasService() {
         this.redisService = new RedisService();
     }
 
-    public List<Notas> obterNotas(Login login) {
+    public List<Notas> obterNotas(String uid) {
         List<Notas> notas = new ArrayList<>();
 
         try (Playwright playwright = Playwright.create()) {
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("usuarios");
+
+            mDatabase.orderByChild("uid").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot usuarioSnapshot : dataSnapshot.getChildren()) {
+                            cpf = usuarioSnapshot.child("cpf").getValue(String.class);
+                            String email = usuarioSnapshot.child("email").getValue(String.class);
+                            String nome = usuarioSnapshot.child("nome").getValue(String.class);
+                            senha = usuarioSnapshot.child("senha").getValue(String.class);
+                        }
+                    } else {
+                        logger.log(Level.WARNING, "Nenhum usuário encontrado com o UID fornecido!");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    logger.log(Level.WARNING, "Erro ao consultar o usuário na base de dados: " + databaseError.getMessage());
+                }
+            });
+
+            Login login = new Login(cpf,senha);
+
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
