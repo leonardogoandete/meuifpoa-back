@@ -87,7 +87,8 @@ public class PerfilService {
                         String nivel = page.textContent("td:has-text(\"Nível:\") + td").trim();
                         String status = page.textContent("td:has-text(\"Status:\") + td").trim();
                         String entrada = page.textContent("td:has-text(\"Entrada:\") + td").trim();
-
+                        String imgSrc = page.locator("#perfil-docente .foto img").getAttribute("src");
+                        logger.info("imgSrc: " + imgSrc);
                         dadosUsuario = new Perfil(nomeDocente, matricula, curso, nivel, status, entrada);
                         Gson gson = new Gson();
                         String json = gson.toJson(dadosUsuario);

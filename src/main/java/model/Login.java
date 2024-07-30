@@ -1,4 +1,6 @@
 package model;
 
-public record Login(String login, String senha) {
+public record Login(
+        String login,
+        String senha) {
 }
