@@ -1,5 +1,6 @@
 package br.com.ifrs.backend.controller;
 
+import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.model.Perfil;
 import br.com.ifrs.backend.service.PerfilService;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,15 +28,15 @@ public class PerfilController {
     }
 
     @POST()
-    public Response dadosUsuario(@HeaderParam("Authorization") String mToken) {
-        if (mToken == null || mToken.isEmpty()) {
+    public Response dadosUsuario(@HeaderParam("Authorization") String token, Login login) {
+        if (token == null || token.isEmpty()) {
             logger.log(Level.WARNING, "Token de autenticação não fornecido!");
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
         }
         try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            Perfil u = perfilService.obterDadosUsuario(uid);
+            Perfil u = perfilService.obterDadosUsuario(uid, login);
             logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
             return Response.status(Response.Status.OK).entity(u).build();
         }catch (FirebaseAuthException e){
