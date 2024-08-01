@@ -1,4 +1,4 @@
-package service;
+package br.com.ifrs.backend.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import redis.clients.jedis.Jedis;

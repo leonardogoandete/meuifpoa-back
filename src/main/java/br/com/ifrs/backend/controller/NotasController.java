@@ -1,18 +1,14 @@
-package controller;
+package br.com.ifrs.backend.controller;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
+import br.com.ifrs.backend.service.NotasService;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Login;
-import model.Notas;
-import org.jboss.resteasy.annotations.Body;
-import service.NotasService;
+import br.com.ifrs.backend.model.Login;
+import br.com.ifrs.backend.model.Notas;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -29,7 +25,7 @@ public class NotasController {
 
 
     @POST()
-    public Response minhasNotas(@HeaderParam("Authorization") String uid, Login login) {
+    public Response minhasNotas(@HeaderParam("Authorization") String token, Login login) {
     //public Response minhasNotas(@HeaderParam("Authorization") String mToken, Login login) {
     //    if (mToken == null || mToken.isEmpty()) {
     //        logger.log(Level.WARNING, "Token de autenticação não fornecido!");
@@ -38,7 +34,7 @@ public class NotasController {
         try {
     //        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
     //        String uid = decodedToken.getUid();
-            List<Notas> notas = notasService.obterNotas(uid, login);
+            List<Notas> notas = notasService.obterNotas(token, login);
             logger.log(Level.INFO, "Consultando notas no SIGAA");
             return Response.status(Response.Status.OK).entity(notas).build();
         //}catch (FirebaseAuthException e){

@@ -1,8 +1,8 @@
-package service;
+package br.com.ifrs.backend.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-import model.Noticia;
+import br.com.ifrs.backend.model.Noticia;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

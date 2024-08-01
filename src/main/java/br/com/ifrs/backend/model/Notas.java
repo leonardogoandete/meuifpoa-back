@@ -1,4 +1,4 @@
-package model;
+package br.com.ifrs.backend.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

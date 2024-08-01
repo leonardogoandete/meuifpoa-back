@@ -1,12 +1,12 @@
-package service;
+package br.com.ifrs.backend.service;
 
 import com.google.firebase.database.*;
 import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
-import model.Login;
-import model.Perfil;
+import br.com.ifrs.backend.model.Login;
+import br.com.ifrs.backend.model.Perfil;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

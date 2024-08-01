@@ -1,10 +1,10 @@
-package controller;
+package br.com.ifrs.backend.controller;
 
 
+import br.com.ifrs.backend.service.NoticiaService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import model.Noticia;
-import service.NoticiaService;
+import br.com.ifrs.backend.model.Noticia;
 
 import java.util.List;
 import java.util.logging.Level;

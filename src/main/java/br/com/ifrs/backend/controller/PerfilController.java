@@ -1,5 +1,7 @@
-package controller;
+package br.com.ifrs.backend.controller;
 
+import br.com.ifrs.backend.model.Perfil;
+import br.com.ifrs.backend.service.PerfilService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -9,8 +11,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Perfil;
-import service.PerfilService;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

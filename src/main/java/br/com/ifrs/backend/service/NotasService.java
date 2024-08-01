@@ -1,4 +1,4 @@
-package service;
+package br.com.ifrs.backend.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
-import model.Login;
-import model.Notas;
+import br.com.ifrs.backend.model.Login;
+import br.com.ifrs.backend.model.Notas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
