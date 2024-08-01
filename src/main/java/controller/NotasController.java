@@ -9,7 +9,9 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import model.Login;
 import model.Notas;
+import org.jboss.resteasy.annotations.Body;
 import service.NotasService;
 
 import java.util.List;
@@ -27,20 +29,21 @@ public class NotasController {
 
 
     @POST()
-    public Response minhasNotas(@HeaderParam("Authorization") String mToken) {
-        if (mToken == null || mToken.isEmpty()) {
-            logger.log(Level.WARNING, "Token de autenticação não fornecido!");
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
-        }
+    public Response minhasNotas(@HeaderParam("Authorization") String uid, Login login) {
+    //public Response minhasNotas(@HeaderParam("Authorization") String mToken, Login login) {
+    //    if (mToken == null || mToken.isEmpty()) {
+    //        logger.log(Level.WARNING, "Token de autenticação não fornecido!");
+    //        return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
+    //    }
         try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
-            String uid = decodedToken.getUid();
-            List<Notas> notas = notasService.obterNotas(uid);
+    //        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(mToken);
+    //        String uid = decodedToken.getUid();
+            List<Notas> notas = notasService.obterNotas(uid, login);
             logger.log(Level.INFO, "Consultando notas no SIGAA");
             return Response.status(Response.Status.OK).entity(notas).build();
-        }catch (FirebaseAuthException e){
-            logger.log(Level.WARNING, "Erro ao decodificar o token de autenticação: " + e.getMessage());
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Erro ao decodificar token!").build();
+        //}catch (FirebaseAuthException e){
+        //    logger.log(Level.WARNING, "Erro ao decodificar o token de autenticação: " + e.getMessage());
+        //    return Response.status(Response.Status.UNAUTHORIZED).entity("Erro ao decodificar token!").build();
         }catch (Exception e){
             logger.log(Level.WARNING, "Erro ao consultar notas: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao consultar notas!").build();

@@ -1,6 +1,9 @@
 package service;
 
-import com.google.firebase.database.*;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
@@ -11,6 +14,7 @@ import model.Notas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,79 +22,44 @@ import java.util.logging.Logger;
 public class NotasService {
 
     private static final Logger logger = Logger.getLogger(NotasService.class.getName());
-    private RedisService redisService;
-    private String cpf = "";
-    private String senha = "";
+    private final RedisService redisService;
+    private final Firestore db = FirestoreClient.getFirestore();
 
     public NotasService() {
         this.redisService = new RedisService();
     }
 
-    public List<Notas> obterNotas(String uid) {
+    public List<Notas> obterNotas(String uid, Login login) {
         List<Notas> notas = new ArrayList<>();
 
+        logger.info("Consultando notas no SIGAA");
+
         try (Playwright playwright = Playwright.create()) {
-
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("usuarios");
-
-            mDatabase.orderByChild("uid").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot usuarioSnapshot : dataSnapshot.getChildren()) {
-                            cpf = usuarioSnapshot.child("cpf").getValue(String.class);
-                            String email = usuarioSnapshot.child("email").getValue(String.class);
-                            String nome = usuarioSnapshot.child("nome").getValue(String.class);
-                            senha = usuarioSnapshot.child("senha").getValue(String.class);
-                        }
-                    } else {
-                        logger.log(Level.WARNING, "Nenhum usuário encontrado com o UID fornecido!");
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    logger.log(Level.WARNING, "Erro ao consultar o usuário na base de dados: " + databaseError.getMessage());
-                }
-            });
-
-            Login login = new Login(cpf,senha);
-
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
             page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
 
-            // Preenche o formulário de login
             page.fill("input[name='user.login']", login.login());
             page.fill("input[name='user.senha']", login.senha());
 
-            // Clicar no botão de envio do formulário de login
             page.click("input[type='submit']");
-
-            // Esperar até que a página seja completamente carregada
             page.waitForLoadState(LoadState.NETWORKIDLE);
 
-            // Verificar se o elemento de erro de login está presente
             boolean loginError = page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
 
             if (loginError) {
-                // Ocorreu um erro de login
                 throw new RuntimeException("Usuário e/ou senha inválidos");
             } else {
-
-                // Verifica se o valor está disponível no Redis
-                String redisValue = redisService.getValue(login.login()+"-notas");
+                String redisValue = redisService.getValue(login.login() + "-notas");
                 if (redisValue != null) {
-                    logger.info("Valor "+ login.login() +" recuperado do Redis");
+                    logger.info("Valor " + login.login() + " recuperado do Redis");
                     Gson gson = new Gson();
                     Notas[] notasArray = gson.fromJson(redisValue, Notas[].class);
                     notas.addAll(Arrays.asList(notasArray));
-
-                }else {
-                    logger.info("Valor "+ login.login() +" não encontrado no Redis");
-                    // O login foi bem-sucedido, continue obtendo as notas
+                } else {
+                    logger.info("Valor " + login.login() + " não encontrado no Redis");
                     page.click("td.ThemeOfficeMainItem:nth-child(1)");
                     page.waitForSelector("#cmSubMenuID1");
                     page.click("tr.ThemeOfficeMenuItem:nth-child(1)");
@@ -111,17 +80,28 @@ public class NotasService {
 
                             Notas nota = new Notas(codigo, disciplina, unidade1, unidade2, recuperacao, resultado, faltas, situacao);
                             notas.add(nota);
-                            Gson gson = new Gson();
-                            String json = gson.toJson(notas);
-                            redisService.setKey(login.login()+"-notas", json);
+                            //db.collection("notas").document(uid).set();
                         }
                     }
+
+                    Gson gson = new Gson();
+                    String json = gson.toJson(notas);
+                    redisService.setKey(login.login() + "-notas", json);
                 }
             }
             context.clearCookies();
             browser.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        // Salvar cada nota como um documento separado
+        for (Notas nota : notas) {
+            ApiFuture<WriteResult> result = db.collection("notas").document(uid).collection("disciplinas").document(nota.getCodigoDisciplina()).set(nota);
+            try {
+                result.get();
+            } catch (InterruptedException | ExecutionException e) {
+                logger.log(Level.SEVERE, "Erro ao salvar nota no Firestore", e);
+            }
         }
         return notas;
     }

@@ -5,8 +5,22 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
   </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="app-ifrs-back" value="4fe4feb0-6e02-4ae9-8cc2-bfd9163bf1c2" />
+        </datasource-mapping>
+        <naming-strategy-map>
+          <unit-entry name="app-ifrs-back" />
+        </naming-strategy-map>
+      </configuration>
+    </facet>
+  </component>
   <component name="Quarkus Tools">
-    <option name="hash" value="423703571" />
+    <option name="hash" value="112090569" />
     <option name="version" value="1" />
   </component>
 </module>
