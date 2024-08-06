@@ -8,12 +8,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,7 @@ public class NoticiaService {
     public List<Noticia> obterNoticias(int limit, String filterSearch) {
         List<Noticia> noticias = new ArrayList<>();
         String url = "https://poa.ifrs.edu.br/index.php/ultimas-noticias/noticias-principais";
-        String postData = configuraFiltroNoticia(limit,filterSearch); // Se houver dados a serem enviados no corpo da solicitação POST
+        String postData = configuraFiltroNoticia(limit, filterSearch); // Se houver dados a serem enviados no corpo da solicitação POST
         String contentType = "application/x-www-form-urlencoded";
 
         try {
@@ -40,8 +44,9 @@ public class NoticiaService {
 
     private static HttpResponse<String> configuraConexao(String url, String contentType, String postData) throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response;
-        HttpClient httpClient = HttpClient.newHttpClient();
-        try{
+        HttpClient httpClient = criaHttpClientIgnorandoSSL(); // Usa um cliente HTTP que ignora a verificação de SSL
+
+        try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .header("Content-Type", contentType)
@@ -49,11 +54,39 @@ public class NoticiaService {
                     .build();
 
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao realizar a solicitação HTTP." + e.getMessage());
         }
 
         return response;
+    }
+
+    private static HttpClient criaHttpClientIgnorandoSSL() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+            return HttpClient.newBuilder()
+                    .sslContext(sslContext)
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criar o HttpClient ignorando SSL.", e);
+        }
     }
 
     private static void scrapingInformacoesHtml(HttpResponse<String> response, List<Noticia> noticias) {
@@ -83,9 +116,9 @@ public class NoticiaService {
         if (filterSearch == null) {
             filterSearch = "";
         }
-        if (limit <= 0) {
-            limit = 50;
-        }
-        return "filter-search="+filterSearch+"&limit="+limit;
+//        if (limit <= 0) {
+//            limit = 50;
+//        }
+        return "filter-search=" + filterSearch + "&limit=" + limit;
     }
 }

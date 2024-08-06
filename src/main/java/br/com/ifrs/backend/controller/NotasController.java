@@ -37,7 +37,8 @@ public class NotasController {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            List<Notas> notas = notasService.obterNotas(uid, login);
+            //List<Notas> notas = notasService.obterNotas(uid, login);
+            List<Notas> notas = notasService.obterNotas(uid, login.senha());
             logger.log(Level.INFO, "Consultando notas no SIGAA");
             return Response.status(Response.Status.OK).entity(notas).build();
         } catch (Exception e){

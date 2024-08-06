@@ -1,5 +1,20 @@
 package br.com.ifrs.backend.model;
 
-public record Login(
-        String senha) {
+public class Login{
+    private String senha;
+
+    public Login() {
+    }
+
+    public Login(String senha) {
+        this.senha = senha;
+    }
+
+    public String senha() {
+        return senha;
+    }
+
+    public void senha(String senha) {
+        this.senha = senha;
+    }
 }

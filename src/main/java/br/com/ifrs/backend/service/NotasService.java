@@ -23,7 +23,8 @@ public class NotasService {
     private static final Logger logger = Logger.getLogger(NotasService.class.getName());
     private final Firestore db = FirestoreClient.getFirestore();
 
-    public List<Notas> obterNotas(String uid, Login login) {
+    //public List<Notas> obterNotas(String uid, Login login) {
+    public List<Notas> obterNotas(String uid, String senha) {
         List<Notas> notas = new ArrayList<>();
         String cpf = getCpfFromFirestore(uid);
 
@@ -39,7 +40,7 @@ public class NotasService {
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
-            if (performLogin(page, cpf, login.senha())) {
+            if (performLogin(page, cpf, senha)) {
                 notas = scrapeNotasFromPage(page);
                 saveNotasToFirestore(uid, notas);
             } else {

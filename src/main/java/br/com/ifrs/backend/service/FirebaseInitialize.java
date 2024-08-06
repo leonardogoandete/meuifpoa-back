@@ -19,7 +19,7 @@ public class FirebaseInitialize {
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://ifrspoa-d9f18-default-rtdb.firebaseio.com")
+                    .setStorageBucket("ifrspoa-d9f18.appspot.com")
                     .build();
 
             FirebaseApp.initializeApp(options);

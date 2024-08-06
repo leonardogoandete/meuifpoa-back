@@ -7,6 +7,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.cloud.StorageClient;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,11 +20,17 @@ import java.util.logging.Logger;
 public class PerfilService {
     private static final Logger logger = Logger.getLogger(PerfilService.class.getName());
     private final Firestore db = FirestoreClient.getFirestore();
+    private final StorageClient storage = StorageClient.getInstance();
 
     public Perfil obterDadosUsuario(String uid, Login login) {
         Perfil dadosUsuario = null;
-        String cpf = null;
+        String cpf = getCpfFromFirestore(uid);
         String email = null;
+
+        if (cpf == null) {
+            logger.warning("CPF não encontrado para o UID: " + uid);
+            return null;
+        }
 
         // Consultar os dados do usuário no Firestore
         ApiFuture<DocumentSnapshot> future = db.collection("usuarios").document(uid).get();
@@ -92,6 +99,11 @@ public class PerfilService {
                         imgSrc != null ? imgSrc : ""
                 );
 
+                //Fazer o download da foto e enviar para o bucket
+                byte[] imgBytes = page.locator("#perfil-docente .foto img").screenshot();
+                storage.bucket().create("perfil/" + uid + ".jpg", imgBytes);
+
+
                 // Atualiza o Firestore com os novos dados
                 ApiFuture<WriteResult> writeResult = db.collection("usuarios").document(uid).set(dadosUsuario);
                 try {
@@ -108,5 +120,18 @@ public class PerfilService {
             logger.log(Level.SEVERE, "Erro ao obter dados do usuário", e);
         }
         return dadosUsuario;
+    }
+
+    private String getCpfFromFirestore(String uid) {
+        try {
+            ApiFuture<DocumentSnapshot> future = db.collection("usuarios").document(uid).get();
+            DocumentSnapshot document = future.get();
+            if (document.exists()) {
+                return document.getString("cpf");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            logger.log(Level.SEVERE, "Erro ao obter CPF do Firestore", e);
+        }
+        return null;
     }
 }
