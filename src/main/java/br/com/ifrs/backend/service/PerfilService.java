@@ -103,7 +103,6 @@ public class PerfilService {
                 byte[] imgBytes = page.locator("#perfil-docente .foto img").screenshot();
                 storage.bucket().create("perfil/" + uid + ".jpg", imgBytes);
 
-
                 // Atualiza o Firestore com os novos dados
                 ApiFuture<WriteResult> writeResult = db.collection("usuarios").document(uid).set(dadosUsuario);
                 try {
