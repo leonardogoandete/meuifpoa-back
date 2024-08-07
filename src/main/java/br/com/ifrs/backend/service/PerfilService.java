@@ -22,7 +22,7 @@ public class PerfilService {
     private final Firestore db = FirestoreClient.getFirestore();
     private final StorageClient storage = StorageClient.getInstance();
 
-    public Perfil obterDadosUsuario(String uid, Login login) {
+    public Perfil obterDadosUsuario(String uid, String senha) {
         Perfil dadosUsuario = null;
         String cpf = getCpfFromFirestore(uid);
         String email = null;
@@ -65,7 +65,7 @@ public class PerfilService {
             page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
             page.waitForLoadState(LoadState.DOMCONTENTLOADED);
             page.fill("input[name='user.login']", cpf);
-            page.fill("input[name='user.senha']", login.senha());
+            page.fill("input[name='user.senha']", senha);
             page.click("input[type='submit']");
 
             page.waitForLoadState(LoadState.NETWORKIDLE);

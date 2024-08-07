@@ -36,7 +36,7 @@ public class PerfilController {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            Perfil u = perfilService.obterDadosUsuario(uid, login);
+            Perfil u = perfilService.obterDadosUsuario(uid, login.senha());
             logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
             return Response.status(Response.Status.OK).entity(u).build();
         }catch (FirebaseAuthException e){
