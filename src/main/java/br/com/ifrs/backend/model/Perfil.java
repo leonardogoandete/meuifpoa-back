@@ -11,6 +11,9 @@ public class Perfil{
     private String email;
     private String imgSrc;
 
+    public Perfil() {
+    }
+
     public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgSrc){
         this.nomeDocente = nomeDocente;
         this.matricula = matricula;
