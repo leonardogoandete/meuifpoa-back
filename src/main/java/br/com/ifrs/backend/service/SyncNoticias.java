@@ -42,7 +42,8 @@ public class SyncNoticias {
         logger.info("Iniciando sincronização de notícias");
 
         // Obtenha as notícias
-        List<Noticia> novasNoticias = obterNoticias(0, ""); // Limite de 10 notícias sem filtro de busca
+        // Adicionado o limite para nao exeder o uso no Firebase
+        List<Noticia> novasNoticias = obterNoticias(10, ""); // Limite de 10 notícias sem filtro de busca
 
         // Salva as notícias no Firestore
         try {

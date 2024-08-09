@@ -32,10 +32,10 @@ public class SyncService {
             try {
                 //Obter notas
                 NotasService notasService = new NotasService();
-                notasService.obterNotas(uid, login.senha());
+                notasService.obterNotas(uid, login.getSenha());
                 //Obter perfil
                 PerfilService perfilService = new PerfilService();
-                perfilService.obterDadosUsuario(uid, login.senha());
+                perfilService.obterDadosUsuario(uid, login.getSenha());
             }catch (Exception e) {
                 logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
             }

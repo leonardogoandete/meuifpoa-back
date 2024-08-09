@@ -2,7 +2,6 @@ package br.com.ifrs.backend.controller;
 
 import br.com.ifrs.backend.service.NotasService;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
@@ -29,7 +28,6 @@ public class NotasController {
 
     @POST()
     public Response minhasNotas(@HeaderParam("Authorization") String token, Login login) {
-    //public Response minhasNotas(@HeaderParam("Authorization") String mToken, Login login) {
         if (token == null || token.isEmpty()) {
             logger.log(Level.WARNING, "Token de autenticação não fornecido!");
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
@@ -37,8 +35,7 @@ public class NotasController {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            //List<Notas> notas = notasService.obterNotas(uid, login);
-            List<Notas> notas = notasService.obterNotas(uid, login.senha());
+            List<Notas> notas = notasService.obterNotas(uid, login.getSenha());
             logger.log(Level.INFO, "Consultando notas no SIGAA");
             return Response.status(Response.Status.OK).entity(notas).build();
         } catch (Exception e){

@@ -10,11 +10,11 @@ public class Login{
         this.senha = senha;
     }
 
-    public String senha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void senha(String senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 }

@@ -1,6 +1,5 @@
 package br.com.ifrs.backend.service;
 
-import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.model.Perfil;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
