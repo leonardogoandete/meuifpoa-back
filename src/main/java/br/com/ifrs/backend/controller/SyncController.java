@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 public class SyncController {
     private static final Logger logger = Logger.getLogger(SyncController.class.getName());
     private final SyncService syncService;
+    private static final String MSG_ERRO_SEM_TOKEN = "Token de autenticação não fornecido!";
+    private static final String MSG_ERRO_DECODED_TOKEN = "Erro ao decodificar o token de autenticação: ";
     public SyncController(SyncService syncService){
         this.syncService = syncService;
     }
@@ -28,8 +30,8 @@ public class SyncController {
         Map<String, String> mensagem = new HashMap<>();
 
         if (token == null || token.isEmpty()) {
-            logger.log(Level.WARNING, "Token de autenticação não fornecido!");
-            mensagem.put("erro","Token de autenticação não fornecido!");
+            logger.log(Level.WARNING, MSG_ERRO_SEM_TOKEN);
+            mensagem.put("erro",MSG_ERRO_SEM_TOKEN);
             return Response.status(Response.Status.UNAUTHORIZED).entity(mensagem).build();
         }
         try {
@@ -42,7 +44,7 @@ public class SyncController {
             mensagem.put("status","Iniciando Sincronização com o SIGAA");
             return Response.status(Response.Status.OK).entity("").build();
         }catch (FirebaseAuthException e) {
-            logger.log(Level.WARNING, "Erro ao decodificar o token de autenticação: " + e.getMessage());
+            logger.log(Level.WARNING, MSG_ERRO_DECODED_TOKEN + e.getMessage());
             mensagem.put("erro",e.getMessage());
             return Response.status(Response.Status.UNAUTHORIZED).entity(mensagem).build();
         }catch (Exception e){

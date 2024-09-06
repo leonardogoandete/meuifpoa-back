@@ -8,7 +8,6 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
-import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.model.Notas;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ public class NotasService {
     private static final Logger logger = Logger.getLogger(NotasService.class.getName());
     private final Firestore db = FirestoreClient.getFirestore();
 
-    //public List<Notas> obterNotas(String uid, Login login) {
     public List<Notas> obterNotas(String uid, String senha) {
         List<Notas> notas = new ArrayList<>();
         String cpf = getCpfFromFirestore(uid);
@@ -46,8 +44,6 @@ public class NotasService {
             } else {
                 logger.severe("Falha ao realizar login no SIGAA");
             }
-            context.clearCookies();
-            browser.close();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao consultar notas", e);
         }
@@ -64,6 +60,7 @@ public class NotasService {
             }
         } catch (InterruptedException | ExecutionException e) {
             logger.log(Level.SEVERE, "Erro ao obter CPF do Firestore", e);
+            Thread.currentThread().interrupt(); // Restaurando o status de interrupção
         }
         return null;
     }
@@ -76,10 +73,9 @@ public class NotasService {
             page.click("input[type='submit']");
             page.waitForLoadState(LoadState.NETWORKIDLE);
 
-            boolean loginError = page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
-            return !loginError;
+            return !page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao realizar login", e);
+            logger.log(Level.SEVERE, "Erro ao realizar login no SIGAA", e);
             return false;
         }
     }
@@ -94,17 +90,25 @@ public class NotasService {
 
             List<ElementHandle> tabelas = page.querySelectorAll("table.tabelaRelatorio");
             for (ElementHandle tabela : tabelas) {
-                List<ElementHandle> linhas = tabela.querySelectorAll("tbody tr");
-                for (ElementHandle linha : linhas) {
-                    Notas nota = parseNotaFromElement(linha);
-                    if (nota != null) {
-                        notas.add(nota);
-                    }
-                }
+                notas.addAll(parseNotasFromTable(tabela));
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao extrair notas da página", e);
         }
+        return notas;
+    }
+
+    private List<Notas> parseNotasFromTable(ElementHandle tabela) {
+        List<Notas> notas = new ArrayList<>();
+        List<ElementHandle> linhas = tabela.querySelectorAll("tbody tr");
+
+        for (ElementHandle linha : linhas) {
+            Notas nota = parseNotaFromElement(linha);
+            if (nota != null) {
+                notas.add(nota);
+            }
+        }
+
         return notas;
     }
 
@@ -128,16 +132,16 @@ public class NotasService {
 
     private void saveNotasToFirestore(String uid, List<Notas> notas) {
         for (Notas nota : notas) {
-            ApiFuture<WriteResult> result = db.collection("notas")
-                    .document(uid)
-                    .collection("disciplinas")
-                    .document(nota.getCodigoDisciplina())
-                    .set(nota);
-
             try {
+                ApiFuture<WriteResult> result = db.collection("notas")
+                        .document(uid)
+                        .collection("disciplinas")
+                        .document(nota.getCodigoDisciplina())
+                        .set(nota);
                 result.get();
             } catch (InterruptedException | ExecutionException e) {
                 logger.log(Level.SEVERE, "Erro ao salvar nota no Firestore", e);
+                Thread.currentThread().interrupt(); // Restaurando o status de interrupção
             }
         }
     }
