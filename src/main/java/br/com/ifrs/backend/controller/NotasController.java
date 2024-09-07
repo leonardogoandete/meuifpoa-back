@@ -10,6 +10,9 @@ import jakarta.ws.rs.core.Response;
 import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.model.Notas;
 import br.com.ifrs.backend.exception.UnauthorizedException;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,6 +20,7 @@ import java.util.logging.Logger;
 @Path("/notas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Notas Controller", description = "Controlador responsável por operações relacionadas às notas dos alunos")
 public class NotasController {
 
     private static final Logger logger = Logger.getLogger(NotasController.class.getName());
@@ -27,7 +31,12 @@ public class NotasController {
     }
 
     @POST
-    public Response minhasNotas(@HeaderParam("Authorization") String token, Login login) {
+    @Operation(summary = "Obter Notas de um aluno", description = "Retorna as notas de um aluno específico com base no CPF fornecido, o CPF e obtido no Firebase buscando pelo UID do usuário.")
+    public Response minhasNotas(
+            @Parameter(description = "Token de autenticação", required = true)
+            @HeaderParam("Authorization") String token,
+            Login login) {
+
         if (token == null || token.isEmpty()) {
             logger.warning("Token de autenticação não fornecido!");
             throw new UnauthorizedException("Token de autenticação não fornecido!");
