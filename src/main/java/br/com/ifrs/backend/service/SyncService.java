@@ -7,7 +7,6 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,7 @@ public class SyncService {
     public SyncService() {
     }
 
+
     public void sincronizar(String uid, Login login) {
         String cpf = getCpfFromFirestore(uid);
         if (cpf == null) {
@@ -29,27 +29,17 @@ public class SyncService {
         }
 
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
-
-        CompletableFuture<Void> notasFuture = CompletableFuture.runAsync(() -> {
             try {
+                //Obter notas
                 NotasService notasService = new NotasService();
                 notasService.obterNotas(uid, login.getSenha());
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Erro ao obter notas", e);
-            }
-        });
-
-        CompletableFuture<Void> perfilFuture = CompletableFuture.runAsync(() -> {
-            try {
+                //Obter perfil
                 PerfilService perfilService = new PerfilService();
                 perfilService.obterDadosUsuario(uid, login.getSenha());
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Erro ao obter perfil", e);
+            }catch (Exception e) {
+                logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
             }
-        });
 
-        CompletableFuture<Void> allOf = CompletableFuture.allOf(notasFuture, perfilFuture);
-        allOf.join(); // Isso bloqueia até que ambas as tarefas sejam concluídas
     }
 
     private String getCpfFromFirestore(String uid) {
