@@ -115,7 +115,6 @@ public class PerfilService {
                 context.clearCookies();
                 browser.close();
             }
-            playwright.close();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao obter dados do usuário", e);
         }

@@ -45,7 +45,6 @@ public class NotasService {
             } else {
                 logger.severe("Falha ao realizar login no SIGAA");
             }
-            playwright.close();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao consultar notas", e);
         }
