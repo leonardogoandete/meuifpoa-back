@@ -33,7 +33,8 @@ public class NotasService {
 
         logger.info("Consultando notas no SIGAA com o CPF: " + cpf);
 
-        try (Playwright playwright = Playwright.create()) {
+        try{
+            Playwright playwright = Playwright.create();
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
@@ -44,10 +45,10 @@ public class NotasService {
             } else {
                 logger.severe("Falha ao realizar login no SIGAA");
             }
+            playwright.close();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao consultar notas", e);
         }
-
         return notas;
     }
 

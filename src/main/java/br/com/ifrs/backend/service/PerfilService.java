@@ -56,7 +56,8 @@ public class PerfilService {
             return null;
         }
 
-        try (Playwright playwright = Playwright.create()) {
+        try{
+            Playwright playwright = Playwright.create();
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
@@ -114,6 +115,7 @@ public class PerfilService {
                 context.clearCookies();
                 browser.close();
             }
+            playwright.close();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao obter dados do usuário", e);
         }
