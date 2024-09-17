@@ -1,5 +1,6 @@
 package br.com.ifrs.backend.controller;
 
+import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.model.Perfil;
 import br.com.ifrs.backend.service.PerfilService;
@@ -39,6 +40,8 @@ public class PerfilController {
             Perfil u = perfilService.obterDadosUsuario(uid, login.getSenha());
             logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
             return Response.status(Response.Status.OK).entity(u).build();
+        }catch (UnauthorizedException e){
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido----!").build();
         }catch (RuntimeException e){
             logger.log(Level.WARNING, "Erro ao consultar informações do usuario: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao consultar informações do usuario!").build();
