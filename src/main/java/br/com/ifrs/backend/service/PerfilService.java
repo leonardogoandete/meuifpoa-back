@@ -1,5 +1,6 @@
 package br.com.ifrs.backend.service;
 
+import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.model.Perfil;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -73,7 +74,7 @@ public class PerfilService {
             boolean loginError = page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
 
             if (loginError) {
-                throw new RuntimeException("Usuário e/ou senha inválidos");
+                throw new UnauthorizedException("Usuário e/ou senha inválidos");
             } else {
                 // Coleta os dados do perfil do usuário
                 page.waitForSelector(".info-docente .nome");
