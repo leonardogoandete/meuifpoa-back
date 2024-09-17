@@ -10,6 +10,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Map;
+
 @Path("/sync")
 public class SyncController {
 
@@ -23,7 +25,8 @@ public class SyncController {
             // Supondo que o UID é extraído do token de autorização
             String uid = extractUidFromToken(authorization);
             syncService.sincronizar(uid, login.getSenha());
-            return Response.ok().build();
+            Map<String, String> response = Map.of("mensagem", "sucesso");
+            return Response.ok().entity(response).build();
         } catch (UnauthorizedException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(e.getResponse().getEntity())
