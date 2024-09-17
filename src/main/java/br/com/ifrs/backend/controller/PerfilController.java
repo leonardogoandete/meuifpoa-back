@@ -39,6 +39,9 @@ public class PerfilController {
             Perfil u = perfilService.obterDadosUsuario(uid, login.getSenha());
             logger.log(Level.INFO, "Consultando informações do usuario no SIGAA");
             return Response.status(Response.Status.OK).entity(u).build();
+        }catch (RuntimeException e){
+            logger.log(Level.WARNING, "Erro ao consultar informações do usuario: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao consultar informações do usuario!").build();
         }catch (FirebaseAuthException e){
             logger.log(Level.WARNING, "Erro ao decodificar o token de autenticação: " + e.getMessage());
             return Response.status(Response.Status.UNAUTHORIZED).entity("Erro ao decodificar token!").build();
