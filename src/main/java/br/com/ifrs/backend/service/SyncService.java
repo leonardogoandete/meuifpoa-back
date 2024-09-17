@@ -37,7 +37,7 @@ public class SyncService {
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
 
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
@@ -161,6 +161,12 @@ public class SyncService {
             String anoIngresso = page.textContent("td:has-text(\"Entrada:\") + td").trim();
             String imgSrc = page.locator("#perfil-docente .foto img").getAttribute("src");
 
+            String chObrigatoriaPendente = page.textContent("td:has-text(\"CH. Obrigatória Pendente\") + td").trim();
+            String chOptativaPendente = page.textContent("td:has-text(\"CH. Optativa Pendente\") + td").trim();
+            String chTotalCurriculo = page.textContent("td:has-text(\"CH. Total Currículo\") + td").trim();
+            String chComplementarPendente = page.textContent("td:has-text(\"CH. Complementar Pendente\") + td").trim();
+            String integralizado = calculaIntregalizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
+
             return new Perfil(
                     nomeDocente != null ? nomeDocente : "Nome não disponível",
                     matricula != null ? matricula : "Matrícula não disponível",
@@ -170,7 +176,12 @@ public class SyncService {
                     status != null ? status : "Status não disponível",
                     anoIngresso != null ? anoIngresso : "Ano de ingresso não disponível",
                     email,
-                    imgSrc != null ? imgSrc : ""
+                    imgSrc != null ? imgSrc : "",
+                    chObrigatoriaPendente != null ? chObrigatoriaPendente : "0",
+                    chOptativaPendente != null ? chOptativaPendente : "0",
+                    chTotalCurriculo != null ? chTotalCurriculo : "0",
+                    chComplementarPendente != null ? chComplementarPendente : "0",
+                    integralizado != null ? integralizado : "0"
             );
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao coletar dados do perfil", e);
@@ -198,5 +209,9 @@ public class SyncService {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao enviar foto ao Storage", e);
         }
+    }
+
+    private String calculaIntregalizacao( String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente){
+        return String.format("%.0f",100-((Float.parseFloat(chObrigatoriaPendente)+Float.parseFloat(chOptativaPendente)+Float.parseFloat(chComplementarPendente)) * 100 / Float.parseFloat(chTotalCurriculo)));
     }
 }
