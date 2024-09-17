@@ -37,8 +37,8 @@ public class SyncService {
                 PerfilService perfilService = new PerfilService();
                 perfilService.obterDadosUsuario(uid, login.getSenha());
 
-                DocumentoService documentoService = new DocumentoService();
-                documentoService.downloadPdfAsBase64(uid, login.getSenha());
+                //DocumentoService documentoService = new DocumentoService();
+                //documentoService.downloadPdfAsBase64(uid, login.getSenha());
             }catch (Exception e) {
                 logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
             }
