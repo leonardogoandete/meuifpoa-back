@@ -1,8 +1,8 @@
 package br.com.ifrs.backend.service;
 
-import br.com.ifrs.backend.model.Notas;
+import br.com.ifrs.backend.exception.UnauthorizedException;
+import br.com.ifrs.backend.utils.FirestoreUtils;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -25,28 +24,39 @@ import java.util.logging.Logger;
 public class DocumentoService {
     private static final Logger logger = Logger.getLogger(DocumentoService.class.getName());
     private final Firestore db = FirestoreClient.getFirestore();
+    private final FirestoreUtils firestoreUtils = new FirestoreUtils();
 
-    public String downloadPdfAsBase64(String uid, String senha) throws IOException {
-        String cpf = getCpfFromFirestore(uid);
+    public String downloadPdfAsBase64(String uid,String tipo, String senha) throws IOException {
+        String cpf = firestoreUtils.getCpfFromFirestore(uid);
 
-        Playwright playwright = Playwright.create();
+        try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
-            page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
-            page.waitForLoadState(LoadState.DOMCONTENTLOADED);
-            page.fill("input[name='user.login']", cpf);
-            page.fill("input[name='user.senha']", senha);
-            page.click("input[type='submit']");
-            page.waitForLoadState(LoadState.NETWORKIDLE);
+            if (!performLogin(page, cpf, senha)) {
+                browser.close();
+                throw new UnauthorizedException("Falha ao realizar login no SIGAA");
+            }
 
             page.hover("span.ThemeOfficeMainFolderText:has-text('Ensino')");
 
             page.waitForSelector("div.ThemeOfficeSubMenu#cmSubMenuID1", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
 
             Download download = page.waitForDownload(() -> {
-                page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
+                //page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
+                if (tipo.equals("historico")) {
+                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
+                } else if (tipo.equals("historicoementas")) {
+                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico com Ementas'))");
+                } else if (tipo.equals("declaracaovinculo")) {
+                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Declaração de Vínculo'))");
+                }else if (tipo.equals("atestadomatricula")) {
+                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Atestado de Matrícula'))");
+                }
+                else {
+                    throw new IllegalArgumentException("Tipo de documento inválido");
+                }
             });
 
             String downloadPath = download.path().toString();
@@ -57,25 +67,18 @@ public class DocumentoService {
 
             // Converter para base64
             String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
-            savePdfToFirestore(uid, base64Pdf);
+            //savePdfToFirestore(uid, base64Pdf);
             browser.close();
             logger.log(Level.INFO,"Baixando documento");
             return base64Pdf;
-
-    }
-
-    private String getCpfFromFirestore(String uid) {
-        try {
-            ApiFuture<DocumentSnapshot> future = db.collection("usuarios").document(uid).get();
-            DocumentSnapshot document = future.get();
-            if (document.exists()) {
-                return document.getString("cpf");
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            logger.log(Level.SEVERE, "Erro ao obter CPF do Firestore", e);
-            Thread.currentThread().interrupt(); // Restaurando o status de interrupção
+        } catch (UnauthorizedException e) {
+            logger.log(Level.SEVERE, "Erro de autenticação durante a sincronização", e);
+            throw e;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
+            throw new RuntimeException("Erro ao sincronizar com o SIGAA", e);
         }
-        return null;
+
     }
 
     private void savePdfToFirestore(String uid,String docPdf) {
@@ -91,4 +94,19 @@ public class DocumentoService {
                 Thread.currentThread().interrupt(); // Restaurando o status de interrupção
             }
         }
+
+    private boolean performLogin(Page page, String cpf, String senha) {
+        try {
+            page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
+            page.fill("input[name='user.login']", cpf);
+            page.fill("input[name='user.senha']", senha);
+            page.click("input[type='submit']");
+            page.waitForLoadState(LoadState.NETWORKIDLE);
+
+            return !page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao realizar login no SIGAA", e);
+            return false;
+        }
+    }
 }

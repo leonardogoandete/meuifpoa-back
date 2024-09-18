@@ -11,19 +11,25 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("/sync")
 public class SyncController {
-
+    private static final Logger logger = Logger.getLogger(SyncController.class.getName());
     private final SyncService syncService = new SyncService();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sincronizar(@HeaderParam("Authorization") String authorization, Login login) {
+    public Response sincronizar(@HeaderParam("Authorization") String token, Login login) {
+        if (token == null || token.isEmpty()) {
+            logger.log(Level.WARNING, "Token de autenticação não fornecido!");
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
+        }
+
         try {
-            // Supondo que o UID é extraído do token de autorização
-            String uid = extractUidFromToken(authorization);
+            String uid = extractUidFromToken(token);
             syncService.sincronizar(uid, login.getSenha());
             Map<String, String> response = Map.of("mensagem", "sucesso");
             return Response.ok().entity(response).build();
@@ -33,7 +39,7 @@ public class SyncController {
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro interno do servidor++")
+                    .entity("Erro interno do servidor")
                     .build();
         }
     }
