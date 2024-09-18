@@ -31,7 +31,8 @@ public class DocumentoService {
 
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-            BrowserContext context = browser.newContext();
+            //Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+            BrowserContext context = browser.newContext(new Browser.NewContextOptions().setAcceptDownloads(true));
             Page page = context.newPage();
 
             if (!performLogin(page, cpf, senha)) {
@@ -45,17 +46,17 @@ public class DocumentoService {
 
             Download download = page.waitForDownload(() -> {
                 //page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
-                if (tipo.equals("historico")) {
-                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
-                } else if (tipo.equals("historicoementas")) {
-                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico com Ementas'))");
-                } else if (tipo.equals("declaracaovinculo")) {
-                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Declaração de Vínculo'))");
-                }else if (tipo.equals("atestadomatricula")) {
-                    page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Atestado de Matrícula'))");
-                }
-                else {
-                    throw new IllegalArgumentException("Tipo de documento inválido");
+                logger.log(Level.INFO,"tipo: {0}", tipo);
+                switch (tipo) {
+                    case "historico" ->
+                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
+                    case "historicoEmentas" ->
+                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico com Ementas'))");
+                    case "declaracaoVinculo" ->
+                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Declaração de Vínculo'))");
+                    case "atestadoMatricula" ->
+                        page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Atestado de Matrícula'))");
+                    default -> throw new IllegalArgumentException("Tipo de documento inválido");
                 }
             });
 

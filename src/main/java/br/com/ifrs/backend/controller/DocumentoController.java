@@ -1,6 +1,7 @@
 package br.com.ifrs.backend.controller;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
+import br.com.ifrs.backend.model.DocumentoRequest;
 import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.service.DocumentoService;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ public class DocumentoController {
     public DocumentoController(DocumentoService documentoService) { this.documentoService = documentoService; }
 
     @POST
-    public Response getDocumento(@HeaderParam("Authorization") String token, String tipo, Login login) {
+    public Response getDocumento(@HeaderParam("Authorization") String token, DocumentoRequest documentoRequest) {
         if (token == null || token.isEmpty()) {
             logger.log(Level.WARNING, "Token de autenticação não fornecido!");
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
@@ -33,7 +34,7 @@ public class DocumentoController {
             //String pdfbase64 = documentoService.downloadPdfAsBase64();
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            String base64Pdf = documentoService.downloadPdfAsBase64(uid, tipo, login.getSenha());
+            String base64Pdf = documentoService.downloadPdfAsBase64(uid, documentoRequest.tipo(), documentoRequest.senha());
             Map<String, String> response = new HashMap<>();
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
