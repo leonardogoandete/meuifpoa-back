@@ -7,6 +7,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,9 +31,9 @@ public class DocumentoService {
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
 
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             //Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
-            BrowserContext context = browser.newContext(new Browser.NewContextOptions().setAcceptDownloads(true));
+            BrowserContext context = browser.newContext();
             Page page = context.newPage();
 
             if (!performLogin(page, cpf, senha)) {
@@ -45,7 +46,6 @@ public class DocumentoService {
             page.waitForSelector("div.ThemeOfficeSubMenu#cmSubMenuID1", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
 
             Download download = page.waitForDownload(() -> {
-                //page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
                 logger.log(Level.INFO,"tipo: {0}", tipo);
                 switch (tipo) {
                     case "historico" ->
@@ -61,7 +61,6 @@ public class DocumentoService {
             });
 
             String downloadPath = download.path().toString();
-            //System.out.println("PDF baixado em: " + downloadPath);
 
             // Ler o arquivo PDF como byte array
             byte[] pdfBytes = Files.readAllBytes(Paths.get(downloadPath));

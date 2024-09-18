@@ -27,19 +27,28 @@ public class SyncController {
             logger.log(Level.WARNING, "Token de autenticação não fornecido!");
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
         }
-
+        Map<String, String> response = new java.util.HashMap<>(Map.of());
         try {
             String uid = extractUidFromToken(token);
             syncService.sincronizar(uid, login.getSenha());
-            Map<String, String> response = Map.of("mensagem", "sucesso");
+            response.put("mensagem", "Sincronização realizada com sucesso!");
             return Response.ok().entity(response).build();
-        } catch (UnauthorizedException e) {
+        } catch (FirebaseAuthException e) {
+            logger.log(Level.WARNING, "Token de autenticação inválido!");
+            response.put("mensagem", "Token de autenticação inválido!");
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(e.getResponse().getEntity())
+                    .entity(response)
+                    .build();
+        } catch (UnauthorizedException e) {
+            response.put("mensagem", e.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(response)
                     .build();
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro interno do servidor", e);
+            response.put("mensagem", "Erro interno do servidor");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro interno do servidor")
+                    .entity(response)
                     .build();
         }
     }
