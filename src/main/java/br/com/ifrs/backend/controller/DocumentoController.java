@@ -38,18 +38,19 @@ public class DocumentoController {
             String base64Pdf = documentoService.downloadPdfAsBase64(uid, documentoRequest.tipo(), documentoRequest.senha());
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
-        } catch (UnauthorizedException e) {
-            response.put("mensagem", e.getMessage());
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(response)
-                    .build();
         } catch (FirebaseAuthException e) {
             logger.log(Level.WARNING, "Token de autenticação inválido!");
             response.put("mensagem", "Token de autenticação inválido!");
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(response)
                     .build();
-        }catch (Exception e) {
+        } catch (UnauthorizedException e) {
+            response.put("mensagem", e.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(response)
+                    .build();
+        }
+        catch (Exception e) {
             response.put("mensagem", "Erro interno do servidor");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
