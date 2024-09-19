@@ -1,15 +1,12 @@
 package br.com.ifrs.backend.controller;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.service.SyncService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
