@@ -36,11 +36,6 @@ public class SyncController {
             syncService.sincronizar(userId, login.getSenha());
             response.put("mensagem", "Sincronização realizada com sucesso!");
             return Response.ok().entity(response).build();
-        }catch (UnauthorizedException e) {
-            response.put("mensagem", e.getMessage());
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(response)
-                    .build();
         }catch (Exception e) {
             logger.log(Level.SEVERE, "Erro interno do servidor", e);
             response.put("mensagem", "Erro interno do servidor");
