@@ -68,6 +68,7 @@ public class DocumentoService {
             // Converter para base64
             String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
             //savePdfToFirestore(uid, base64Pdf);
+
             browser.close();
             logger.log(Level.INFO,"Baixando documento");
             return base64Pdf;

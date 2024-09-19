@@ -2,14 +2,16 @@ package br.com.ifrs.backend.controller;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.model.DocumentoRequest;
-import br.com.ifrs.backend.model.Login;
 import br.com.ifrs.backend.service.DocumentoService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import jakarta.ws.rs.*;
+import io.quarkus.security.Authenticated;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,25 +27,14 @@ public class DocumentoController {
     public DocumentoController(DocumentoService documentoService) { this.documentoService = documentoService; }
 
     @POST
-    public Response getDocumento(@HeaderParam("Authorization") String token, DocumentoRequest documentoRequest) {
-        if (token == null || token.isEmpty()) {
-            logger.log(Level.WARNING, "Token de autenticação não fornecido!");
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Token de autenticação não fornecido!").build();
-        }
+    @Authenticated
+    public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
+        String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
         try{
-            //String pdfbase64 = documentoService.downloadPdfAsBase64();
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-            String uid = decodedToken.getUid();
-            String base64Pdf = documentoService.downloadPdfAsBase64(uid, documentoRequest.tipo(), documentoRequest.senha());
+            String base64Pdf = documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha());
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
-        } catch (FirebaseAuthException e) {
-            logger.log(Level.WARNING, "Token de autenticação inválido!");
-            response.put("mensagem", "Token de autenticação inválido!");
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(response)
-                    .build();
         } catch (UnauthorizedException e) {
             response.put("mensagem", e.getMessage());
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -52,6 +43,7 @@ public class DocumentoController {
         }
         catch (Exception e) {
             response.put("mensagem", "Erro interno do servidor");
+            logger.log(Level.SEVERE, "Erro interno do servidor", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
     }
