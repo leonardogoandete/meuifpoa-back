@@ -29,17 +29,19 @@ RUN apk add --no-cache \
     firefox \
     ffmpeg
 
+# Instalar Playwright e navegadores como root
+RUN npm install -g playwright && \
+    npx playwright install
+
 # Adiciona um usuário não-root
 RUN addgroup -S appgroup && \
     adduser -S appuser -G appgroup
+
+# Mudar para o usuário não-root
 USER appuser
 
 # Copia o Jar gerado na etapa de build
 COPY --from=build /app/target/*.jar /app/app.jar
-
-# Instala Playwright e navegadores
-RUN npm install -g playwright && \
-    npx playwright install
 
 # Expor a porta 8080
 EXPOSE 8080
