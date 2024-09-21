@@ -37,7 +37,7 @@ public class SyncService {
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
 
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
 

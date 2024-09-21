@@ -31,7 +31,7 @@ public class DocumentoService {
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
 
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
             //Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
             BrowserContext context = browser.newContext();
             Page page = context.newPage();
