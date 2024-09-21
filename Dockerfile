@@ -33,12 +33,13 @@ RUN apk add --no-cache \
 RUN npm install -g playwright && \
     npx playwright install
 
-# Adiciona um usuário não-root
-RUN addgroup -S appgroup && \
-    adduser -S appuser -G appgroup
-
-# Mudar para o usuário não-root
-USER appuser
+RUN chmod +x /tmp/node
+## Adiciona um usuário não-root
+#RUN addgroup -S appgroup && \
+#    adduser -S appuser -G appgroup
+#
+## Mudar para o usuário não-root
+#USER appuser
 
 # Copia o Jar gerado na etapa de build
 COPY --from=build /app/target/*.jar /app/app.jar
