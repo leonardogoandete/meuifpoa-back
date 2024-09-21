@@ -33,7 +33,6 @@ RUN apk add --no-cache \
 RUN npm install -g playwright && \
     npx playwright install
 
-RUN chmod +x /tmp/node
 ## Adiciona um usuário não-root
 #RUN addgroup -S appgroup && \
 #    adduser -S appuser -G appgroup
