@@ -15,30 +15,14 @@ COPY ./src/main/ ./src/main/
 RUN ./mvnw package -Dquarkus.package.type=uber-jar
 
 # Etapa 2: Configuração do ambiente de execução (runtime)
-FROM eclipse-temurin:21-jre-alpine AS app
+FROM mcr.microsoft.com/playwright/java:v1.46.0-jammy AS app
 
-# Instalar dependências necessárias para Playwright e Node.js
-RUN apk add --no-cache \
-    bash \
-    nss \
-    freetype \
-    harfbuzz \
-    nodejs \
-    npm \
-    chromium \
-    firefox \
-    ffmpeg
+# Adicionar um grupo e um usuário não-root
+RUN addgroup appgroup && \
+    adduser --ingroup appgroup appuser --disabled-password --gecos ""
 
-# Instalar Playwright e navegadores como root
-RUN npm install -g playwright && \
-    npx playwright install
-
-## Adiciona um usuário não-root
-#RUN addgroup -S appgroup && \
-#    adduser -S appuser -G appgroup
-#
-## Mudar para o usuário não-root
-#USER appuser
+# Mudar para o usuário não-root
+USER appuser
 
 # Copia o Jar gerado na etapa de build
 COPY --from=build /app/target/*.jar /app/app.jar
