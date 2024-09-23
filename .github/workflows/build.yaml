@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build do projeto
-        run: docker build -t leogoandete/app-ifrsback .
+        run: docker build -t leogoandete/app-ifrsback-jsoup .
 
       - name: Autenticando no docker registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
