@@ -13,8 +13,6 @@ jobs:
       - name: Checkout
           - uses: actions/checkout@v4
           ref: 'okhttp3'
-
-
       - name: Build do projeto
         run: docker build -t leogoandete/app-ifrsback-jsoup .
 
