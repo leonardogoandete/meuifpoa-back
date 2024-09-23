@@ -24,4 +24,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Enviando a imagem para o Dockerhub
-        run: docker push leogoandete/app-ifrsback
+        run: docker push leogoandete/app-ifrsback-jsoup

@@ -9,12 +9,17 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
-import com.microsoft.playwright.*;
-import com.microsoft.playwright.options.LoadState;
 import jakarta.enterprise.context.ApplicationScoped;
+import okhttp3.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +32,29 @@ public class SyncService {
     private final FirestoreUtils firestoreUtils = new FirestoreUtils();
     private final StorageClient storage = StorageClient.getInstance();
 
-    public void sincronizar(String uid, String senha) {
+    // Mapa de cookies personalizado
+    private final Map<String, List<Cookie>> cookieStore = new java.util.HashMap<>();
+
+    private final OkHttpClient client;
+
+    public SyncService() {
+        this.client = new OkHttpClient.Builder()
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<>();
+                    }
+                })
+                .build();
+    }
+
+    public void sincronizar(String uid, String senha) throws IOException {
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
         if (cpf == null) {
             logger.warning("CPF não encontrado para o UID: " + uid);
@@ -36,99 +63,166 @@ public class SyncService {
 
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
 
-        try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
-            BrowserContext context = browser.newContext();
-            Page page = context.newPage();
-
-            // Perform login
-            if (!performLogin(page, cpf, senha)) {
+        try {
+            // Realiza o login
+            String loginUrl = "https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn";
+            if (!performLogin(loginUrl, cpf, senha)) {
                 logger.severe("Falha ao realizar login no SIGAA");
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            // Process profile
-            Perfil perfil = coletarDadosPerfil(page, cpf);
+            // Processar perfil
+            Perfil perfil = coletarDadosPerfil(cpf);
             atualizarPerfilNoFirestore(uid, perfil);
-            enviarFotoAoStorage(uid, page);
 
-            // Process notes
-            List<Notas> notas = scrapeNotasFromPage(page);
+            // Processar notas
+            List<Notas> notas = obterNotas();
             saveNotasToFirestore(uid, notas);
 
-            context.clearCookies();
-            browser.close();
-        } catch (UnauthorizedException e) {
-            logger.log(Level.SEVERE, "Erro de autenticação durante a sincronização", e);
-            throw e;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
-            throw new RuntimeException("Erro ao sincronizar com o SIGAA", e);
+        } finally {
+            // Limpar os cookies ao final do processo
+            limparCookies();
         }
     }
 
-    private boolean performLogin(Page page, String cpf, String senha) {
-        try {
-            page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
-            page.fill("input[name='user.login']", cpf);
-            page.fill("input[name='user.senha']", senha);
-            page.click("input[type='submit']");
-            page.waitForLoadState(LoadState.NETWORKIDLE);
+    private boolean performLogin(String loginUrl, String username, String password) throws IOException {
+        FormBody formBody = new FormBody.Builder()
+                .add("user.login", username)
+                .add("user.senha", password)
+                .build();
 
-            return !page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao realizar login no SIGAA", e);
-            return false;
-        }
-    }
+        Request postLoginRequest = new Request.Builder()
+                .url(loginUrl)
+                .post(formBody)
+                .build();
 
-    private List<Notas> scrapeNotasFromPage(Page page) {
-        List<Notas> notas = new ArrayList<>();
-        try {
-            page.click("td.ThemeOfficeMainItem:nth-child(1)");
-            page.waitForSelector("#cmSubMenuID1");
-            page.click("tr.ThemeOfficeMenuItem:nth-child(1)");
-            page.waitForSelector("table.tabelaRelatorio");
-
-            List<ElementHandle> tabelas = page.querySelectorAll("table.tabelaRelatorio");
-            for (ElementHandle tabela : tabelas) {
-                notas.addAll(parseNotasFromTable(tabela));
+        try (Response response = client.newCall(postLoginRequest).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Erro ao realizar o login: " + response);
             }
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao extrair notas da página", e);
+            String responseBody = response.body().string();
+            return !responseBody.contains("Usuário e/ou senha inválidos");
         }
+    }
+
+    private List<Notas> obterNotas() throws IOException {
+        String postUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
+        FormBody formBody = new FormBody.Builder()
+                .add("menu:form_menu_discente", "menu:form_menu_discente")
+                .add("id", "11278")
+                .add("jscook_action", "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ relatorioNotasAluno.gerarRelatorio }")
+                .add("javax.faces.ViewState", "j_id1")
+                .build();
+
+        Request postRequest = new Request.Builder()
+                .url(postUrl)
+                .post(formBody)
+                .build();
+
+        try (Response response = client.newCall(postRequest).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Erro ao realizar o POST para obter notas: " + response);
+            }
+            return parseNotasFromHtml(response.body().string());
+        }
+    }
+
+    private List<Notas> parseNotasFromHtml(String html) {
+        List<Notas> notas = new ArrayList<>();
+        Document doc = Jsoup.parse(html);
+        Elements tabelas = doc.select("table.tabelaRelatorio");
+
+        for (Element tabela : tabelas) {
+            Elements linhas = tabela.select("tbody tr");
+            for (Element linha : linhas) {
+                Notas nota = parseNotaFromElement(linha);
+                if (nota != null) {
+                    notas.add(nota);
+                }
+            }
+        }
+
         return notas;
     }
 
-    private List<Notas> parseNotasFromTable(ElementHandle tabela) {
-        List<Notas> notas = new ArrayList<>();
-        List<ElementHandle> linhas = tabela.querySelectorAll("tbody tr");
-
-        for (ElementHandle linha : linhas) {
-            Notas nota = parseNotaFromElement(linha);
-            if (nota != null) {
-                notas.add(nota);
-            }
-        }
-
-        return notas;
-    }
-
-    private Notas parseNotaFromElement(ElementHandle linha) {
+    private Notas parseNotaFromElement(Element linha) {
         try {
-            String codigo = linha.querySelector("td:nth-child(1)").innerText();
-            String disciplina = linha.querySelector("td:nth-child(2)").innerText();
-            String unidade1 = linha.querySelector("td:nth-child(3)").innerText();
-            String unidade2 = linha.querySelector("td:nth-child(4)").innerText();
-            String recuperacao = linha.querySelector("td:nth-child(5)").innerText();
-            String resultado = linha.querySelector("td:nth-child(6)").innerText();
-            String faltas = linha.querySelector("td:nth-child(7)").innerText();
-            String situacao = linha.querySelector("td:nth-child(8)").innerText();
+            String codigo = linha.select("td:nth-child(1)").text();
+            String disciplina = linha.select("td:nth-child(2)").text();
+            String unidade1 = linha.select("td:nth-child(3)").text();
+            String unidade2 = linha.select("td:nth-child(4)").text();
+            String recuperacao = linha.select("td:nth-child(5)").text();
+            String resultado = linha.select("td:nth-child(6)").text();
+            String faltas = linha.select("td:nth-child(7)").text();
+            String situacao = linha.select("td:nth-child(8)").text();
 
             return new Notas(codigo, disciplina, unidade1, unidade2, recuperacao, resultado, faltas, situacao);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao parsear nota de um elemento", e);
             return null;
+        }
+    }
+
+    private Perfil coletarDadosPerfil(String cpf) throws IOException {
+        String perfilUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
+        Request getRequest = new Request.Builder()
+                .url(perfilUrl)
+                .get()
+                .build();
+
+        try (Response response = client.newCall(getRequest).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Erro ao carregar a página de perfil: " + response);
+            }
+            return parsePerfilFromHtml(response.body().string(), cpf);
+        }
+    }
+
+    private Perfil parsePerfilFromHtml(String html, String cpf) {
+        Document doc = Jsoup.parse(html);
+        String nomeDocente = doc.selectFirst(".info-docente .nome").text();
+        String matricula = doc.selectFirst("td:contains(Matrícula:) + td").text();
+        String curso = doc.selectFirst("td:contains(Curso:) + td").text();
+        String nivel = doc.selectFirst("td:contains(Nível:) + td").text();
+        String status = doc.selectFirst("td:contains(Status:) + td").text();
+        String anoIngresso = doc.selectFirst("td:contains(Entrada:) + td").text();
+        String chObrigatoriaPendente = doc.selectFirst("td:contains(CH. Obrigatória Pendente) + td").text();
+        String chOptativaPendente = doc.selectFirst("td:contains(CH. Optativa Pendente) + td").text();
+        String chTotalCurriculo = doc.selectFirst("td:contains(CH. Total Currículo) + td").text();
+        String chComplementarPendente = doc.selectFirst("td:contains(CH. Complementar Pendente) + td").text();
+        String imgSrc = doc.selectFirst("#perfil-docente .foto img").attr("src");
+
+        String email = firestoreUtils.getEmailFromFirestore(cpf);
+        String integralizado = calculaIntegralizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
+
+        return new Perfil(
+                nomeDocente,
+                matricula,
+                cpf,
+                curso,
+                nivel,
+                status,
+                anoIngresso,
+                email,
+                imgSrc,
+                chObrigatoriaPendente,
+                chOptativaPendente,
+                chTotalCurriculo,
+                chComplementarPendente,
+                integralizado
+        );
+    }
+
+    private void atualizarPerfilNoFirestore(String uid, Perfil perfil) {
+        try {
+            ApiFuture<WriteResult> writeResult = db.collection("usuarios")
+                    .document(uid)
+                    .set(perfil);
+            writeResult.get();
+            logger.info("Dados do perfil atualizados no Firestore para o UID: " + uid);
+        } catch (InterruptedException | ExecutionException e) {
+            logger.log(Level.SEVERE, "Erro ao atualizar dados no Firestore", e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -143,75 +237,18 @@ public class SyncService {
                 result.get();
             } catch (InterruptedException | ExecutionException e) {
                 logger.log(Level.SEVERE, "Erro ao salvar nota no Firestore", e);
-                Thread.currentThread().interrupt(); // Restaurando o status de interrupção
+                Thread.currentThread().interrupt();
             }
         }
     }
 
-    private Perfil coletarDadosPerfil(Page page, String cpf) {
-        String email = firestoreUtils.getEmailFromFirestore(cpf); // Assuming email is obtained using cpf
-        try {
-            page.waitForSelector(".info-docente .nome");
-
-            String nomeDocente = page.textContent(".info-docente .nome").trim();
-            String matricula = page.textContent("td:has-text(\"Matrícula:\") + td").trim();
-            String curso = page.textContent("td:has-text(\"Curso:\") + td").replaceAll("\\s+", " ").trim();
-            String nivel = page.textContent("td:has-text(\"Nível:\") + td").trim();
-            String status = page.textContent("td:has-text(\"Status:\") + td").trim();
-            String anoIngresso = page.textContent("td:has-text(\"Entrada:\") + td").trim();
-            String imgSrc = page.locator("#perfil-docente .foto img").getAttribute("src");
-
-            String chObrigatoriaPendente = page.textContent("td:has-text(\"CH. Obrigatória Pendente\") + td").trim();
-            String chOptativaPendente = page.textContent("td:has-text(\"CH. Optativa Pendente\") + td").trim();
-            String chTotalCurriculo = page.textContent("td:has-text(\"CH. Total Currículo\") + td").trim();
-            String chComplementarPendente = page.textContent("td:has-text(\"CH. Complementar Pendente\") + td").trim();
-            String integralizado = calculaIntregalizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
-
-            return new Perfil(
-                    nomeDocente != null ? nomeDocente : "Nome não disponível",
-                    matricula != null ? matricula : "Matrícula não disponível",
-                    cpf,
-                    curso != null ? curso : "Curso não disponível",
-                    nivel != null ? nivel : "Nível não disponível",
-                    status != null ? status : "Status não disponível",
-                    anoIngresso != null ? anoIngresso : "Ano de ingresso não disponível",
-                    email,
-                    imgSrc != null ? imgSrc : "",
-                    chObrigatoriaPendente != null ? chObrigatoriaPendente : "0",
-                    chOptativaPendente != null ? chOptativaPendente : "0",
-                    chTotalCurriculo != null ? chTotalCurriculo : "0",
-                    chComplementarPendente != null ? chComplementarPendente : "0",
-                    integralizado != null ? integralizado : "0"
-            );
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao coletar dados do perfil", e);
-            return null;
-        }
+    private String calculaIntegralizacao(String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente) {
+        return String.format("%.0f", 100 - ((Float.parseFloat(chObrigatoriaPendente) + Float.parseFloat(chOptativaPendente) + Float.parseFloat(chComplementarPendente)) * 100 / Float.parseFloat(chTotalCurriculo)));
     }
 
-    private void atualizarPerfilNoFirestore(String uid, Perfil perfil) {
-        try {
-            ApiFuture<WriteResult> writeResult = db.collection("usuarios")
-                    .document(uid)
-                    .set(perfil);
-            writeResult.get();
-            logger.info("Dados do perfil atualizados no Firestore para o UID: " + uid);
-        } catch (InterruptedException | ExecutionException e) {
-            logger.log(Level.SEVERE, "Erro ao atualizar dados no Firestore", e);
-            Thread.currentThread().interrupt(); // Restaurando o status de interrupção
-        }
-    }
-
-    private void enviarFotoAoStorage(String uid, Page page) {
-        try {
-            byte[] imgBytes = page.locator("#perfil-docente .foto img").screenshot();
-            storage.bucket().create("perfil/" + uid + ".jpg", imgBytes);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao enviar foto ao Storage", e);
-        }
-    }
-
-    private String calculaIntregalizacao( String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente){
-        return String.format("%.0f",100-((Float.parseFloat(chObrigatoriaPendente)+Float.parseFloat(chOptativaPendente)+Float.parseFloat(chComplementarPendente)) * 100 / Float.parseFloat(chTotalCurriculo)));
+    // Método para limpar os cookies ao final do processo
+    private void limparCookies() {
+        cookieStore.clear();
+        logger.info("Cookies limpos após o processo.");
     }
 }

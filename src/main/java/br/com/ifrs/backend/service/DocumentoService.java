@@ -2,112 +2,143 @@ package br.com.ifrs.backend.service;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.utils.FirestoreUtils;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
-import com.google.firebase.cloud.FirestoreClient;
-import com.microsoft.playwright.*;
-import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.LoadState;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import jakarta.enterprise.context.ApplicationScoped;
+import okhttp3.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class DocumentoService {
-    private static final Logger logger = Logger.getLogger(DocumentoService.class.getName());
-    private final Firestore db = FirestoreClient.getFirestore();
-    private final FirestoreUtils firestoreUtils = new FirestoreUtils();
 
-    public String downloadPdfAsBase64(String uid,String tipo, String senha) throws IOException {
+    private static final Logger logger = Logger.getLogger(DocumentoService.class.getName());
+    private final FirestoreUtils firestoreUtils = new FirestoreUtils();
+    private final java.util.Map<String, List<Cookie>> cookieStore = new java.util.HashMap<>();
+    private final OkHttpClient client;
+
+    public DocumentoService() {
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)  // Definir timeout de conexão para 30 segundos
+                .readTimeout(30, TimeUnit.SECONDS)     // Definir timeout de leitura para 30 segundos
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .cookieJar(new CookieJar() {
+
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<>();
+                    }
+                })
+                .build();
+    }
+
+    public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
 
-        try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(true));
-            //Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
-            BrowserContext context = browser.newContext();
-            Page page = context.newPage();
-
-            if (!performLogin(page, cpf, senha)) {
-                browser.close();
+        try {
+            // Realizar login no SIGAA
+            if (!performLogin("https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn", cpf, senha)) {
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            page.hover("span.ThemeOfficeMainFolderText:has-text('Ensino')");
-
-            page.waitForSelector("div.ThemeOfficeSubMenu#cmSubMenuID1", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
-
-            Download download = page.waitForDownload(() -> {
-                logger.log(Level.INFO,"tipo: {0}", tipo);
-                switch (tipo) {
-                    case "historico" ->
-                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico'))");
-                    case "historicoEmentas" ->
-                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Histórico com Ementas'))");
-                    case "declaracaoVinculo" ->
-                            page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Declaração de Vínculo'))");
-                    case "atestadoMatricula" ->
-                        page.click("div.ThemeOfficeSubMenu#cmSubMenuID1 tr.ThemeOfficeMenuItem:has(td.ThemeOfficeMenuItemText:has-text('Emitir Atestado de Matrícula'))");
-                    default -> throw new IllegalArgumentException("Tipo de documento inválido");
-                }
-            });
-
-            String downloadPath = download.path().toString();
-
-            // Ler o arquivo PDF como byte array
-            byte[] pdfBytes = Files.readAllBytes(Paths.get(downloadPath));
-
-            // Converter para base64
-            String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
-            //savePdfToFirestore(uid, base64Pdf);
-
-            browser.close();
-            logger.log(Level.INFO,"Baixando documento");
-            return base64Pdf;
-        } catch (UnauthorizedException e) {
-            logger.log(Level.SEVERE, "Erro de autenticação durante a sincronização", e);
-            throw e;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao sincronizar com o SIGAA", e);
-            throw new RuntimeException("Erro ao sincronizar com o SIGAA", e);
+            // Baixar o documento com base no tipo (historico, ementas, etc.)
+            return baixarDocumento(uid, tipo);
+        } finally {
+            // Garantir que os cookies sejam limpos após o processo
+            limparCookies();
         }
-
     }
 
-    private void savePdfToFirestore(String uid,String docPdf) {
-            try {
-                ApiFuture<WriteResult> result = db.collection("notas")
-                        .document(uid)
-                        .collection("disciplinas")
-                        .document("historico")
-                        .set(Map.of("pdfbase64", docPdf));
-                result.get();
-            } catch (InterruptedException | ExecutionException e) {
-                logger.log(Level.SEVERE, "Erro ao salvar nota no Firestore", e);
-                Thread.currentThread().interrupt(); // Restaurando o status de interrupção
+    private boolean performLogin(String loginUrl, String username, String password) throws IOException {
+        FormBody formBody = new FormBody.Builder()
+                .add("user.login", username)
+                .add("user.senha", password)
+                .build();
+
+        Request postLoginRequest = new Request.Builder()
+                .url(loginUrl)
+                .post(formBody)
+                .build();
+
+        try (Response response = client.newCall(postLoginRequest).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Erro ao realizar login: " + response);
             }
+            String responseBody = response.body().string();
+            return !responseBody.contains("Usuário e/ou senha inválidos");
         }
+    }
 
-    private boolean performLogin(Page page, String cpf, String senha) {
-        try {
-            page.navigate("https://sig.ifrs.edu.br/sigaa/verTelaLogin.do");
-            page.fill("input[name='user.login']", cpf);
-            page.fill("input[name='user.senha']", senha);
-            page.click("input[type='submit']");
-            page.waitForLoadState(LoadState.NETWORKIDLE);
+    private String baixarDocumento(String uid, String tipo) throws IOException {
+        logger.info("Baixando documento: " + tipo + " para o usuário: " + uid);
+        String postUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
+        FormBody formBody = new FormBody.Builder()
+                .add("menu:form_menu_discente", "menu:form_menu_discente")
+                .add("id", "11278")
+                .add("jscook_action", getJscookAction(tipo))
+                .add("javax.faces.ViewState", "j_id1")
+                .build();
 
-            return !page.isVisible("center:has-text(\"Usuário e/ou senha inválidos\")");
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao realizar login no SIGAA", e);
-            return false;
+        Request postRequest = new Request.Builder()
+                .url(postUrl)
+                .post(formBody)
+                .build();
+
+        try (Response postResponse = client.newCall(postRequest).execute()) {
+            if (!postResponse.isSuccessful()) {
+                throw new IOException("Erro ao realizar o POST: " + postResponse);
+            }
+
+            // Baixar o arquivo PDF
+            InputStream inputStream = postResponse.body().byteStream();
+            String filePath = uid + "_" + tipo + ".pdf";
+            //salvarPdf(inputStream, filePath);
+
+            // Converter para base64 e retornar
+            byte[] pdfBytes = Files.readAllBytes(Paths.get(filePath));
+            String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
+            return base64Pdf;
         }
+    }
+
+    private String getJscookAction(String tipo) {
+        return switch (tipo) {
+            case "historico" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ portalDiscente.historico }";
+            case "historicoEmentas" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ portalDiscente.historicoComEmentas }";
+            case "declaracaoVinculo" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ declaracaoVinculo.emitirDeclaracao }";
+            case "atestadoMatricula" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ portalDiscente.atestadoMatricula }";
+            default -> throw new IllegalArgumentException("Tipo de documento inválido");
+        };
+    }
+
+//    private void salvarPdf(InputStream inputStream, String filePath) throws IOException {
+//        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+//            byte[] buffer = new byte[2048];
+//            int bytesRead;
+//            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                fileOutputStream.write(buffer, 0, bytesRead);
+//            }
+//            logger.info("PDF baixado e salvo como: " + filePath);
+//        } catch (IOException e) {
+//            throw new IOException("Erro ao salvar o arquivo PDF", e);
+//        }
+//    }
+
+    // Método para limpar os cookies ao final do processo
+    private void limparCookies() {
+        cookieStore.clear();
+        logger.info("Cookies limpos após o processo.");
     }
 }
