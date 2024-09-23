@@ -15,7 +15,13 @@ COPY ./src/main/ ./src/main/
 RUN ./mvnw package -Dquarkus.package.type=uber-jar
 
 # Etapa 2: Configuração do ambiente de execução (runtime)
-FROM mcr.microsoft.com/playwright/java:v1.46.0-jammy AS app
+FROM mcr.microsoft.com/playwright:v1.43.0-jammy AS app
+
+# Instalar o JRE (Java Runtime Environment)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    openjdk-21-jre && \
+    rm -rf /var/lib/apt/lists/*
 
 # Adicionar um grupo e um usuário não-root
 RUN addgroup appgroup && \
