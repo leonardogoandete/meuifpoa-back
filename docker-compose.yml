@@ -1,0 +1,11 @@
+version: '3'
+services:
+  meuifrspoa:
+    container_name: meuifrspoa
+    image: leogoandete/app-ifrsback
+    networks:
+      - meuifpoa
+
+networks:
+  meuifpoa:
+    driver: bridge
