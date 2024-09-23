@@ -103,13 +103,7 @@ public class DocumentoService {
 
             // Baixar o arquivo PDF
             InputStream inputStream = postResponse.body().byteStream();
-            String filePath = uid + "_" + tipo + ".pdf";
-
-            //salvarPdf(inputStream, filePath);
-
-            // Converter para base64 e retornar
-            byte[] pdfBytes = Files.readAllBytes(Paths.get(filePath));
-            String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
+            String base64Pdf = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
             return base64Pdf;
         }
     }
