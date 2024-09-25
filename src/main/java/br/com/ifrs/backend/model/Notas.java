@@ -1,7 +1,5 @@
 package br.com.ifrs.backend.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class Notas{
     private String codigoDisciplina;
     private String nomeDisciplina;

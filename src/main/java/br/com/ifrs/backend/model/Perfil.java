@@ -1,7 +1,5 @@
 package br.com.ifrs.backend.model;
 
-import java.util.logging.Level;
-
 public class Perfil{
     private String nomeDocente;
     private String matricula;
