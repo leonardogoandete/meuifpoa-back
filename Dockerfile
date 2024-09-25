@@ -15,6 +15,9 @@ COPY ./src/main/ ./src/main/
 RUN ./mvnw package -Dquarkus.package.type=uber-jar
 
 FROM eclipse-temurin:21-jre-alpine AS app
+#Trocar timezone
+RUN apk add --no-cache tzdata
+ENV TZ=America/Sao_Paulo
 RUN addgroup -S appgroup && \
     adduser -S appuser -G appgroup
 USER appuser
