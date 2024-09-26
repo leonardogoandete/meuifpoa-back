@@ -4,9 +4,11 @@ import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.utils.FirestoreUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -99,12 +101,36 @@ public class DocumentoService {
                 throw new IOException("Erro ao realizar o POST: " + postResponse);
             }
 
-            // Baixar o arquivo PDF
+            // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
+            if (tipo.equals("atestadoMatricula")) {
+                Document document = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
+                document.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
+                String xhtml = document.html();  // Obtém o HTML corrigido
+
+                // Renderiza o XHTML em PDF usando Flying Saucer
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                    ITextRenderer renderer = new ITextRenderer();
+                    renderer.setDocumentFromString(xhtml);  // Usa o HTML corrigido
+                    renderer.layout();
+                    renderer.createPDF(byteArrayOutputStream); // Gera o PDF no ByteArrayOutputStream
+                    byteArrayOutputStream.flush();
+
+                    // Converte o PDF para Base64
+                    return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new IOException("Erro ao renderizar o PDF", e);
+                }
+            }
+
+            // Caso não seja "atestadoMatricula", continuar com o fluxo padrão de download
+            logger.info("Documento baixado com sucesso: \n" + postResponse.body());
             InputStream inputStream = postResponse.body().byteStream();
             String base64Pdf = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
             return base64Pdf;
         }
     }
+
 
     private String getJscookAction(String tipo) {
         return switch (tipo) {
