@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -178,7 +179,7 @@ public class SyncService {
         }
     }
 
-    private Perfil parsePerfilFromHtml(String html, String cpf) {
+    private Perfil parsePerfilFromHtml(String html, String cpf) throws IOException {
         Document doc = Jsoup.parse(html);
         String nomeDocente = doc.selectFirst(".info-docente .nome").text();
         String matricula = doc.selectFirst("td:contains(Matrícula:) + td").text();
@@ -192,6 +193,7 @@ public class SyncService {
         String chComplementarPendente = doc.selectFirst("td:contains(CH. Complementar Pendente) + td").text();
         String imgSrc = doc.selectFirst("#perfil-docente .foto img").attr("src");
 
+        String fotoBase64 = baixarImagemEConverterParaBase64(imgSrc);
         String email = firestoreUtils.getEmailFromFirestore(cpf);
         String integralizado = calculaIntegralizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
 
@@ -204,7 +206,7 @@ public class SyncService {
                 status,
                 anoIngresso,
                 email,
-                imgSrc,
+                fotoBase64,
                 chObrigatoriaPendente,
                 chOptativaPendente,
                 chTotalCurriculo,
@@ -244,6 +246,23 @@ public class SyncService {
 
     private String calculaIntegralizacao(String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente) {
         return String.format("%.0f", 100 - ((Float.parseFloat(chObrigatoriaPendente) + Float.parseFloat(chOptativaPendente) + Float.parseFloat(chComplementarPendente)) * 100 / Float.parseFloat(chTotalCurriculo)));
+    }
+
+    private String baixarImagemEConverterParaBase64(String imgUrl) throws IOException {
+        Request request = new Request.Builder()
+                .url(imgUrl)
+                .get()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Erro ao baixar a imagem: " + response);
+            }
+
+            // Converte a imagem para Base64
+            byte[] imageBytes = response.body().bytes();
+            return Base64.getEncoder().encodeToString(imageBytes);
+        }
     }
 
     // Método para limpar os cookies ao final do processo
