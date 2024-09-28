@@ -114,8 +114,8 @@ public class DocumentoService {
             // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
             if (tipo.equals("atestadoMatricula")) {
                 Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
-                document.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
-                String xhtml = document.html();  // Obtém o HTML corrigido
+                documentAtestadoMatricula.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
+                String xhtml = documentAtestadoMatricula.html();  // Obtém o HTML corrigido
 
                 // Renderiza o XHTML em PDF usando Flying Saucer
                 try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
