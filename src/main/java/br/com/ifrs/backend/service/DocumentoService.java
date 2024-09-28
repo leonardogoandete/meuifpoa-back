@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
@@ -107,10 +108,12 @@ public class DocumentoService {
             if (tipo.equals("atestadoMatricula")) {
                 Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
 
-                //valida se possui o vinculo ativo
-                if (Objects.requireNonNull(documentAtestadoMatricula.selectFirst("td:contains(Status:) + td")).text().contains("TRANCADO")) {
+                Element statusElement = documentAtestadoMatricula.selectFirst("td:contains(Status:) + td");
+
+                if (statusElement != null && statusElement.text().contains("TRANCADO")) {
                     throw new VinculoBusinessException("Usuário não possui vínculo ativo");
                 }
+
 
                 documentAtestadoMatricula.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
                 String xhtml = documentAtestadoMatricula.html();  // Obtém o HTML corrigido
