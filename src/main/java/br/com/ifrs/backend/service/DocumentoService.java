@@ -13,6 +13,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -102,18 +103,15 @@ public class DocumentoService {
                 throw new IOException("Erro ao realizar o POST: " + postResponse);
             }
 
-            Document document = Jsoup.parse(postResponse.body().string());
-            String status = document.selectFirst("td:contains(Status:) + td").text();
-            if (status.contains("TRANCADO")) {
-                throw new VinculoBusinessException("Usuário não possui vínculo ativo");
-            }
-
-
-
-
             // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
             if (tipo.equals("atestadoMatricula")) {
                 Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
+
+                //valida se possui o vinculo ativo
+                if (Objects.requireNonNull(documentAtestadoMatricula.selectFirst("td:contains(Status:) + td")).text().contains("TRANCADO")) {
+                    throw new VinculoBusinessException("Usuário não possui vínculo ativo");
+                }
+
                 documentAtestadoMatricula.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
                 String xhtml = documentAtestadoMatricula.html();  // Obtém o HTML corrigido
 
