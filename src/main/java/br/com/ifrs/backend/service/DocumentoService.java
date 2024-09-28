@@ -1,6 +1,7 @@
 package br.com.ifrs.backend.service;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
+import br.com.ifrs.backend.exception.VinculoBusinessException;
 import br.com.ifrs.backend.utils.FirestoreUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
@@ -99,6 +100,10 @@ public class DocumentoService {
         try (Response postResponse = client.newCall(postRequest).execute()) {
             if (!postResponse.isSuccessful()) {
                 throw new IOException("Erro ao realizar o POST: " + postResponse);
+            }
+
+            if (postResponse.body().string().contains("Somente discentes com um vínculo ativo com a instituição podem tirar o atestado de matrícula.")) {
+                throw new VinculoBusinessException("Usuário não possui vínculo ativo com a instituição");
             }
 
             // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
