@@ -111,6 +111,7 @@ public class DocumentoService {
                 Element statusElement = documentAtestadoMatricula.selectFirst("td:contains(Status:) + td");
 
                 if (statusElement != null && statusElement.text().contains("TRANCADO")) {
+                    logger.info("Usuário não possui vínculo ativo "+uid);
                     throw new VinculoBusinessException("Usuário não possui vínculo ativo");
                 }
 
