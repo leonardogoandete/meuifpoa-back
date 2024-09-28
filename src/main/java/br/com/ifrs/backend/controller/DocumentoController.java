@@ -1,6 +1,7 @@
 package br.com.ifrs.backend.controller;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
+import br.com.ifrs.backend.exception.VinculoBusinessException;
 import br.com.ifrs.backend.model.DocumentoRequest;
 import br.com.ifrs.backend.service.DocumentoService;
 import io.quarkus.security.Authenticated;
@@ -31,10 +32,15 @@ public class DocumentoController {
     public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
-        try{
+        try {
             String base64Pdf = documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha());
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
+        }catch (VinculoBusinessException e) {
+            response.put("mensagem", e.getMessage());
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity(response)
+                    .build();
         } catch (UnauthorizedException e) {
             response.put("mensagem", e.getMessage());
             return Response.status(Response.Status.UNAUTHORIZED)

@@ -102,13 +102,18 @@ public class DocumentoService {
                 throw new IOException("Erro ao realizar o POST: " + postResponse);
             }
 
-            if (postResponse.body().string().contains("Somente discentes com um vínculo ativo com a instituição podem tirar o atestado de matrícula.")) {
-                throw new VinculoBusinessException("Usuário não possui vínculo ativo com a instituição");
+            Document document = Jsoup.parse(postResponse.body().string());
+            String status = document.selectFirst("td:contains(Status:) + td").text();
+            if (status.contains("TRANCADO")) {
+                throw new VinculoBusinessException("Usuário não possui vínculo ativo");
             }
+
+
+
 
             // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
             if (tipo.equals("atestadoMatricula")) {
-                Document document = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
+                Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
                 document.outputSettings().syntax(Document.OutputSettings.Syntax.xml); // Garante que o output seja XHTML
                 String xhtml = document.html();  // Obtém o HTML corrigido
 
