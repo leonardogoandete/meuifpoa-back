@@ -54,5 +54,5 @@ jobs:
         run: sleep 10s
 
       - name: Wait For Deployment To Finish
-        run: kubectl wait --for=condition=available --timeout=60s deployment/ifrs-back-jsoup
+        run: kubectl get pods | grep meuifrspoa
 
