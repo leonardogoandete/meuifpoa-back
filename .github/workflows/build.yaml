@@ -25,3 +25,28 @@ jobs:
 
       - name: Enviando a imagem para o Dockerhub
         run: docker push leogoandete/app-ifrsback-jsoup
+
+  aplicando-deployment:
+    name: Aplicando deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v1
+
+      - name: Setup kubectl
+        env:
+          K8S_CONFIG: ${{ secrets.K8S_CONFIG }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${K8S_CONFIG}" | base64 --decode > $HOME/.kube/config
+
+      - name: Aplicando deployment
+        run: kubectl apply -f ${{ env.K8S_DEPLOYMENT }}
+
+      - name: Wait For Deployment To Start
+        run: sleep 10s
+
+      - name: Wait For Deployment To Finish
+        run: kubectl wait --for=condition=available --timeout=60s deployment/ifrs-back-jsoup
+
