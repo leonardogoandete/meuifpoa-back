@@ -6,6 +6,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import br.com.ifrs.backend.model.Noticia;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ public class NoticiaController {
     }
 
     @POST
+    @Operation(summary = "Obter notícias")
     @PermitAll
     public Response obterNoticias(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
         try{

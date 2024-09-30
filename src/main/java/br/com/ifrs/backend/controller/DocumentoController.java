@@ -13,6 +13,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,7 @@ public class DocumentoController {
     public DocumentoController(DocumentoService documentoService) { this.documentoService = documentoService; }
 
     @POST
+    @Operation(summary = "Obter documento PDF em base64")
     @Authenticated
     public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
         String userId = securityContext.getUserPrincipal().getName();

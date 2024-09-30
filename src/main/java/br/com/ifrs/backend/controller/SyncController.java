@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class SyncController {
     private final SyncService syncService = new SyncService();
 
     @POST
+    @Operation(summary = "Sincronizar dados do usuário e salva no firebase")
     @Authenticated
     public Response sincronizar(@Context SecurityContext securityContext, Login login) {
         String userId = securityContext.getUserPrincipal().getName();
