@@ -42,7 +42,7 @@ jobs:
           echo "${K8S_CONFIG}" | base64 --decode > $HOME/.kube/config
 
       - name: Aplicando deployment
-        run: kubectl apply -f ${{ env.K8S_DEPLOYMENT }}
+        run: kubectl apply -f ${{ vars.K8S_DEPLOYMENT }}
 
       - name: Wait For Deployment To Start
         run: sleep 10s
