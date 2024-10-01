@@ -18,7 +18,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
                 )
         ),
         servers = {
-                @Server(url = "https://app.ifrs.edu.br"),
+                @Server(url = "https://app.poa.ifrs.edu.br/meuifpoa/"),
                 @Server(url = "http://localhost:8080")
 
         }
