@@ -52,7 +52,7 @@ jobs:
         run: kubectl apply -f $HOME/deployment.yaml
 
       - name: Rollout deployment
-        run: kubectl rollout restart deployment/meuifrspoa
+        run: kubectl rollout restart deployment meuifrspoa-deployment
 
       - name: Wait For Deployment To Start
         run: sleep 20s
