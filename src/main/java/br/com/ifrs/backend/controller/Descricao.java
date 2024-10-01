@@ -9,11 +9,6 @@ import org.eclipse.microprofile.openapi.annotations.servers.Server;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @OpenAPIDefinition(
-        tags = {
-                @Tag(name = "Documento", description = "Operações relacionadas a documentos"),
-                @Tag(name = "Sincronização", description = "Operações relacionadas a sincronização de dados"),
-                @Tag(name = "Notícia", description = "Operações relacionadas a notícias")
-        },
         info = @Info(
                 title = "IFRS Backend API",
                 version = "1.0.0",
