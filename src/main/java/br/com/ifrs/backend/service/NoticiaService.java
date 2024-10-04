@@ -43,6 +43,16 @@ public class NoticiaService {
     }
 
     private static HttpResponse<String> configuraConexao(String url, String contentType, String postData) throws URISyntaxException, IOException, InterruptedException {
+        if (url == null || url.isEmpty()) {
+            throw new IllegalArgumentException("URL não pode ser nula ou vazia.");
+        }
+        if (contentType == null || contentType.isEmpty()) {
+            throw new IllegalArgumentException("Content-Type não pode ser nulo ou vazio.");
+        }
+        if (postData == null) {
+            postData = "";
+        }
+
         HttpResponse<String> response;
         HttpClient httpClient = criaHttpClientIgnorandoSSL(); // Usa um cliente HTTP que ignora a verificação de SSL
 
@@ -90,6 +100,13 @@ public class NoticiaService {
     }
 
     private static void scrapingInformacoesHtml(HttpResponse<String> response, List<Noticia> noticias) {
+        if (response == null) {
+            throw new IllegalArgumentException("A resposta não pode ser nula.");
+        }
+        if (noticias == null) {
+            throw new IllegalArgumentException("A lista de notícias não pode ser nula.");
+        }
+
         // Carrega o conteúdo HTML da página
         String htmlContent = response.body();
 
@@ -113,12 +130,9 @@ public class NoticiaService {
     }
 
     private String configuraFiltroNoticia(int limit, String filterSearch) {
-        if (filterSearch == null) {
-            filterSearch = "";
-        }
-//        if (limit <= 0) {
-//            limit = 50;
-//        }
-        return "filter-search=" + filterSearch + "&limit=" + limit;
+        String queryString;
+        return queryString = (filterSearch == null)
+                ? ("filter-search=&limit=\"\"" + limit)
+                : ("filter-search=" + filterSearch + "&limit=" + limit);
     }
 }

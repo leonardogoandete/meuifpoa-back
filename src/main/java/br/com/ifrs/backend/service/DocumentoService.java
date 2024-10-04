@@ -3,11 +3,15 @@ package br.com.ifrs.backend.service;
 import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.exception.VinculoBusinessException;
 import br.com.ifrs.backend.utils.FirestoreUtils;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.junit.jupiter.api.BeforeAll;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
@@ -25,6 +29,7 @@ public class DocumentoService {
     private final FirestoreUtils firestoreUtils = new FirestoreUtils();
     private final java.util.Map<String, List<Cookie>> cookieStore = new java.util.HashMap<>();
     private final OkHttpClient client;
+    private static final String SIGAA_URL = "https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn";
 
     public DocumentoService() {
         this.client = new OkHttpClient.Builder()
@@ -48,11 +53,15 @@ public class DocumentoService {
     }
 
     public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
-        String cpf = firestoreUtils.getCpfFromFirestore(uid);
+        if (uid == null || tipo == null || senha == null) {
+            throw new IllegalArgumentException("Argumentos nulos");
+        }
 
         try {
+
+            String cpf = firestoreUtils.getCpfFromFirestore(uid);
             // Realizar login no SIGAA
-            if (!performLogin("https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn", cpf, senha)) {
+            if (!performLogin(cpf, senha)) {
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
@@ -64,14 +73,17 @@ public class DocumentoService {
         }
     }
 
-    private boolean performLogin(String loginUrl, String username, String password) throws IOException {
+    public boolean performLogin(String username, String password) throws IOException {
+        if (username == null || password == null) {
+            throw new IllegalArgumentException("Usuario ou senha nulos");
+        }
         FormBody formBody = new FormBody.Builder()
                 .add("user.login", username)
                 .add("user.senha", password)
                 .build();
 
         Request postLoginRequest = new Request.Builder()
-                .url(loginUrl)
+                .url(SIGAA_URL)
                 .post(formBody)
                 .build();
 
@@ -85,6 +97,10 @@ public class DocumentoService {
     }
 
     private String baixarDocumento(String uid, String tipo) throws IOException {
+        if (uid == null || tipo == null) {
+            throw new IllegalArgumentException("Argumentos nulos para baixarDocumento");
+        }
+
         logger.info("Baixando documento: " + tipo + " para o usuário: " + uid);
         String postUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
         FormBody formBody = new FormBody.Builder()
@@ -145,6 +161,10 @@ public class DocumentoService {
 
 
     private String getJscookAction(String tipo) {
+        if (tipo == null) {
+            throw new IllegalArgumentException("Tipo de documento nulo para getJscookAction");
+        }
+
         return switch (tipo) {
             case "historico" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ portalDiscente.historico }";
             case "historicoEmentas" -> "menu_form_menu_discente_j_id_jsp_925609363_97_menu:A]#{ portalDiscente.historicoComEmentas }";
@@ -173,3 +193,7 @@ public class DocumentoService {
         logger.info("Cookies limpos após o processo.");
     }
 }
+
+
+
+
