@@ -92,7 +92,7 @@ public class DocumentoService {
         }
     }
 
-    private String baixarDocumento(String uid, String tipo) throws IOException {
+    protected String baixarDocumento(String uid, String tipo) throws IOException {
         if (uid == null || tipo == null) {
             throw new IllegalArgumentException("Argumentos nulos para baixarDocumento");
         }
