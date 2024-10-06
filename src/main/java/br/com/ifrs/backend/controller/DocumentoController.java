@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,10 +37,23 @@ public class DocumentoController {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
         try {
+            if (documentoRequest.tipo() == null ||
+                documentoRequest.senha() == null ||
+                documentoRequest.tipo().isEmpty() ||
+                documentoRequest.senha().isEmpty()) {
+                throw new IllegalArgumentException("Argumentos nulos");
+            }
+
+
             String base64Pdf = documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha());
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
-        }catch (VinculoBusinessException e) {
+        } catch (IllegalArgumentException e) {
+            response.put("mensagem", e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(response)
+                    .build();
+        } catch (VinculoBusinessException e) {
             response.put("mensagem", e.getMessage());
             return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(response)
@@ -49,8 +63,7 @@ public class DocumentoController {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(response)
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             response.put("mensagem", "Erro interno do servidor");
             logger.log(Level.SEVERE, "Erro interno do servidor", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();

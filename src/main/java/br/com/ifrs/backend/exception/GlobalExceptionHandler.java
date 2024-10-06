@@ -14,19 +14,30 @@ public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
-        // Log da exceção para facilitar o rastreamento
         LOG.error("Unhandled exception occurred: ", exception);
 
-        // Verifica se a exceção é do tipo UnauthorizedException
         if (exception instanceof UnauthorizedException) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(Collections.singletonMap("mensagem", exception.getMessage()))
                     .build();
         }
 
-        // Trata exceções genéricas e inesperadas
+        if (exception instanceof IllegalArgumentException) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Collections.singletonMap("mensagem", exception.getMessage()))
+                    .build();
+        }
+
+        if (exception instanceof VinculoBusinessException) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity(Collections.singletonMap("mensagem", exception.getMessage()))
+                    .build();
+        }
+
+        // Exceções não tratadas
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(Collections.singletonMap("erro", "Erro interno do servidor."))
+                .entity(Collections.singletonMap("erro", "Erro interno do servidor. Consulte o log para mais detalhes."))
                 .build();
     }
 }
+

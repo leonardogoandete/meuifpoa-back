@@ -3,22 +3,19 @@ package br.com.ifrs.backend.service;
 import br.com.ifrs.backend.exception.UnauthorizedException;
 import br.com.ifrs.backend.exception.VinculoBusinessException;
 import br.com.ifrs.backend.utils.FirestoreUtils;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.junit.jupiter.api.BeforeAll;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -53,12 +50,11 @@ public class DocumentoService {
     }
 
     public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
+
         if (uid == null || tipo == null || senha == null) {
-            throw new IllegalArgumentException("Argumentos nulos");
+            throw new IllegalArgumentException("Argumentos nulos para downloadPdfAsBase64");
         }
-
         try {
-
             String cpf = firestoreUtils.getCpfFromFirestore(uid);
             // Realizar login no SIGAA
             if (!performLogin(cpf, senha)) {
