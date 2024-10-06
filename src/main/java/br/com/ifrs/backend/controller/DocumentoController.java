@@ -44,7 +44,6 @@ public class DocumentoController {
                 throw new IllegalArgumentException("Argumentos nulos");
             }
 
-
             String base64Pdf = documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha());
             response.put("pdfbase64", base64Pdf);
             return Response.status(Response.Status.OK).entity(response).build();
