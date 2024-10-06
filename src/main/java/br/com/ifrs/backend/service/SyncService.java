@@ -10,6 +10,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,10 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,14 +27,14 @@ import java.util.logging.Logger;
 public class SyncService {
 
     private static final Logger logger = Logger.getLogger(SyncService.class.getName());
+
+    private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
+
     private final Firestore db = FirestoreClient.getFirestore();
     private final FirestoreUtils firestoreUtils = new FirestoreUtils();
-    private final StorageClient storage = StorageClient.getInstance();
-
-    // Mapa de cookies personalizado
-    private final Map<String, List<Cookie>> cookieStore = new java.util.HashMap<>();
 
     private final OkHttpClient client;
+    private boolean sincronizado;
 
     public SyncService() {
         this.client = new OkHttpClient.Builder()
@@ -48,14 +46,14 @@ public class SyncService {
 
                     @Override
                     public List<Cookie> loadForRequest(HttpUrl url) {
-                        List<Cookie> cookies = cookieStore.get(url.host());
-                        return cookies != null ? cookies : new ArrayList<>();
+                        return cookieStore.getOrDefault(url.host(), new ArrayList<>());
                     }
                 })
                 .build();
     }
 
-    public void sincronizar(String uid, String senha) throws IOException {
+    public boolean sincronizar(String uid, String senha) throws IOException {
+        sincronizado = false; // Inicializa como não sincronizado
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
         if (cpf == null) {
             logger.warning("CPF não encontrado para o UID: " + uid);
@@ -65,40 +63,37 @@ public class SyncService {
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
 
         try {
-            // Realiza o login
-            String loginUrl = "https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn";
-            if (!performLogin(loginUrl, cpf, senha)) {
+            if (!realizarLogin(cpf, senha)) {
                 logger.severe("Falha ao realizar login no SIGAA");
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            // Processar perfil
             Perfil perfil = coletarDadosPerfil(cpf);
             atualizarPerfilNoFirestore(uid, perfil);
 
-            // Processar notas
             List<Notas> notas = obterNotas();
             saveNotasToFirestore(uid, notas);
-
+            sincronizado = true;
         } finally {
-            // Limpar os cookies ao final do processo
             limparCookies();
         }
+        return sincronizado;
     }
 
-    private boolean performLogin(String loginUrl, String username, String password) throws IOException {
+    private boolean realizarLogin(String username, String password) throws IOException {
         FormBody formBody = new FormBody.Builder()
                 .add("user.login", username)
                 .add("user.senha", password)
                 .build();
 
         Request postLoginRequest = new Request.Builder()
-                .url(loginUrl)
+                .url("https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn")
                 .post(formBody)
                 .build();
 
         try (Response response = client.newCall(postLoginRequest).execute()) {
             if (!response.isSuccessful()) {
+                sincronizado = false;
                 throw new IOException("Erro ao realizar o login: " + response);
             }
             String responseBody = response.body().string();
@@ -107,7 +102,18 @@ public class SyncService {
     }
 
     private List<Notas> obterNotas() throws IOException {
-        String postUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
+        Request postRequest = criarRequestParaNotas();
+
+        try (Response response = client.newCall(postRequest).execute()) {
+            if (!response.isSuccessful()) {
+                sincronizado = false;
+                throw new IOException("Erro ao realizar o POST para obter notas: " + response);
+            }
+            return parseNotasFromHtml(response.body().string());
+        }
+    }
+
+    private Request criarRequestParaNotas() {
         FormBody formBody = new FormBody.Builder()
                 .add("menu:form_menu_discente", "menu:form_menu_discente")
                 .add("id", "11278")
@@ -115,17 +121,10 @@ public class SyncService {
                 .add("javax.faces.ViewState", "j_id1")
                 .build();
 
-        Request postRequest = new Request.Builder()
-                .url(postUrl)
+        return new Request.Builder()
+                .url("https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf")
                 .post(formBody)
                 .build();
-
-        try (Response response = client.newCall(postRequest).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Erro ao realizar o POST para obter notas: " + response);
-            }
-            return parseNotasFromHtml(response.body().string());
-        }
     }
 
     private List<Notas> parseNotasFromHtml(String html) {
@@ -142,32 +141,30 @@ public class SyncService {
                 }
             }
         }
-
         return notas;
     }
 
     private Notas parseNotaFromElement(Element linha) {
         try {
-            String codigo = linha.select("td:nth-child(1)").text();
-            String disciplina = linha.select("td:nth-child(2)").text();
-            String unidade1 = linha.select("td:nth-child(3)").text();
-            String unidade2 = linha.select("td:nth-child(4)").text();
-            String recuperacao = linha.select("td:nth-child(5)").text();
-            String resultado = linha.select("td:nth-child(6)").text();
-            String faltas = linha.select("td:nth-child(7)").text();
-            String situacao = linha.select("td:nth-child(8)").text();
-
-            return new Notas(codigo, disciplina, unidade1, unidade2, recuperacao, resultado, faltas, situacao);
+            return new Notas(
+                    linha.select("td:nth-child(1)").text(),
+                    linha.select("td:nth-child(2)").text(),
+                    linha.select("td:nth-child(3)").text(),
+                    linha.select("td:nth-child(4)").text(),
+                    linha.select("td:nth-child(5)").text(),
+                    linha.select("td:nth-child(6)").text(),
+                    linha.select("td:nth-child(7)").text(),
+                    linha.select("td:nth-child(8)").text()
+            );
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao parsear nota de um elemento", e);
+            logger.log(Level.SEVERE, "Erro ao parsear nota", e);
             return null;
         }
     }
 
     private Perfil coletarDadosPerfil(String cpf) throws IOException {
-        String perfilUrl = "https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf";
         Request getRequest = new Request.Builder()
-                .url(perfilUrl)
+                .url("https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf")
                 .get()
                 .build();
 
@@ -259,13 +256,11 @@ public class SyncService {
                 throw new IOException("Erro ao baixar a imagem: " + response);
             }
 
-            // Converte a imagem para Base64
             byte[] imageBytes = response.body().bytes();
             return Base64.getEncoder().encodeToString(imageBytes);
         }
     }
 
-    // Método para limpar os cookies ao final do processo
     private void limparCookies() {
         cookieStore.clear();
         logger.info("Cookies limpos após o processo.");
