@@ -1,3 +1,6 @@
+/**
+ * Serviço responsável pela sincronização de dados com o SIGAA.
+ */
 package br.com.ifrs.backend.service;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
@@ -23,9 +26,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Sync service.
- */
 @ApplicationScoped
 public class SyncService {
 
@@ -39,8 +39,10 @@ public class SyncService {
     private final OkHttpClient client;
     private boolean sincronizado;
 
+
     /**
-     * Instantiates a new Sync service.
+     * Construtor do serviço de sincronização.
+     * Inicializa o cliente HTTP com um gerenciador de cookies.
      */
     public SyncService() {
         this.client = new OkHttpClient.Builder()
@@ -58,13 +60,14 @@ public class SyncService {
                 .build();
     }
 
+
     /**
-     * Sincronizar boolean.
+     * Sincroniza os dados do usuário com o SIGAA.
      *
-     * @param uid   the uid
-     * @param senha the senha
-     * @return the boolean
-     * @throws IOException the io exception
+     * @param uid   Identificador do usuário.
+     * @param senha Senha do usuário.
+     * @return true se a sincronização for bem-sucedida, false caso contrário.
+     * @throws IOException Se ocorrer um erro de I/O.
      */
     public boolean sincronizar(String uid, String senha) throws IOException {
         sincronizado = false; // Inicializa como não sincronizado
@@ -94,6 +97,14 @@ public class SyncService {
         return sincronizado;
     }
 
+    /**
+     * Realiza o login no SIGAA.
+     *
+     * @param username Nome de usuário.
+     * @param password Senha do usuário.
+     * @return true se o login for bem-sucedido, false caso contrário.
+     * @throws IOException Se ocorrer um erro de I/O.
+     */
     private boolean realizarLogin(String username, String password) throws IOException {
         FormBody formBody = new FormBody.Builder()
                 .add("user.login", username)
@@ -115,6 +126,12 @@ public class SyncService {
         }
     }
 
+    /**
+     * Obtém as notas do usuário.
+     *
+     * @return Lista de notas.
+     * @throws IOException Se ocorrer um erro de I/O.
+     */
     private List<Notas> obterNotas() throws IOException {
         Request postRequest = criarRequestParaNotas();
 
@@ -127,6 +144,12 @@ public class SyncService {
         }
     }
 
+
+    /**
+     * Cria a requisição HTTP para obter as notas.
+     *
+     * @return Requisição HTTP configurada.
+     */
     private Request criarRequestParaNotas() {
         FormBody formBody = new FormBody.Builder()
                 .add("menu:form_menu_discente", "menu:form_menu_discente")
@@ -141,6 +164,12 @@ public class SyncService {
                 .build();
     }
 
+    /**
+     * Parseia o HTML para extrair as notas.
+     *
+     * @param html Conteúdo HTML.
+     * @return Lista de notas extraídas.
+     */
     private List<Notas> parseNotasFromHtml(String html) {
         List<Notas> notas = new ArrayList<>();
         Document doc = Jsoup.parse(html);
@@ -158,6 +187,12 @@ public class SyncService {
         return notas;
     }
 
+    /**
+     * Parseia um elemento HTML para extrair uma nota.
+     *
+     * @param linha Elemento HTML representando uma linha da tabela.
+     * @return Objeto Notas extraído ou null em caso de erro.
+     */
     private Notas parseNotaFromElement(Element linha) {
         try {
             return new Notas(
@@ -176,6 +211,13 @@ public class SyncService {
         }
     }
 
+    /**
+     * Coleta os dados do perfil do usuário.
+     *
+     * @param cpf CPF do usuário.
+     * @return Objeto Perfil contendo os dados do usuário.
+     * @throws IOException Se ocorrer um erro de I/O.
+     */
     private Perfil coletarDadosPerfil(String cpf) throws IOException {
         Request getRequest = new Request.Builder()
                 .url("https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf")
@@ -190,6 +232,14 @@ public class SyncService {
         }
     }
 
+/**
+ * Parseia o HTML para extrair os dados do perfil.
+ *
+ * @param html Conteúdo HTML.
+ * @param cpf  CPF do usuário.
+ * @return Objeto Perfil extraído.
+ * @throws IOException Se ocorrer um erro de I/O.
+ */
     private Perfil parsePerfilFromHtml(String html, String cpf) throws IOException {
         Document doc = Jsoup.parse(html);
         String nomeDocente = doc.selectFirst(".info-docente .nome").text();
@@ -226,6 +276,13 @@ public class SyncService {
         );
     }
 
+
+    /**
+     * Atualiza os dados do perfil no Firestore.
+     *
+     * @param uid    Identificador do usuário.
+     * @param perfil Objeto Perfil contendo os dados a serem atualizados.
+     */
     private void atualizarPerfilNoFirestore(String uid, Perfil perfil) {
         try {
             ApiFuture<WriteResult> writeResult = db.collection("usuarios")
@@ -239,6 +296,13 @@ public class SyncService {
         }
     }
 
+
+    /**
+     * Salva as notas no Firestore.
+     *
+     * @param uid   Identificador do usuário.
+     * @param notas Lista de notas a serem salvas.
+     */
     private void saveNotasToFirestore(String uid, List<Notas> notas) {
         for (Notas nota : notas) {
             try {
@@ -255,10 +319,28 @@ public class SyncService {
         }
     }
 
+
+
+    /**
+     * Calcula a integralização do curso.
+     *
+     * @param chObrigatoriaPendente CH obrigatória pendente.
+     * @param chOptativaPendente    CH optativa pendente.
+     * @param chTotalCurriculo      CH total do currículo.
+     * @param chComplementarPendente CH complementar pendente.
+     * @return Percentual de integralização.
+     */
     private String calculaIntegralizacao(String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente) {
         return String.format("%.0f", 100 - ((Float.parseFloat(chObrigatoriaPendente) + Float.parseFloat(chOptativaPendente) + Float.parseFloat(chComplementarPendente)) * 100 / Float.parseFloat(chTotalCurriculo)));
     }
 
+    /**
+     * Baixa uma imagem e a converte para Base64.
+     *
+     * @param imgUrl URL da imagem.
+     * @return String da imagem em Base64.
+     * @throws IOException Se ocorrer um erro de I/O.
+     */
     private String baixarImagemEConverterParaBase64(String imgUrl) throws IOException {
         Request request = new Request.Builder()
                 .url(imgUrl)
@@ -275,8 +357,13 @@ public class SyncService {
         }
     }
 
+
+    /**
+     * Limpa os cookies armazenados.
+     */
     private void limparCookies() {
         cookieStore.clear();
         logger.info("Cookies limpos após o processo.");
     }
 }
+

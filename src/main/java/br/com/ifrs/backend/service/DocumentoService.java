@@ -1,3 +1,6 @@
+/**
+ * Serviço responsável por manipular documentos.
+ */
 package br.com.ifrs.backend.service;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
@@ -20,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- * The type Documento service.
+ * Classe que fornece serviços relacionados a documentos.
  */
 @ApplicationScoped
 public class DocumentoService {
@@ -32,7 +35,7 @@ public class DocumentoService {
     private static final String SIGAA_URL = "https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn";
 
     /**
-     * Instantiates a new Documento service.
+     * Construtor que inicializa o cliente HTTP com configurações de timeout e gerenciamento de cookies.
      */
     public DocumentoService() {
         this.client = new OkHttpClient.Builder()
@@ -56,13 +59,13 @@ public class DocumentoService {
     }
 
     /**
-     * Download pdf as base 64 string.
+     * Faz o download de um documento PDF e o retorna como uma string codificada em Base64.
      *
-     * @param uid   the uid
-     * @param tipo  the tipo
-     * @param senha the senha
-     * @return the string
-     * @throws IOException the io exception
+     * @param uid   Identificador do usuário.
+     * @param tipo  Tipo do documento.
+     * @param senha Senha do usuário.
+     * @return String codificada em Base64 do PDF.
+     * @throws IOException Se ocorrer um erro durante o download.
      */
     public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
 
@@ -85,12 +88,12 @@ public class DocumentoService {
     }
 
     /**
-     * Perform login boolean.
+     * Realiza o login no sistema SIGAA.
      *
-     * @param username the username
-     * @param password the password
-     * @return the boolean
-     * @throws IOException the io exception
+     * @param username Nome de usuário.
+     * @param password Senha do usuário.
+     * @return true se o login for bem-sucedido, false caso contrário.
+     * @throws IOException Se ocorrer um erro durante o login.
      */
     public boolean performLogin(String username, String password) throws IOException {
         if (username == null || password == null) {
@@ -116,12 +119,12 @@ public class DocumentoService {
     }
 
     /**
-     * Baixar documento string.
+     * Baixa o documento do tipo especificado para o usuário.
      *
-     * @param uid  the uid
-     * @param tipo the tipo
-     * @return the string
-     * @throws IOException the io exception
+     * @param uid  Identificador do usuário.
+     * @param tipo Tipo do documento.
+     * @return String codificada em Base64 do PDF.
+     * @throws IOException Se ocorrer um erro durante o download.
      */
     protected String baixarDocumento(String uid, String tipo) throws IOException {
         if (uid == null || tipo == null) {
@@ -187,6 +190,13 @@ public class DocumentoService {
     }
 
 
+    /**
+     * Retorna a ação do JSCook para o tipo de documento especificado.
+     *
+     * @param tipo Tipo do documento.
+     * @return Ação do JSCook.
+     * @throws IllegalArgumentException Se o tipo de documento for inválido.
+     */
     private String getJscookAction(String tipo) {
         if (tipo == null) {
             throw new IllegalArgumentException("Tipo de documento nulo para getJscookAction");
@@ -214,13 +224,16 @@ public class DocumentoService {
 //        }
 //    }
 
-    // Método para limpar os cookies ao final do processo
+    /**
+     * Limpa os cookies após o processo.
+     */
     private void limparCookies() {
+
         cookieStore.clear();
         logger.info("Cookies limpos após o processo.");
     }
-}
 
+}
 
 
 

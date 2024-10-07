@@ -11,25 +11,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * The type Firebase initialize.
+ * Classe responsável por inicializar o Firebase.
  */
 @ApplicationScoped
 public class FirebaseInitialize {
+
     /**
-     * On start.
+     * Método chamado no início da aplicação para configurar o Firebase.
      *
-     * @param ev the ev
+     * @param ev evento de inicialização
      */
     void onStart(@Observes StartupEvent ev) {
         try{
-            //FileInputStream serviceAccount = new FileInputStream("../../resources/serviceAccountKey.json");
+            // Carrega o arquivo de credenciais do Firebase
             InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
 
+            // Configura as opções do Firebase
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setStorageBucket("ifrspoa-d9f18.appspot.com")
                     .build();
 
+            // Inicializa o Firebase com as opções configuradas
             FirebaseApp.initializeApp(options);
         }catch (IOException e){
             e.printStackTrace();

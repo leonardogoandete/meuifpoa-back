@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Sync controller.
+ * A classe SyncController é responsável por gerenciar as requisições relacionadas à sincronização de dados do usuário.
  */
 @Path("/sync")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -31,21 +31,20 @@ public class SyncController {
     private static final Logger logger = Logger.getLogger(SyncController.class.getName());
 
     /**
-     * The Sync service.
+     * O serviço de sincronização.
      */
     @Inject
     SyncService syncService;
 
     /**
-     * Sincronizar response.
+     * Sincroniza os dados do usuário e salva no Firebase.
      *
-     * @param securityContext the security context
-     * @param login           the login
-     * @return the response
+     * @param securityContext o contexto de segurança
+     * @param login           os dados de login do usuário
+     * @return a resposta da sincronização
      */
     @POST
-    @Operation(summary = "Sincronizar dados do usuário e salva no firebase")
-    @Authenticated
+    @Operation(summary = "Sincronizar dados do usuário e salvar no Firebase")
     public Response sincronizar(@Context SecurityContext securityContext, Login login) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();

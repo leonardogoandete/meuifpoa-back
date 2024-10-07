@@ -6,14 +6,14 @@ import jakarta.ws.rs.core.Response;
 import java.util.Collections;
 
 /**
- * The type Unauthorized exception.
+ * A classe UnauthorizedException representa uma exceção para situações de não autorização.
  */
 public class UnauthorizedException extends WebApplicationException {
 
     /**
-     * Instantiates a new Unauthorized exception.
+     * Instancia uma nova UnauthorizedException.
      *
-     * @param message the message
+     * @param message a mensagem de erro
      */
     public UnauthorizedException(String message) {
         super(Response.status(Response.Status.UNAUTHORIZED)

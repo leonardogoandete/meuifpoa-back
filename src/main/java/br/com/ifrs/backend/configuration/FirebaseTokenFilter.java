@@ -13,7 +13,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.logging.Logger;
 
 /**
- * The type Firebase token filter.
+ * Filtro para autenticação de tokens do Firebase.
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -22,6 +22,11 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(FirebaseTokenFilter.class.getName());
 
+    /**
+     * Método que intercepta as requisições para autenticação.
+     *
+     * @param requestContext contexto da requisição
+     */
     @Override
     public void filter(ContainerRequestContext requestContext) {
         logger.info("Interceptando requisição para autenticação");

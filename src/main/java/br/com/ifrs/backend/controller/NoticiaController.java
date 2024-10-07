@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 
 /**
- * The type Noticia controller.
+ * A classe NoticiaController é responsável por gerenciar as requisições relacionadas a notícias.
  */
 @Path("/noticias")
 public class NoticiaController {
@@ -23,20 +23,20 @@ public class NoticiaController {
     private final NoticiaService noticiaService;
 
     /**
-     * Instantiates a new Noticia controller.
+     * Instancia um novo controlador de notícias.
      *
-     * @param noticiaService the noticia service
+     * @param noticiaService o serviço de notícias
      */
     public NoticiaController(NoticiaService noticiaService) {
         this.noticiaService = noticiaService;
     }
 
     /**
-     * Obter noticias response.
+     * Obtém notícias com base nos parâmetros fornecidos.
      *
-     * @param limit  the limit
-     * @param filter the filter
-     * @return the response
+     * @param limit  o limite de notícias a serem retornadas
+     * @param filter o filtro a ser aplicado nas notícias
+     * @return a resposta contendo a lista de notícias
      */
     @POST
     @Operation(summary = "Obter notícias")

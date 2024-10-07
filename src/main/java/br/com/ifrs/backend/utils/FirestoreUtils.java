@@ -7,18 +7,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Firestore utils.
- */
 public class FirestoreUtils {
 
     private static final Logger logger = Logger.getLogger(FirestoreUtils.class.getName());
 
     /**
-     * Gets cpf from firestore.
+     * Obtém o CPF do Firestore.
      *
-     * @param uid the uid
-     * @return the cpf from firestore
+     * @param uid Identificador do usuário.
+     * @return CPF do usuário ou null se não encontrado.
      */
     public String getCpfFromFirestore(String uid) {
         try {
@@ -38,10 +35,10 @@ public class FirestoreUtils {
     }
 
     /**
-     * Gets email from firestore.
+     * Obtém o email do Firestore.
      *
-     * @param uid the uid
-     * @return the email from firestore
+     * @param uid Identificador do usuário.
+     * @return Email do usuário ou null se não encontrado.
      */
     public String getEmailFromFirestore(String uid) {
         try {

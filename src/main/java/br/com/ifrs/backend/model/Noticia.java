@@ -1,28 +1,28 @@
 package br.com.ifrs.backend.model;
 
 /**
- * The type Noticia.
+ * Classe que representa uma notícia.
  */
 public class Noticia{
-    private String link;
-    private String titulo;
-    private String resumo;
-    private String dataPublicacao;
-    private String horaPublicacao;
+    private String link; // Link da notícia
+    private String titulo; // Título da notícia
+    private String resumo; // Resumo da notícia
+    private String dataPublicacao; // Data de publicação da notícia
+    private String horaPublicacao; // Hora de publicação da notícia
 
     /**
-     * Instantiates a new Noticia.
+     * Construtor padrão.
      */
     public Noticia(){}
 
     /**
-     * Instantiates a new Noticia.
+     * Construtor com parâmetros.
      *
-     * @param link           the link
-     * @param titulo         the titulo
-     * @param resumo         the resumo
-     * @param dataPublicacao the data publicacao
-     * @param horaPublicacao the hora publicacao
+     * @param link            o link da notícia
+     * @param titulo          o título da notícia
+     * @param resumo          o resumo da notícia
+     * @param dataPublicacao  a data de publicação da notícia
+     * @param horaPublicacao  a hora de publicação da notícia
      */
     public Noticia(String link, String titulo, String resumo, String dataPublicacao, String horaPublicacao) {
         this.link = link;
@@ -33,90 +33,90 @@ public class Noticia{
     }
 
     /**
-     * Gets link.
+     * Obtém o link da notícia.
      *
-     * @return the link
+     * @return o link da notícia
      */
     public String getLink() {
         return link;
     }
 
     /**
-     * Sets link.
+     * Define o link da notícia.
      *
-     * @param link the link
+     * @param link o link da notícia
      */
     public void setLink(String link) {
         this.link = link;
     }
 
     /**
-     * Gets titulo.
+     * Obtém o título da notícia.
      *
-     * @return the titulo
+     * @return o título da notícia
      */
     public String getTitulo() {
         return titulo;
     }
 
     /**
-     * Sets titulo.
+     * Define o título da notícia.
      *
-     * @param titulo the titulo
+     * @param titulo o título da notícia
      */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
     /**
-     * Gets resumo.
+     * Obtém o resumo da notícia.
      *
-     * @return the resumo
+     * @return o resumo da notícia
      */
     public String getResumo() {
         return resumo;
     }
 
     /**
-     * Sets resumo.
+     * Define o resumo da notícia.
      *
-     * @param resumo the resumo
+     * @param resumo o resumo da notícia
      */
     public void setResumo(String resumo) {
         this.resumo = resumo;
     }
 
     /**
-     * Gets data publicacao.
+     * Obtém a data de publicação da notícia.
      *
-     * @return the data publicacao
+     * @return a data de publicação da notícia
      */
     public String getDataPublicacao() {
         return dataPublicacao;
     }
 
     /**
-     * Sets data publicacao.
+     * Define a data de publicação da notícia.
      *
-     * @param dataPublicacao the data publicacao
+     * @param dataPublicacao a data de publicação da notícia
      */
     public void setDataPublicacao(String dataPublicacao) {
         this.dataPublicacao = dataPublicacao;
     }
 
     /**
-     * Gets hora publicacao.
+     * Obtém a hora de publicação da notícia.
      *
-     * @return the hora publicacao
+     * @return a hora de publicação da notícia
      */
     public String getHoraPublicacao() {
         return horaPublicacao;
     }
 
     /**
-     * Sets hora publicacao.
+     * Define a hora de publicação da notícia.
      *
-     * @param horaPublicacao the hora publicacao
+     * @param horaPublicacao a hora de publicação da notícia
      */
     public void setHoraPublicacao(String horaPublicacao) {
         this.horaPublicacao = horaPublicacao;

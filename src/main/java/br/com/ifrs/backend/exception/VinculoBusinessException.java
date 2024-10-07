@@ -6,13 +6,13 @@ import jakarta.ws.rs.core.Response;
 import java.util.Collections;
 
 /**
- * The type Vinculo business exception.
+ * A classe VinculoBusinessException representa uma exceção para situações de vínculo não aceitável.
  */
 public class VinculoBusinessException extends WebApplicationException {
     /**
-     * Instantiates a new Vinculo business exception.
+     * Instancia uma nova VinculoBusinessException.
      *
-     * @param message the message
+     * @param message a mensagem de erro
      */
     public VinculoBusinessException(String message) {
         super(Response.status(Response.Status.NOT_ACCEPTABLE)

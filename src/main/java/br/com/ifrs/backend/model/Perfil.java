@@ -1,7 +1,7 @@
 package br.com.ifrs.backend.model;
 
 /**
- * The type Perfil.
+ * Classe que representa o perfil de um docente.
  */
 public class Perfil{
     private String nomeDocente;
@@ -20,23 +20,23 @@ public class Perfil{
     private String integralizado;
 
     /**
-     * Instantiates a new Perfil.
+     * Construtor padrão.
      */
     public Perfil() {
     }
 
     /**
-     * Instantiates a new Perfil.
+     * Construtor com parâmetros.
      *
-     * @param nomeDocente the nome docente
-     * @param matricula   the matricula
-     * @param cpf         the cpf
-     * @param curso       the curso
-     * @param nivel       the nivel
-     * @param status      the status
-     * @param anoIngresso the ano ingresso
-     * @param email       the email
-     * @param imgSrc      the img src
+     * @param nomeDocente o nome do docente
+     * @param matricula a matrícula do docente
+     * @param cpf o CPF do docente
+     * @param curso o curso do docente
+     * @param nivel o nível do docente
+     * @param status o status do docente
+     * @param anoIngresso o ano de ingresso do docente
+     * @param email o email do docente
+     * @param imgSrc a URL da imagem do docente
      */
     public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgSrc){
         this.nomeDocente = nomeDocente;
@@ -51,22 +51,22 @@ public class Perfil{
     }
 
     /**
-     * Instantiates a new Perfil.
+     * Construtor com todos os parâmetros.
      *
-     * @param nomeDocente            the nome docente
-     * @param matricula              the matricula
-     * @param cpf                    the cpf
-     * @param curso                  the curso
-     * @param nivel                  the nivel
-     * @param status                 the status
-     * @param anoIngresso            the ano ingresso
-     * @param email                  the email
-     * @param imgSrc                 the img src
-     * @param chObrigatoriaPendente  the ch obrigatoria pendente
-     * @param chOptativaPendente     the ch optativa pendente
-     * @param chTotalCurriculo       the ch total curriculo
-     * @param chComplementarPendente the ch complementar pendente
-     * @param integralizado          the integralizado
+     * @param nomeDocente o nome do docente
+     * @param matricula a matrícula do docente
+     * @param cpf o CPF do docente
+     * @param curso o curso do docente
+     * @param nivel o nível do docente
+     * @param status o status do docente
+     * @param anoIngresso o ano de ingresso do docente
+     * @param email o email do docente
+     * @param imgSrc a URL da imagem do docente
+     * @param chObrigatoriaPendente a carga horária obrigatória pendente
+     * @param chOptativaPendente a carga horária optativa pendente
+     * @param chTotalCurriculo a carga horária total do currículo
+     * @param chComplementarPendente a carga horária complementar pendente
+     * @param integralizado se o currículo está integralizado
      */
     public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgSrc, String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente, String integralizado){
         this.nomeDocente = nomeDocente;
@@ -85,253 +85,254 @@ public class Perfil{
         this.integralizado = integralizado;
     }
 
+
     /**
-     * Gets nome docente.
+     * Obtém o nome do docente.
      *
-     * @return the nome docente
+     * @return o nome do docente
      */
     public String getNomeDocente() {
         return nomeDocente;
     }
 
     /**
-     * Sets nome docente.
+     * Define o nome do docente.
      *
-     * @param nomeDocente the nome docente
+     * @param nomeDocente o nome do docente
      */
     public void setNomeDocente(String nomeDocente) {
         this.nomeDocente = nomeDocente;
     }
 
     /**
-     * Gets matricula.
+     * Obtém a matrícula do docente.
      *
-     * @return the matricula
+     * @return a matrícula do docente
      */
     public String getMatricula() {
         return matricula;
     }
 
     /**
-     * Sets matricula.
+     * Define a matrícula do docente.
      *
-     * @param matricula the matricula
+     * @param matricula a matrícula do docente
      */
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 
     /**
-     * Gets cpf.
+     * Obtém o CPF do docente.
      *
-     * @return the cpf
+     * @return o CPF do docente
      */
     public String getCpf() {
         return cpf;
     }
 
     /**
-     * Sets cpf.
+     * Define o CPF do docente.
      *
-     * @param cpf the cpf
+     * @param cpf o CPF do docente
      */
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
     /**
-     * Gets curso.
+     * Obtém o curso do docente.
      *
-     * @return the curso
+     * @return o curso do docente
      */
     public String getCurso() {
         return curso;
     }
 
     /**
-     * Sets curso.
+     * Define o curso do docente.
      *
-     * @param curso the curso
+     * @param curso o curso do docente
      */
     public void setCurso(String curso) {
         this.curso = curso;
     }
 
     /**
-     * Gets nivel.
+     * Obtém o nível do docente.
      *
-     * @return the nivel
+     * @return o nível do docente
      */
     public String getNivel() {
         return nivel;
     }
 
     /**
-     * Sets nivel.
+     * Define o nível do docente.
      *
-     * @param nivel the nivel
+     * @param nivel o nível do docente
      */
     public void setNivel(String nivel) {
         this.nivel = nivel;
     }
 
     /**
-     * Gets status.
+     * Obtém o status do docente.
      *
-     * @return the status
+     * @return o status do docente
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * Sets status.
+     * Define o status do docente.
      *
-     * @param status the status
+     * @param status o status do docente
      */
     public void setStatus(String status) {
         this.status = status;
     }
 
     /**
-     * Gets ano ingresso.
+     * Obtém o ano de ingresso do docente.
      *
-     * @return the ano ingresso
+     * @return o ano de ingresso do docente
      */
     public String getAnoIngresso() {
         return anoIngresso;
     }
 
     /**
-     * Sets ano ingresso.
+     * Define o ano de ingresso do docente.
      *
-     * @param anoIngresso the ano ingresso
+     * @param anoIngresso o ano de ingresso do docente
      */
     public void setAnoIngresso(String anoIngresso) {
         this.anoIngresso = anoIngresso;
     }
 
     /**
-     * Gets email.
+     * Obtém o email do docente.
      *
-     * @return the email
+     * @return o email do docente
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets email.
+     * Define o email do docente.
      *
-     * @param email the email
+     * @param email o email do docente
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Gets img src.
+     * Obtém a URL da imagem do docente.
      *
-     * @return the img src
+     * @return a URL da imagem do docente
      */
     public String getImgSrc() {
         return imgSrc;
     }
 
     /**
-     * Sets img src.
+     * Define a URL da imagem do docente.
      *
-     * @param imgSrc the img src
+     * @param imgSrc a URL da imagem do docente
      */
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
     }
 
     /**
-     * Gets ch obrigatoria pendente.
+     * Obtém a carga horária obrigatória pendente.
      *
-     * @return the ch obrigatoria pendente
+     * @return a carga horária obrigatória pendente
      */
     public String getChObrigatoriaPendente() {
         return chObrigatoriaPendente;
     }
 
     /**
-     * Sets ch obrigatoria pendente.
+     * Define a carga horária obrigatória pendente.
      *
-     * @param chObrigatoriaPendente the ch obrigatoria pendente
+     * @param chObrigatoriaPendente a carga horária obrigatória pendente
      */
     public void setChObrigatoriaPendente(String chObrigatoriaPendente) {
         this.chObrigatoriaPendente = chObrigatoriaPendente;
     }
 
     /**
-     * Gets ch optativa pendente.
+     * Obtém a carga horária optativa pendente.
      *
-     * @return the ch optativa pendente
+     * @return a carga horária optativa pendente
      */
     public String getChOptativaPendente() {
         return chOptativaPendente;
     }
 
     /**
-     * Sets ch optativa pendente.
+     * Define a carga horária optativa pendente.
      *
-     * @param chOptativaPendente the ch optativa pendente
+     * @param chOptativaPendente a carga horária optativa pendente
      */
     public void setChOptativaPendente(String chOptativaPendente) {
         this.chOptativaPendente = chOptativaPendente;
     }
 
     /**
-     * Gets ch total curriculo.
+     * Obtém a carga horária total do currículo.
      *
-     * @return the ch total curriculo
+     * @return a carga horária total do currículo
      */
     public String getChTotalCurriculo() {
         return chTotalCurriculo;
     }
 
     /**
-     * Sets ch total curriculo.
+     * Define a carga horária total do currículo.
      *
-     * @param chTotalCurriculo the ch total curriculo
+     * @param chTotalCurriculo a carga horária total do currículo
      */
     public void setChTotalCurriculo(String chTotalCurriculo) {
         this.chTotalCurriculo = chTotalCurriculo;
     }
 
     /**
-     * Gets ch complementar pendente.
+     * Obtém a carga horária complementar pendente.
      *
-     * @return the ch complementar pendente
+     * @return a carga horária complementar pendente
      */
     public String getChComplementarPendente() {
         return chComplementarPendente;
     }
 
     /**
-     * Sets ch complementar pendente.
+     * Define a carga horária complementar pendente.
      *
-     * @param chComplementarPendente the ch complementar pendente
+     * @param chComplementarPendente a carga horária complementar pendente
      */
     public void setChComplementarPendente(String chComplementarPendente) {
         this.chComplementarPendente = chComplementarPendente;
     }
 
     /**
-     * Gets integralizado.
+     * Obtém se o currículo está integralizado.
      *
-     * @return the integralizado
+     * @return se o currículo está integralizado
      */
     public String getIntegralizado() {
         return integralizado;
     }
 
     /**
-     * Sets integralizado.
+     * Define se o currículo está integralizado.
      *
-     * @param integralizado the integralizado
+     * @param integralizado se o currículo está integralizado
      */
     public void setIntegralizado(String integralizado) {
         this.integralizado = integralizado;

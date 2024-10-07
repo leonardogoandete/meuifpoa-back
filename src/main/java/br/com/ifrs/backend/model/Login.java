@@ -1,39 +1,39 @@
 package br.com.ifrs.backend.model;
 
 /**
- * The type Login.
+ * A classe Login.
  */
 public class Login{
     private String senha;
 
     /**
-     * Instantiates a new Login.
+     * Instancia um novo Login.
      */
     public Login() {
     }
 
     /**
-     * Instantiates a new Login.
+     * Instancia um novo Login.
      *
-     * @param senha the senha
+     * @param senha a senha
      */
     public Login(String senha) {
         this.senha = senha;
     }
 
     /**
-     * Gets senha.
+     * Obtém a senha.
      *
-     * @return the senha
+     * @return a senha
      */
     public String getSenha() {
         return senha;
     }
 
     /**
-     * Sets senha.
+     * Define a senha.
      *
-     * @param senha the senha
+     * @param senha a senha
      */
     public void setSenha(String senha) {
         this.senha = senha;

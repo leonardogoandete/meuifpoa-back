@@ -8,7 +8,7 @@ import org.jboss.logging.Logger;
 import java.util.Collections;
 
 /**
- * The type Global exception handler.
+ * A classe GlobalExceptionHandler é responsável por tratar exceções não tratadas em todo o aplicativo.
  */
 @Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
@@ -17,7 +17,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
-        LOG.error("Unhandled exception occurred: ", exception);
+        LOG.error("Ocorreu uma exceção não tratada: ", exception);
 
         if (exception instanceof UnauthorizedException) {
             return Response.status(Response.Status.UNAUTHORIZED)

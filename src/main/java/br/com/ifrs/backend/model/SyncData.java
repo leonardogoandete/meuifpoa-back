@@ -3,17 +3,17 @@ package br.com.ifrs.backend.model;
 import java.util.List;
 
 /**
- * The type Sync data.
+ * Classe que representa os dados de sincronização.
  */
 public class SyncData {
     private Perfil perfil;
     private List<Notas> notas;
 
     /**
-     * Instantiates a new Sync data.
+     * Construtor para inicializar os dados de sincronização.
      *
-     * @param perfil the perfil
-     * @param notas  the notas
+     * @param perfil o perfil do docente
+     * @param notas a lista de notas
      */
     public SyncData(Perfil perfil, List<Notas> notas) {
         this.perfil = perfil;
@@ -21,18 +21,18 @@ public class SyncData {
     }
 
     /**
-     * Gets perfil.
+     * Obtém o perfil do docente.
      *
-     * @return the perfil
+     * @return o perfil do docente
      */
     public Perfil getPerfil() {
         return perfil;
     }
 
     /**
-     * Gets notas.
+     * Obtém a lista de notas.
      *
-     * @return the notas
+     * @return a lista de notas
      */
     public List<Notas> getNotas() {
         return notas;

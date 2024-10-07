@@ -1,3 +1,6 @@
+/**
+ * Serviço responsável por obter notícias do site do IFRS.
+ */
 package br.com.ifrs.backend.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -21,18 +24,15 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The type Noticia service.
- */
 @Slf4j
 @ApplicationScoped
 public class NoticiaService {
     /**
-     * Obter noticias list.
+     * Obtém uma lista de notícias do site do IFRS.
      *
-     * @param limit        the limit
-     * @param filterSearch the filter search
-     * @return the list
+     * @param limit        Limite de notícias a serem obtidas.
+     * @param filterSearch Filtro de busca para as notícias.
+     * @return Lista de notícias.
      */
     public List<Noticia> obterNoticias(int limit, String filterSearch) {
         List<Noticia> noticias = new ArrayList<>();
@@ -52,6 +52,17 @@ public class NoticiaService {
         return noticias;
     }
 
+    /**
+     * Configura a conexão HTTP para realizar a solicitação POST.
+     *
+     * @param url         URL da solicitação.
+     * @param contentType Tipo de conteúdo da solicitação.
+     * @param postData    Dados a serem enviados no corpo da solicitação POST.
+     * @return Resposta HTTP da solicitação.
+     * @throws URISyntaxException       Se a URL for inválida.
+     * @throws IOException              Se ocorrer um erro de I/O.
+     * @throws InterruptedException     Se a solicitação for interrompida.
+     */
     private static HttpResponse<String> configuraConexao(String url, String contentType, String postData) throws URISyntaxException, IOException, InterruptedException {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("URL não pode ser nula ou vazia.");
@@ -81,6 +92,11 @@ public class NoticiaService {
         return response;
     }
 
+    /**
+     * Cria um cliente HTTP que ignora a verificação de SSL.
+     *
+     * @return Cliente HTTP configurado para ignorar SSL.
+     */
     private static HttpClient criaHttpClientIgnorandoSSL() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
@@ -109,6 +125,12 @@ public class NoticiaService {
         }
     }
 
+    /**
+     * Realiza o scraping das informações HTML da resposta HTTP.
+     *
+     * @param response Resposta HTTP contendo o HTML.
+     * @param noticias Lista de notícias a ser preenchida com os dados extraídos.
+     */
     private static void scrapingInformacoesHtml(HttpResponse<String> response, List<Noticia> noticias) {
         if (response == null) {
             throw new IllegalArgumentException("A resposta não pode ser nula.");
@@ -139,6 +161,13 @@ public class NoticiaService {
         }
     }
 
+    /**
+     * Configura o filtro de notícias para a solicitação POST.
+     *
+     * @param limit        Limite de notícias a serem obtidas.
+     * @param filterSearch Filtro de busca para as notícias.
+     * @return String de consulta configurada.
+     */
     private String configuraFiltroNoticia(int limit, String filterSearch) {
         String queryString;
         return queryString = (filterSearch == null)

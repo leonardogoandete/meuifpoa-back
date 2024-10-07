@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Documento controller.
+ * A classe DocumentoController é responsável por gerenciar as requisições relacionadas a documentos.
  */
 @Path("/documento")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,18 +33,18 @@ public class DocumentoController {
     private final DocumentoService documentoService;
 
     /**
-     * Instantiates a new Documento controller.
+     * Instancia um novo controlador de documentos.
      *
-     * @param documentoService the documento service
+     * @param documentoService o serviço de documentos
      */
     public DocumentoController(DocumentoService documentoService) { this.documentoService = documentoService; }
 
     /**
-     * Gets documento.
+     * Obtém um documento em formato PDF codificado em base64.
      *
-     * @param securityContext  the security context
-     * @param documentoRequest the documento request
-     * @return the documento
+     * @param securityContext  o contexto de segurança
+     * @param documentoRequest a requisição do documento
+     * @return o documento em formato PDF codificado em base64
      */
     @POST
     @Operation(summary = "Obter documento PDF em base64")
