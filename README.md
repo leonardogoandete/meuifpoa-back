@@ -1,54 +1,92 @@
-# notas
+# Projeto Backend
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Descrição
+Este projeto é um serviço backend desenvolvido em Java utilizando o framework Quarkus. Ele inclui funcionalidades para manipulação de documentos e integração com serviços externos.
+Serve como api para obter informações de documentos, notícias e notas de alunos e acessar essas informações através de endpoints.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Tecnologias Utilizadas
+- **Java**
+- **Quarkus**
+- **Maven**
 
-## Running the application in dev mode
+## Estrutura do Projeto
+### Diretórios
+- `src/main/java/br/com/ifrs/backend/service/DocumentoService.java`: Contém a lógica de manipulação de documentos.
+- `src/main/java/br/com/ifrs/backend/controller/DocumentoController.java`: Contém os endpoints para manipulação de documentos.
+- `src/main/java/br/com/ifrs/backend/model/DocumentoRequest.java`: Contém a definição do modelo de documento.
+- `src/main/java/br/com/ifrs/backend/service/NoticiaService.java`: Contém a lógica de notícias.
+- `src/main/java/br/com/ifrs/backend/controller/NoticiaController.java`: Contém os endpoints para manipulação de notícias.
+- `src/main/java/br/com/ifrs/backend/model/Noticia.java`: Contém a definição do modelo de notícia.
+- `src/main/java/br/com/ifrs/backend/service/SyncService.java`: Contém a lógica de sincronização de alunos.
+- `src/main/java/br/com/ifrs/backend/controller/SyncController.java`: Contém os endpoints para sincronização de alunos.
+- `src/main/java/br/com/ifrs/backend/model/Perfil.java`: Contém a definição do modelo de aluno.
+- `src/main/java/br/com/ifrs/backend/model/Notas.java`: Contém a definição do modelo de notas.
+- `src/main/java/br/com/ifrs/backend/configuration/FirebaseInitializer.java`: Contém a configuração do Firebase.
+- `src/main/java/br/com/ifrs/backend/configuration/FirebaseSecurityContext.java`: Contém a configuração do contexto de segurança do Firebase.
+- `src/main/java/br/com/ifrs/backend/configuration/FirebaseTokenFilter.java`: Contém o filtro de token do Firebase.
+- `src/main/java/br/com/ifrs/backend/utils/FirestoreUtils.java`: Contém métodos utilitários para manipulação do Firestore.
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+
+## Configuração do Ambiente
+1. **Pré-requisitos**:
+    - JDK 11 ou superior
+    - Maven 3.6 ou superior
+
+2. **Clonar o repositório**:
+    ```sh
+    git clone https://github.com/leonardogoandete/projeto-backend.git
+    cd projeto-backend
+    ```
+3. **Configurar certificado para autenticação dos usuarios com o Firebase**:
+    - Obter os certificados publicos do Firebase e salvar em um arquivo chamado `google-key.pem` na pasta `src/main/resources`.
+    - Configurar o arquivo `application.properties` com as informações do Firebase adicionando as seguintes linhas:
+    ```mp.jwt.verify.issuer=https://securetoken.google.com/<ID do projeto>
+    mp.jwt.verify.publickey.location=google-key.pem
+    quarkus.smallrye-jwt.public-key.location=https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+    quarkus.smallrye-jwt.enabled=true
+    ```
+
+4. **Compilar o projeto**:
+    ```sh
+    mvn clean install
+    ```
+
+5. **Executar o projeto**:
+    ```sh
+    mvn spring-boot:run
+    ```
+
+## Endpoints
+- **POST /documento**: Endpoint para manipulação de documentos.
+    - **Parâmetros**:
+        - `tipo`: Tipo do documento (ex: `atestadoMatricula`, `historico`, `declaracaoVinculo` e `historicoEmentas`).
+        - `senha`: Senha do SIGAA
+        - `header Authorization`: Token de autenticação do Firebase.
+      
+- **POST /sincronizar**: Endpoint para sincronização de alunos.
+    - **Parâmetros**:
+        - `senha`: Senha do SIGAA
+        - `header Authorization`: Token de autenticação do Firebase.
+         
+- **POST /noticia**: Endpoint para obter notícias.
+    - **Parâmetros**:
+        - `limit`: Limite de notícias a serem retornadas.
+        - `filter`: Filtro de notícias (ex: `ifrs`, `campus`, `ensino`, `pesquisa`, `extensao`).
+
+### Exemplo de Uso
+```sh
+# Obter atestado de matrícula
+curl -X POST http://localhost:8080/documento -H "Authorization: Bearer <token>" -d "{"tipo":"atestadoMatricula","senha":"giropops"}"
+
+# Sinconizar aluno
+curl -X POST http://localhost:8080/sincronizar -H "Authorization: Bearer <token>" -d "{"senha":"giropops"}"
+
+# Obter notícias
+curl -X POST http://localhost:8080/noticias
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+## Licença
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/notas-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Related Guides
-
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
-- OpenTelemetry ([guide](https://quarkus.io/guides/opentelemetry)): Use OpenTelemetry to trace services
-- RESTEasy Classic's REST Client Jackson ([guide](https://quarkus.io/guides/resteasy-client)): Jackson serialization support for the REST Client
+Adapte as seções conforme necessário para refletir as especificidades do seu projeto.
