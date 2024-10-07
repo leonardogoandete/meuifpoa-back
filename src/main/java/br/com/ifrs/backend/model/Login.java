@@ -1,7 +1,7 @@
 package br.com.ifrs.backend.model;
 
 /**
- * A classe Login.
+ * A classe Login representa o login de um aluno
  */
 public class Login{
     private String senha;

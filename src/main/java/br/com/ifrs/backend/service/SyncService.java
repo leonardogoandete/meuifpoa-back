@@ -1,6 +1,3 @@
-/**
- * Serviço responsável pela sincronização de dados com o SIGAA.
- */
 package br.com.ifrs.backend.service;
 
 import br.com.ifrs.backend.exception.UnauthorizedException;
@@ -25,7 +22,9 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * Serviço responsável pela sincronização de dados com o SIGAA.
+ */
 @ApplicationScoped
 public class SyncService {
 

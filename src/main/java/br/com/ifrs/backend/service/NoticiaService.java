@@ -1,6 +1,4 @@
-/**
- * Serviço responsável por obter notícias do site do IFRS.
- */
+
 package br.com.ifrs.backend.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,6 +22,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço responsável por obter notícias do site do IFRS.
+ */
 @Slf4j
 @ApplicationScoped
 public class NoticiaService {

@@ -7,6 +7,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe utilitária para operações no Firestore.
+ */
 public class FirestoreUtils {
 
     private static final Logger logger = Logger.getLogger(FirestoreUtils.class.getName());

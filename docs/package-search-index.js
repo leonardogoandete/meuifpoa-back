@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"br.com.ifrs.backend.configuration"},{"l":"br.com.ifrs.backend.controller"},{"l":"br.com.ifrs.backend.exception"},{"l":"br.com.ifrs.backend.model"},{"l":"br.com.ifrs.backend.service"},{"l":"br.com.ifrs.backend.utils"}];updateSearchResults();
