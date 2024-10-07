@@ -38,7 +38,7 @@ Serve como api para obter informações de documentos, notícias e notas de alun
     cd projeto-backend
     ```
 3. **Configurar certificado para autenticação dos usuarios com o Firebase**:
-    - Obter os certificados publicos do Firebase e salvar em um arquivo chamado `google-key.pem` na pasta `src/main/resources`.
+    - Obter os certificados publicos do Firebase atraves da URL https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com e salvar em um arquivo chamado `google-key.pem` na pasta `src/main/resources`.
     - Configurar o arquivo `application.properties` com as informações do Firebase adicionando as seguintes linhas:
     ```mp.jwt.verify.issuer=https://securetoken.google.com/<ID do projeto>
     mp.jwt.verify.publickey.location=google-key.pem
