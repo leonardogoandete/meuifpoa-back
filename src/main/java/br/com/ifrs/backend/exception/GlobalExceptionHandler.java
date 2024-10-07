@@ -7,6 +7,9 @@ import org.jboss.logging.Logger;
 
 import java.util.Collections;
 
+/**
+ * The type Global exception handler.
+ */
 @Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
 

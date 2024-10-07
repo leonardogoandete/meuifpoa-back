@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Sync controller.
+ */
 @Path("/sync")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,9 +30,19 @@ public class SyncController {
 
     private static final Logger logger = Logger.getLogger(SyncController.class.getName());
 
+    /**
+     * The Sync service.
+     */
     @Inject
     SyncService syncService;
 
+    /**
+     * Sincronizar response.
+     *
+     * @param securityContext the security context
+     * @param login           the login
+     * @return the response
+     */
     @POST
     @Operation(summary = "Sincronizar dados do usuário e salva no firebase")
     @Authenticated

@@ -10,8 +10,16 @@ import jakarta.enterprise.event.Observes;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The type Firebase initialize.
+ */
 @ApplicationScoped
 public class FirebaseInitialize {
+    /**
+     * On start.
+     *
+     * @param ev the ev
+     */
     void onStart(@Observes StartupEvent ev) {
         try{
             //FileInputStream serviceAccount = new FileInputStream("../../resources/serviceAccountKey.json");

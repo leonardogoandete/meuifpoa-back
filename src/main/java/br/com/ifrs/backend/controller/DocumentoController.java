@@ -22,14 +22,30 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Documento controller.
+ */
 @Path("/documento")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class DocumentoController {
     private static final Logger logger = Logger.getLogger(DocumentoController.class.getName());
     private final DocumentoService documentoService;
+
+    /**
+     * Instantiates a new Documento controller.
+     *
+     * @param documentoService the documento service
+     */
     public DocumentoController(DocumentoService documentoService) { this.documentoService = documentoService; }
 
+    /**
+     * Gets documento.
+     *
+     * @param securityContext  the security context
+     * @param documentoRequest the documento request
+     * @return the documento
+     */
     @POST
     @Operation(summary = "Obter documento PDF em base64")
     @Authenticated

@@ -13,16 +13,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+/**
+ * The type Noticia controller.
+ */
 @Path("/noticias")
 public class NoticiaController {
 
     private static final Logger logger = Logger.getLogger(NoticiaController.class.getName());
     private final NoticiaService noticiaService;
 
+    /**
+     * Instantiates a new Noticia controller.
+     *
+     * @param noticiaService the noticia service
+     */
     public NoticiaController(NoticiaService noticiaService) {
         this.noticiaService = noticiaService;
     }
 
+    /**
+     * Obter noticias response.
+     *
+     * @param limit  the limit
+     * @param filter the filter
+     * @return the response
+     */
     @POST
     @Operation(summary = "Obter notícias")
     @PermitAll

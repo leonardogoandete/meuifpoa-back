@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/**
+ * The type Documento service.
+ */
 @ApplicationScoped
 public class DocumentoService {
 
@@ -28,6 +31,9 @@ public class DocumentoService {
     private final OkHttpClient client;
     private static final String SIGAA_URL = "https://sig.ifrs.edu.br/sigaa/logar.do?dispatch=logOn";
 
+    /**
+     * Instantiates a new Documento service.
+     */
     public DocumentoService() {
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)  // Definir timeout de conexão para 30 segundos
@@ -49,6 +55,15 @@ public class DocumentoService {
                 .build();
     }
 
+    /**
+     * Download pdf as base 64 string.
+     *
+     * @param uid   the uid
+     * @param tipo  the tipo
+     * @param senha the senha
+     * @return the string
+     * @throws IOException the io exception
+     */
     public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
 
         if (uid == null || tipo == null || senha == null) {
@@ -69,6 +84,14 @@ public class DocumentoService {
         }
     }
 
+    /**
+     * Perform login boolean.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the boolean
+     * @throws IOException the io exception
+     */
     public boolean performLogin(String username, String password) throws IOException {
         if (username == null || password == null) {
             throw new IllegalArgumentException("Usuario ou senha nulos");
@@ -92,6 +115,14 @@ public class DocumentoService {
         }
     }
 
+    /**
+     * Baixar documento string.
+     *
+     * @param uid  the uid
+     * @param tipo the tipo
+     * @return the string
+     * @throws IOException the io exception
+     */
     protected String baixarDocumento(String uid, String tipo) throws IOException {
         if (uid == null || tipo == null) {
             throw new IllegalArgumentException("Argumentos nulos para baixarDocumento");

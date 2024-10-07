@@ -23,6 +23,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Sync service.
+ */
 @ApplicationScoped
 public class SyncService {
 
@@ -36,6 +39,9 @@ public class SyncService {
     private final OkHttpClient client;
     private boolean sincronizado;
 
+    /**
+     * Instantiates a new Sync service.
+     */
     public SyncService() {
         this.client = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
@@ -52,6 +58,14 @@ public class SyncService {
                 .build();
     }
 
+    /**
+     * Sincronizar boolean.
+     *
+     * @param uid   the uid
+     * @param senha the senha
+     * @return the boolean
+     * @throws IOException the io exception
+     */
     public boolean sincronizar(String uid, String senha) throws IOException {
         sincronizado = false; // Inicializa como não sincronizado
         String cpf = firestoreUtils.getCpfFromFirestore(uid);

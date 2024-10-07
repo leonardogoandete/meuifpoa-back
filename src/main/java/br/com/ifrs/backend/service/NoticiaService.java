@@ -21,9 +21,19 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Noticia service.
+ */
 @Slf4j
 @ApplicationScoped
 public class NoticiaService {
+    /**
+     * Obter noticias list.
+     *
+     * @param limit        the limit
+     * @param filterSearch the filter search
+     * @return the list
+     */
     public List<Noticia> obterNoticias(int limit, String filterSearch) {
         List<Noticia> noticias = new ArrayList<>();
         String url = "https://poa.ifrs.edu.br/index.php/ultimas-noticias/noticias-principais";

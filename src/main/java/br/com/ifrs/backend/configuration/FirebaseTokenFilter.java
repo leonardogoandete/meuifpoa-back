@@ -12,6 +12,9 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.util.logging.Logger;
 
+/**
+ * The type Firebase token filter.
+ */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 @ApplicationScoped
