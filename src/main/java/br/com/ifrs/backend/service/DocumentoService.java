@@ -74,6 +74,9 @@ public class DocumentoService {
         }
         try {
             String cpf = firestoreUtils.getCpfFromFirestore(uid);
+            if (cpf == null) {
+                throw new IllegalArgumentException("CPF não encontrado para o usuário: " + uid);
+            }
             // Realizar login no SIGAA
             if (!performLogin(cpf, senha)) {
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
@@ -84,6 +87,7 @@ public class DocumentoService {
         } finally {
             // Garantir que os cookies sejam limpos após o processo
             limparCookies();
+            logger.info("Cookies limpos após o processo.");
         }
     }
 
@@ -96,7 +100,7 @@ public class DocumentoService {
      * @throws IOException Se ocorrer um erro durante o login.
      */
     public boolean performLogin(String username, String password) throws IOException {
-        if (username == null || password == null) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Usuario ou senha nulos");
         }
         FormBody formBody = new FormBody.Builder()
@@ -114,6 +118,7 @@ public class DocumentoService {
                 throw new IOException("Erro ao realizar login: " + response);
             }
             String responseBody = response.body().string();
+            response.close();
             return !responseBody.contains("Usuário e/ou senha inválidos");
         }
     }
@@ -127,7 +132,7 @@ public class DocumentoService {
      * @throws IOException Se ocorrer um erro durante o download.
      */
     protected String baixarDocumento(String uid, String tipo) throws IOException {
-        if (uid == null || tipo == null) {
+        if (uid == null || uid.isEmpty() || tipo == null || tipo.isEmpty()) {
             throw new IllegalArgumentException("Argumentos nulos para baixarDocumento");
         }
 
@@ -182,10 +187,10 @@ public class DocumentoService {
             }
 
             // Caso não seja "atestadoMatricula", continuar com o fluxo padrão de download
-            logger.info("Documento baixado com sucesso: \n" + postResponse.body());
-            InputStream inputStream = postResponse.body().byteStream();
-            String base64Pdf = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
-            return base64Pdf;
+            logger.info("Documento baixado com sucesso.");
+            try (InputStream inputStream = postResponse.body().byteStream()) {
+                return Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+            }
         }
     }
 
