@@ -1,4 +1,4 @@
-package br.com.ifrs.backend.exception;
+package br.com.ifrs.meuifpoaback.exception;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

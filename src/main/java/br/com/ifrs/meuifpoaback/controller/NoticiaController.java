@@ -1,11 +1,11 @@
-package br.com.ifrs.backend.controller;
+package br.com.ifrs.meuifpoaback.controller;
 
 
-import br.com.ifrs.backend.service.NoticiaService;
+import br.com.ifrs.meuifpoaback.service.NoticiaService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import br.com.ifrs.backend.model.Noticia;
+import br.com.ifrs.meuifpoaback.model.Noticia;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import java.util.List;

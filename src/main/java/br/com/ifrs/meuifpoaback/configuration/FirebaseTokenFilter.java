@@ -1,6 +1,6 @@
-package br.com.ifrs.backend.configuration;
+package br.com.ifrs.meuifpoaback.configuration;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
+import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.annotation.Priority;

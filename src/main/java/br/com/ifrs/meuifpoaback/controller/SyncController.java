@@ -1,9 +1,8 @@
-package br.com.ifrs.backend.controller;
+package br.com.ifrs.meuifpoaback.controller;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
-import br.com.ifrs.backend.model.Login;
-import br.com.ifrs.backend.service.SyncService;
-import io.quarkus.security.Authenticated;
+import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
+import br.com.ifrs.meuifpoaback.model.Login;
+import br.com.ifrs.meuifpoaback.service.SyncService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

@@ -1,4 +1,4 @@
-package br.com.ifrs.backend.model;
+package br.com.ifrs.meuifpoaback.model;
 
 import java.util.List;
 

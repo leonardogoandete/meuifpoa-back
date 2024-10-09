@@ -35,7 +35,7 @@ Serve como api para obter informações de documentos, notícias e notas de alun
 2. **Clonar o repositório**:
     ```sh
     git clone https://github.com/leonardogoandete/projeto-backend.git
-    cd projeto-backend
+    cd projeto-meuifpoaback
     ```
 3. **Configurar certificado para autenticação dos usuarios com o Firebase**:
     - Obter os certificados publicos do Firebase atraves da URL https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com e salvar em um arquivo chamado `google-key.pem` na pasta `src/main/resources`.

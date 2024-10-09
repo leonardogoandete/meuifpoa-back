@@ -1,6 +1,6 @@
-br.com.ifrs.backend.configuration
-br.com.ifrs.backend.controller
-br.com.ifrs.backend.exception
-br.com.ifrs.backend.model
-br.com.ifrs.backend.service
-br.com.ifrs.backend.utils
+br.com.ifrs.meuifpoaback.configuration
+br.com.ifrs.meuifpoaback.controller
+br.com.ifrs.meuifpoaback.exception
+br.com.ifrs.meuifpoaback.model
+br.com.ifrs.meuifpoaback.service
+br.com.ifrs.meuifpoaback.utils

@@ -1,9 +1,9 @@
-package br.com.ifrs.backend.controller;
+package br.com.ifrs.meuifpoaback.controller;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
-import br.com.ifrs.backend.exception.VinculoBusinessException;
-import br.com.ifrs.backend.model.DocumentoRequest;
-import br.com.ifrs.backend.service.DocumentoService;
+import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
+import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
+import br.com.ifrs.meuifpoaback.model.DocumentoRequest;
+import br.com.ifrs.meuifpoaback.service.DocumentoService;
 import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -14,9 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

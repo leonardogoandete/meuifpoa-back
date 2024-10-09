@@ -1,9 +1,9 @@
 
-package br.com.ifrs.backend.service;
+package br.com.ifrs.meuifpoaback.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-import br.com.ifrs.backend.model.Noticia;
+import br.com.ifrs.meuifpoaback.model.Noticia;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

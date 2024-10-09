@@ -1,11 +1,11 @@
 /**
  * Serviço responsável por manipular documentos.
  */
-package br.com.ifrs.backend.service;
+package br.com.ifrs.meuifpoaback.service;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
-import br.com.ifrs.backend.exception.VinculoBusinessException;
-import br.com.ifrs.backend.utils.FirestoreUtils;
+import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
+import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
+import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
 import org.jsoup.Jsoup;

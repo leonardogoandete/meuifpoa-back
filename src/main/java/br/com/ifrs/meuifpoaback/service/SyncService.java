@@ -1,16 +1,14 @@
-package br.com.ifrs.backend.service;
+package br.com.ifrs.meuifpoaback.service;
 
-import br.com.ifrs.backend.exception.UnauthorizedException;
-import br.com.ifrs.backend.model.Notas;
-import br.com.ifrs.backend.model.Perfil;
-import br.com.ifrs.backend.utils.FirestoreUtils;
+import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
+import br.com.ifrs.meuifpoaback.model.Notas;
+import br.com.ifrs.meuifpoaback.model.Perfil;
+import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.cloud.StorageClient;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

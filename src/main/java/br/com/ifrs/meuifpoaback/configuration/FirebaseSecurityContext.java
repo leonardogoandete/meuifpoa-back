@@ -1,4 +1,4 @@
-package br.com.ifrs.backend.configuration;
+package br.com.ifrs.meuifpoaback.configuration;
 
 import jakarta.ws.rs.core.SecurityContext;
 import java.security.Principal;
