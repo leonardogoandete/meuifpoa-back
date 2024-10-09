@@ -11,20 +11,20 @@ Serve como api para obter informações de documentos, notícias e notas de alun
 
 ## Estrutura do Projeto
 ### Diretórios
-- `src/main/java/br/com/ifrs/backend/service/DocumentoService.java`: Contém a lógica de manipulação de documentos.
-- `src/main/java/br/com/ifrs/backend/controller/DocumentoController.java`: Contém os endpoints para manipulação de documentos.
-- `src/main/java/br/com/ifrs/backend/model/DocumentoRequest.java`: Contém a definição do modelo de documento.
-- `src/main/java/br/com/ifrs/backend/service/NoticiaService.java`: Contém a lógica de notícias.
-- `src/main/java/br/com/ifrs/backend/controller/NoticiaController.java`: Contém os endpoints para manipulação de notícias.
-- `src/main/java/br/com/ifrs/backend/model/Noticia.java`: Contém a definição do modelo de notícia.
-- `src/main/java/br/com/ifrs/backend/service/SyncService.java`: Contém a lógica de sincronização de alunos.
-- `src/main/java/br/com/ifrs/backend/controller/SyncController.java`: Contém os endpoints para sincronização de alunos.
-- `src/main/java/br/com/ifrs/backend/model/Perfil.java`: Contém a definição do modelo de aluno.
-- `src/main/java/br/com/ifrs/backend/model/Notas.java`: Contém a definição do modelo de notas.
-- `src/main/java/br/com/ifrs/backend/configuration/FirebaseInitializer.java`: Contém a configuração do Firebase.
-- `src/main/java/br/com/ifrs/backend/configuration/FirebaseSecurityContext.java`: Contém a configuração do contexto de segurança do Firebase.
-- `src/main/java/br/com/ifrs/backend/configuration/FirebaseTokenFilter.java`: Contém o filtro de token do Firebase.
-- `src/main/java/br/com/ifrs/backend/utils/FirestoreUtils.java`: Contém métodos utilitários para manipulação do Firestore.
+- `src/main/java/br/com/ifrs/meuifpoaback/service/DocumentoService.java`: Contém a lógica de manipulação de documentos.
+- `src/main/java/br/com/ifrs/meuifpoaback/controller/DocumentoController.java`: Contém os endpoints para manipulação de documentos.
+- `src/main/java/br/com/ifrs/meuifpoaback/model/DocumentoRequest.java`: Contém a definição do modelo de documento.
+- `src/main/java/br/com/ifrs/meuifpoaback/service/NoticiaService.java`: Contém a lógica de notícias.
+- `src/main/java/br/com/ifrs/meuifpoaback/controller/NoticiaController.java`: Contém os endpoints para manipulação de notícias.
+- `src/main/java/br/com/ifrs/meuifpoaback/model/Noticia.java`: Contém a definição do modelo de notícia.
+- `src/main/java/br/com/ifrs/meuifpoaback/service/SyncService.java`: Contém a lógica de sincronização de alunos.
+- `src/main/java/br/com/ifrs/meuifpoaback/controller/SyncController.java`: Contém os endpoints para sincronização de alunos.
+- `src/main/java/br/com/ifrs/meuifpoaback/model/Perfil.java`: Contém a definição do modelo de aluno.
+- `src/main/java/br/com/ifrs/meuifpoaback/model/Notas.java`: Contém a definição do modelo de notas.
+- `src/main/java/br/com/ifrs/meuifpoaback/configuration/FirebaseInitializer.java`: Contém a configuração do Firebase.
+- `src/main/java/br/com/ifrs/meuifpoaback/configuration/FirebaseSecurityContext.java`: Contém a configuração do contexto de segurança do Firebase.
+- `src/main/java/br/com/ifrs/meuifpoaback/configuration/FirebaseTokenFilter.java`: Contém o filtro de token do Firebase.
+- `src/main/java/br/com/ifrs/meuifpoaback/utils/FirestoreUtils.java`: Contém métodos utilitários para manipulação do Firestore.
 
 
 ## Configuração do Ambiente
