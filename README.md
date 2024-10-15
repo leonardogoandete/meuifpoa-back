@@ -14,6 +14,7 @@ Serve como api para obter informações de documentos, notícias e notas de alun
 - `src/main/java/br/com/ifrs/meuifpoaback/service/DocumentoService.java`: Contém a lógica de manipulação de documentos.
 - `src/main/java/br/com/ifrs/meuifpoaback/controller/DocumentoController.java`: Contém os endpoints para manipulação de documentos.
 - `src/main/java/br/com/ifrs/meuifpoaback/model/DocumentoRequest.java`: Contém a definição do modelo de documento.
+- `src/main/java/br/com/ifrs/meuifpoaback/model/DocumentoResponse.java`: Contém a definição do modelo de resposta de documento.
 - `src/main/java/br/com/ifrs/meuifpoaback/service/NoticiaService.java`: Contém a lógica de notícias.
 - `src/main/java/br/com/ifrs/meuifpoaback/controller/NoticiaController.java`: Contém os endpoints para manipulação de notícias.
 - `src/main/java/br/com/ifrs/meuifpoaback/model/Noticia.java`: Contém a definição do modelo de notícia.
