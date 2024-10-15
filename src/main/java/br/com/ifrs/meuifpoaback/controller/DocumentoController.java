@@ -59,10 +59,8 @@ public class DocumentoController {
                 documentoRequest.senha().isEmpty()) {
                 throw new IllegalArgumentException("Argumentos nulos");
             }
-
-            String base64Pdf = documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha());
-            response.put("pdfbase64", base64Pdf);
-            return Response.status(Response.Status.OK).entity(response).build();
+            //response.put("pdfbase64", base64Pdf);
+            return Response.status(Response.Status.OK).entity(documentoService.downloadPdfAsBase64(userId, documentoRequest.tipo(), documentoRequest.senha())).build();
         } catch (IllegalArgumentException e) {
             response.put("mensagem", e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)

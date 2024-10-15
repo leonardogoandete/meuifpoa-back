@@ -5,6 +5,7 @@ package br.com.ifrs.meuifpoaback.service;
 
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
+import br.com.ifrs.meuifpoaback.model.DocumentoResponse;
 import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.*;
@@ -64,10 +65,10 @@ public class DocumentoService {
      * @param uid   Identificador do usuário.
      * @param tipo  Tipo do documento.
      * @param senha Senha do usuário.
-     * @return String codificada em Base64 do PDF.
+     * @return DocumentoResponse codificada em Base64 do PDF.
      * @throws IOException Se ocorrer um erro durante o download.
      */
-    public String downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
+    public DocumentoResponse downloadPdfAsBase64(String uid, String tipo, String senha) throws IOException {
 
         if (uid == null || tipo == null || senha == null) {
             throw new IllegalArgumentException("Argumentos nulos para downloadPdfAsBase64");
@@ -83,7 +84,7 @@ public class DocumentoService {
             }
 
             // Baixar o documento com base no tipo (historico, ementas, etc.)
-            return baixarDocumento(uid, tipo);
+            return new DocumentoResponse(baixarDocumento(uid, tipo));
         } finally {
             // Garantir que os cookies sejam limpos após o processo
             limparCookies();
