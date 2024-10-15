@@ -2,6 +2,7 @@ package br.com.ifrs.meuifpoaback.controller;
 
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.model.Login;
+import br.com.ifrs.meuifpoaback.model.Perfil;
 import br.com.ifrs.meuifpoaback.service.SyncService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -54,10 +55,11 @@ public class SyncController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
 
+            Perfil perfil = syncService.sincronizar(userId, login.getSenha());
             // Executa a sincronização
-            if (syncService.sincronizar(userId, login.getSenha())) {
+            if (perfil != null) {
                 response.put("mensagem", "Sincronização realizada com sucesso!");
-                return Response.ok().entity(response).build();
+                return Response.ok().entity(perfil).build();
             } else {
                 response.put("mensagem", "Erro ao sincronizar dados.");
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();

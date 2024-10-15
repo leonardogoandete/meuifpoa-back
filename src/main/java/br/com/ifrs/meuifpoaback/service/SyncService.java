@@ -6,6 +6,8 @@ import br.com.ifrs.meuifpoaback.model.Perfil;
 import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,6 +37,7 @@ public class SyncService {
 
     private final OkHttpClient client;
     private boolean sincronizado;
+    private final List<Notas> notas = new ArrayList<>();
 
 
     /**
@@ -58,17 +61,11 @@ public class SyncService {
     }
 
 
-    /**
-     * Sincroniza os dados do usuário com o SIGAA.
-     *
-     * @param uid   Identificador do usuário.
-     * @param senha Senha do usuário.
-     * @return true se a sincronização for bem-sucedida, false caso contrário.
-     * @throws IOException Se ocorrer um erro de I/O.
-     */
-    public boolean sincronizar(String uid, String senha) throws IOException {
+    public Perfil sincronizar(String uid, String senha) throws IOException {
         sincronizado = false; // Inicializa como não sincronizado
         String cpf = firestoreUtils.getCpfFromFirestore(uid);
+        Perfil perfil;
+
         if (cpf == null) {
             logger.warning("CPF não encontrado para o UID: " + uid);
             throw new UnauthorizedException("CPF não encontrado para o UID: " + uid);
@@ -82,17 +79,52 @@ public class SyncService {
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            Perfil perfil = coletarDadosPerfil(cpf);
+            perfil = coletarDadosPerfil(cpf);
+
+            // Busque as notas existentes no Firestore
+            ArrayList<Notas> notasExistentes = obterNotasExistentesDoFirestore(uid);
+
+            // Obtenha as novas notas
+            List<Notas> novasNotas = obterNotas();
+
+            // Atualize a lista de notas no perfil, sem duplicação
+            perfil.setNotas(atualizarNotasExistentes(notasExistentes, novasNotas));
+
+            // Atualize o perfil no Firestore
             atualizarPerfilNoFirestore(uid, perfil);
 
-            List<Notas> notas = obterNotas();
-            saveNotasToFirestore(uid, notas);
-            sincronizado = true;
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             limparCookies();
         }
-        return sincronizado;
+        return perfil;
     }
+
+    /**
+     * Atualiza a lista de notas existentes com novas notas, evitando duplicações.
+     *
+     * @param notasExistentes Lista de notas existentes no Firestore.
+     * @param novasNotas Lista de novas notas obtidas do SIGAA.
+     * @return Lista atualizada de notas.
+     */
+    private ArrayList<Notas> atualizarNotasExistentes(List<Notas> notasExistentes, List<Notas> novasNotas) {
+        Map<String, Notas> mapNotasExistentes = new HashMap<>();
+
+        // Cria um mapa das notas existentes usando o código da disciplina como chave
+        for (Notas nota : notasExistentes) {
+            mapNotasExistentes.put(nota.getCodigoDisciplina(), nota);
+        }
+
+        // Atualiza ou adiciona novas notas ao mapa
+        for (Notas novaNota : novasNotas) {
+            mapNotasExistentes.put(novaNota.getCodigoDisciplina(), novaNota);  // Substitui ou adiciona
+        }
+
+        // Retorna a lista atualizada de notas
+        return new ArrayList<>(mapNotasExistentes.values());
+    }
+
 
     /**
      * Realiza o login no SIGAA.
@@ -168,7 +200,7 @@ public class SyncService {
      * @return Lista de notas extraídas.
      */
     private List<Notas> parseNotasFromHtml(String html) {
-        List<Notas> notas = new ArrayList<>();
+
         Document doc = Jsoup.parse(html);
         Elements tabelas = doc.select("table.tabelaRelatorio");
 
@@ -207,6 +239,30 @@ public class SyncService {
             return null;
         }
     }
+
+    /**
+     * Obtém as notas existentes no Firestore para o usuário especificado.
+     *
+     * @param uid Identificador do usuário.
+     * @return Lista de notas existentes no Firestore.
+     * @throws InterruptedException Em caso de erro de execução.
+     * @throws ExecutionException Em caso de erro de execução.
+     */
+    private ArrayList<Notas> obterNotasExistentesDoFirestore(String uid) throws InterruptedException, ExecutionException {
+        ApiFuture<QuerySnapshot> future = db.collection("usuarios")
+                .document(uid)
+                .collection("disciplinas")
+                .get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+        ArrayList<Notas> notasExistentes = new ArrayList<>();
+        for (QueryDocumentSnapshot document : documents) {
+            Notas nota = document.toObject(Notas.class);
+            notasExistentes.add(nota);
+        }
+        return notasExistentes;
+    }
+
 
     /**
      * Coleta os dados do perfil do usuário.
@@ -255,6 +311,8 @@ public class SyncService {
         String email = firestoreUtils.getEmailFromFirestore(cpf);
         String integralizado = calculaIntegralizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
 
+
+
         return new Perfil(
                 nomeDocente,
                 matricula,
@@ -269,7 +327,8 @@ public class SyncService {
                 chOptativaPendente,
                 chTotalCurriculo,
                 chComplementarPendente,
-                integralizado
+                integralizado,
+                new ArrayList<>()
         );
     }
 
@@ -292,31 +351,6 @@ public class SyncService {
             Thread.currentThread().interrupt();
         }
     }
-
-
-    /**
-     * Salva as notas no Firestore.
-     *
-     * @param uid   Identificador do usuário.
-     * @param notas Lista de notas a serem salvas.
-     */
-    private void saveNotasToFirestore(String uid, List<Notas> notas) {
-        for (Notas nota : notas) {
-            try {
-                ApiFuture<WriteResult> result = db.collection("notas")
-                        .document(uid)
-                        .collection("disciplinas")
-                        .document(nota.getCodigoDisciplina())
-                        .set(nota);
-                result.get();
-            } catch (InterruptedException | ExecutionException e) {
-                logger.log(Level.SEVERE, "Erro ao salvar nota no Firestore", e);
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-
 
     /**
      * Calcula a integralização do curso.

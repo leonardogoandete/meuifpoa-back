@@ -1,5 +1,7 @@
 package br.com.ifrs.meuifpoaback.model;
 
+import java.util.ArrayList;
+
 /**
  * Classe que representa o perfil de um docente.
  */
@@ -12,12 +14,13 @@ public class Perfil{
     private String status;
     private String anoIngresso;
     private String email;
-    private String imgSrc;
+    private String imgPerfil;
     private String chObrigatoriaPendente;
     private String chOptativaPendente;
     private String chTotalCurriculo;
     private String chComplementarPendente;
     private String integralizado;
+    private ArrayList<Notas> notas;
 
     /**
      * Construtor padrão.
@@ -36,9 +39,9 @@ public class Perfil{
      * @param status o status do docente
      * @param anoIngresso o ano de ingresso do docente
      * @param email o email do docente
-     * @param imgSrc a URL da imagem do docente
+     * @param imgPerfil a URL da imagem do docente
      */
-    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgSrc){
+    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgPerfil){
         this.nomeDocente = nomeDocente;
         this.matricula = matricula;
         this.cpf = cpf;
@@ -47,7 +50,7 @@ public class Perfil{
         this.status = status;
         this.anoIngresso = anoIngresso;
         this.email = email;
-        this.imgSrc = imgSrc;
+        this.imgPerfil = imgPerfil;
     }
 
     /**
@@ -61,14 +64,15 @@ public class Perfil{
      * @param status o status do docente
      * @param anoIngresso o ano de ingresso do docente
      * @param email o email do docente
-     * @param imgSrc a URL da imagem do docente
+     * @param imgPerfil a URL da imagem do docente
      * @param chObrigatoriaPendente a carga horária obrigatória pendente
      * @param chOptativaPendente a carga horária optativa pendente
      * @param chTotalCurriculo a carga horária total do currículo
      * @param chComplementarPendente a carga horária complementar pendente
      * @param integralizado se o currículo está integralizado
+     * @param notas as notas do docente
      */
-    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgSrc, String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente, String integralizado){
+    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgPerfil, String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente, String integralizado, ArrayList<Notas> notas) {
         this.nomeDocente = nomeDocente;
         this.matricula = matricula;
         this.cpf = cpf;
@@ -77,12 +81,13 @@ public class Perfil{
         this.status = status;
         this.anoIngresso = anoIngresso;
         this.email = email;
-        this.imgSrc = imgSrc;
+        this.imgPerfil = imgPerfil;
         this.chObrigatoriaPendente = chObrigatoriaPendente;
         this.chOptativaPendente = chOptativaPendente;
         this.chTotalCurriculo = chTotalCurriculo;
         this.chComplementarPendente = chComplementarPendente;
         this.integralizado = integralizado;
+        this.notas = notas;
     }
 
 
@@ -235,17 +240,17 @@ public class Perfil{
      *
      * @return a URL da imagem do docente
      */
-    public String getImgSrc() {
-        return imgSrc;
+    public String getimgPerfil() {
+        return imgPerfil;
     }
 
     /**
      * Define a URL da imagem do docente.
      *
-     * @param imgSrc a URL da imagem do docente
+     * @param imgPerfil a URL da imagem do docente
      */
-    public void setImgSrc(String imgSrc) {
-        this.imgSrc = imgSrc;
+    public void setimgPerfil(String imgPerfil) {
+        this.imgPerfil = imgPerfil;
     }
 
     /**
@@ -336,5 +341,23 @@ public class Perfil{
      */
     public void setIntegralizado(String integralizado) {
         this.integralizado = integralizado;
+    }
+
+    /**
+     * Obtém as notas do docente.
+     *
+     * @return as notas do docente
+     */
+    public ArrayList<Notas> getNotas() {
+        return notas;
+    }
+    
+    /**
+     * Define as notas do docente.
+     *
+     * @param notas as notas do docente
+     */
+    public void setNotas(ArrayList<Notas> notas) {
+        this.notas = notas;
     }
 }
