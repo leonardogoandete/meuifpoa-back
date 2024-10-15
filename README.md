@@ -38,12 +38,11 @@ Serve como api para obter informações de documentos, notícias e notas de alun
     cd projeto-meuifpoaback
     ```
 3. **Configurar certificado para autenticação dos usuarios com o Firebase**:
-    - Obter os certificados publicos do Firebase atraves da URL https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com e salvar em um arquivo chamado `google-key.pem` na pasta `src/main/resources`.
     - Configurar o arquivo `application.properties` com as informações do Firebase adicionando as seguintes linhas:
-    ```mp.jwt.verify.issuer=https://securetoken.google.com/<ID do projeto>
-    mp.jwt.verify.publickey.location=google-key.pem
-    quarkus.smallrye-jwt.public-key.location=https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+    ```
     quarkus.smallrye-jwt.enabled=true
+    smallrye.jwt.verify.key.location=https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
+    mp.jwt.verify.issuer=https://securetoken.google.com/<ID_PROJETO>
     ```
 
 4. **Compilar o projeto**:
