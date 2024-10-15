@@ -47,7 +47,6 @@ public class DocumentoController {
      */
     @POST
     @Operation(summary = "Obter documento PDF em base64")
-    //@Authenticated
     @RolesAllowed("*")
     public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
         String userId = securityContext.getUserPrincipal().getName();

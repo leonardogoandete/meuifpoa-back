@@ -72,6 +72,7 @@ Serve como api para obter informações de documentos, notícias e notas de alun
     - **Parâmetros**:
         - `limit`: Limite de notícias a serem retornadas.
         - `filter`: Filtro de notícias (ex: `ifrs`, `campus`, `ensino`, `pesquisa`, `extensao`).
+- **GET /noticias**: Endpoint para obter notícias.
 
 ### Exemplo de Uso
 ```sh

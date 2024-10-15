@@ -41,7 +41,7 @@ public class NoticiaController {
     @POST
     @Operation(summary = "Obter notícias")
     @PermitAll
-    public Response obterNoticias(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
+    public Response obterNoticiasComFiltro(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
         try{
             List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
             logger.log(Level.INFO, "Consultando notícias");
@@ -55,4 +55,28 @@ public class NoticiaController {
                     .build();
         }
     }
+
+    /**
+     * Obtem uma lista de notícias.
+     * @return a resposta contendo a lista de notícias
+    */
+    @GET
+    @Operation(summary = "Obter todas as notícias")
+    @PermitAll
+    public Response obterTodasNoticias(){
+        try{
+            List<Noticia> noticias = noticiaService.obterNoticias(50,null);
+            logger.log(Level.INFO, "Consultando todas as notícias");
+            return Response.status(Response.Status.OK)
+                    .entity(noticias)
+                    .build();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Erro ao consultar todas as notícias: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao consultar todas as notícias!")
+                    .build();
+        }
+    }
+
+
 }
