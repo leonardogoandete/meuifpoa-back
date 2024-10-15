@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -45,6 +46,7 @@ public class SyncController {
      */
     @POST
     @Operation(summary = "Sincronizar dados do usuário e salvar no Firebase")
+    @RolesAllowed("*")
     public Response sincronizar(@Context SecurityContext securityContext, Login login) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();

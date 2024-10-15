@@ -5,6 +5,7 @@ import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
 import br.com.ifrs.meuifpoaback.model.DocumentoRequest;
 import br.com.ifrs.meuifpoaback.service.DocumentoService;
 import io.quarkus.security.Authenticated;
+import javax.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -46,7 +47,8 @@ public class DocumentoController {
      */
     @POST
     @Operation(summary = "Obter documento PDF em base64")
-    @Authenticated
+    //@Authenticated
+    @RolesAllowed("*")
     public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
