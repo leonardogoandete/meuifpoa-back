@@ -86,6 +86,16 @@ curl -X POST http://localhost:8080/sync -H "Authorization: Bearer <token>" -d "{
 curl -X POST http://localhost:8080/noticias
 ```
 
+## Documentação javadoc
+Casos deseje gerar a documentação javadoc, execute um dos comandos abaixo:
+```sh
+mvn javadoc:javadoc
+```
+```sh
+./mvnw javadoc:javadoc
+```
+
+
 ## Documentação
 - **Documentação da API**: [https://app.poa.ifrs.edu.br/meuifpoa/q/swagger-ui/](https://app.poa.ifrs.edu.br/meuifpoa/q/swagger-ui/)
 - **Documentação do Firebase**: [https://firebase.google.com/docs](https://firebase.google.com/docs)
@@ -93,9 +103,3 @@ curl -X POST http://localhost:8080/noticias
 - **Documentação do JSoup**: [https://jsoup.org/cookbook/](https://jsoup.org/cookbook/)
 - **Documentação do OkHttp**: [https://square.github.io/okhttp/](https://square.github.io/okhttp/)
 - **Documentação local do projeto**: [docs/](docs/)
-
-## Licença
-Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-```
-
-Adapte as seções conforme necessário para refletir as especificidades do seu projeto.
