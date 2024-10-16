@@ -42,6 +42,12 @@ public class AuthController {
         this.firebaseAuthService = firebaseAuthService;
     }
 
+    /**
+     * Método que realiza o login de um usuário.
+     *
+     * @param loginRequest objeto com os dados de login
+     * @return resposta com o token de autenticação
+     */
     @POST
     @Operation(summary = "Realiza o login de um usuário.")
     @APIResponse(responseCode = "200", description = "Login bem-sucedido.")
