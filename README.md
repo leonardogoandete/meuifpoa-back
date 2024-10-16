@@ -73,6 +73,10 @@ Serve como api para obter informações de documentos, notícias e notas de alun
         - `limit`: Limite de notícias a serem retornadas.
         - `filter`: Filtro de notícias (ex: `ifrs`, `campus`, `ensino`, `pesquisa`, `extensao`).
 - **GET /noticias**: Endpoint para obter notícias.
+- **POST /auth**: Endpoint para autenticação de usuários.
+    - **Parâmetros**:
+        - `email`: Email do usuário.
+        - `senha`: Senha do usuário.
 
 ### Exemplo de Uso
 ```sh
@@ -84,6 +88,9 @@ curl -X POST http://localhost:8080/sync -H "Authorization: Bearer <token>" -d "{
 
 # Obter notícias
 curl -X POST http://localhost:8080/noticias
+
+# Obter token de autenticação
+curl -X POST http://localhost:8080/auth -d "{"email":"email@email.com","senha":"senha"}"
 ```
 
 ## Documentação javadoc

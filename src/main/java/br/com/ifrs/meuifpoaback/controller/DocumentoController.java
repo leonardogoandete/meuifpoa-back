@@ -40,6 +40,9 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 public class DocumentoController {
     private static final Logger logger = Logger.getLogger(DocumentoController.class.getName());
+    /**
+     * O serviço de documentos.
+     */
     private final DocumentoService documentoService;
 
     /**

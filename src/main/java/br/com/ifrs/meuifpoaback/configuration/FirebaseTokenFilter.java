@@ -31,10 +31,12 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) {
         logger.info("Interceptando requisição para autenticação");
 
-        if (requestContext.getUriInfo().getPath().contains("noticias")) {
+        if (requestContext.getUriInfo().getPath().contains("noticias") || requestContext.getUriInfo().getPath().contains("auth")) {
             logger.info("Endpoint liberado: " + requestContext.getUriInfo().getPath());
             return;
         }
+
+
 
         String authHeader = requestContext.getHeaderString("Authorization");
         logger.info("Cabeçalho Authorization: " + authHeader);
