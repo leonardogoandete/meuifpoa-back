@@ -25,10 +25,13 @@ import java.util.logging.Logger;
 public class NoticiaController {
 
     private static final Logger logger = Logger.getLogger(NoticiaController.class.getName());
+    /**
+     * O serviço de notícias.
+     */
     private final NoticiaService noticiaService;
 
     /**
-     * Instancia um novo controlador de notícias.
+     * Construtor da classe.
      *
      * @param noticiaService o serviço de notícias
      */

@@ -7,13 +7,13 @@ public class Login{
     private String senha;
 
     /**
-     * Instancia um novo Login.
+     * Construtor padrão.
      */
     public Login() {
     }
 
     /**
-     * Instancia um novo Login.
+     * Construtor com parâmetros.
      *
      * @param senha a senha
      */

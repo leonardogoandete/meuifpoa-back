@@ -8,10 +8,13 @@ import java.security.Principal;
  */
 public class FirebaseSecurityContext implements SecurityContext {
 
+    /**
+     * O UID do usuário no Firebase.
+     */
     private final String uid;
 
     /**
-     * Instancia um novo contexto de segurança do Firebase.
+     * Construtor que recebe o UID do usuário.
      *
      * @param uid o UID do usuário
      */

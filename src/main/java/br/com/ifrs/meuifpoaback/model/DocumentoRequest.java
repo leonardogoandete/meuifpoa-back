@@ -1,8 +1,8 @@
 package br.com.ifrs.meuifpoaback.model;
 
 /**
- * A classe DocumentoRequest representa uma solicitação de documento.
- * @param tipo o tipo de documento a ser solicitado
- * @param senha a senha do usuário para o SIGAA
+ * O record DocumentoRequest representa a requisição de um documento.
+ * @param tipo o tipo do documento
+ * @param senha a senha do aluno
  */
 public record DocumentoRequest (String tipo, String senha) {}

@@ -4,10 +4,25 @@ package br.com.ifrs.meuifpoaback.model;
  * Classe que representa uma notícia.
  */
 public class Noticia{
+    /**
+     * O link da notícia.
+     */
     private String link; // Link da notícia
+    /**
+     * O título da notícia.
+     */
     private String titulo; // Título da notícia
+    /**
+     * O resumo da notícia.
+     */
     private String resumo; // Resumo da notícia
+    /**
+     * A data de publicação da notícia.
+     */
     private String dataPublicacao; // Data de publicação da notícia
+    /**
+     * A hora de publicação da notícia.
+     */
     private String horaPublicacao; // Hora de publicação da notícia
 
     /**

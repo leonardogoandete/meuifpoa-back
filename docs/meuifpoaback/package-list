@@ -23,7 +23,7 @@ $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController/NoticiaCon
 $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController/obterNoticiasComFiltro/#int#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-noticia-controller/obter-noticias-com-filtro.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController/obterTodasNoticias/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-noticia-controller/obter-todas-noticias.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/SyncController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-sync-controller/index.html
-$dokka.location:br.com.ifrs.meuifpoaback.controller/SyncController/SyncController/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-sync-controller/-sync-controller.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/SyncController/SyncController/#br.com.ifrs.meuifpoaback.service.SyncService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-sync-controller/-sync-controller.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/SyncController/sincronizar/#jakarta.ws.rs.core.SecurityContext#br.com.ifrs.meuifpoaback.model.Login/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-sync-controller/sincronizar.html
 $dokka.location:br.com.ifrs.meuifpoaback.exception////PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.exception/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.exception/GlobalExceptionHandler///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.exception/-global-exception-handler/index.html

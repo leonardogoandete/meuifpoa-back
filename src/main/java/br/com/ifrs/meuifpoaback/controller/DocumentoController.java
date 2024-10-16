@@ -43,7 +43,7 @@ public class DocumentoController {
     private final DocumentoService documentoService;
 
     /**
-     * Instancia um novo controlador de documentos.
+     * Construtor da classe.
      *
      * @param documentoService o serviço de documentos
      */

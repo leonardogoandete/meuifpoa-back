@@ -13,7 +13,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.logging.Logger;
 
 /**
- * Filtro para autenticação de tokens do Firebase.
+ * Classe que implementa um filtro para interceptar as requisições e validar o token JWT do Firebase.
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)

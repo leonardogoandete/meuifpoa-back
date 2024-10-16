@@ -11,7 +11,7 @@ import java.util.Collections;
 public class UnauthorizedException extends WebApplicationException {
 
     /**
-     * Instancia uma nova UnauthorizedException.
+     * Construtor com a mensagem de erro.
      *
      * @param message a mensagem de erro
      */

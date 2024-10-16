@@ -5,23 +5,48 @@ package br.com.ifrs.meuifpoaback.model;
  */
 
 public class Notas{
+    /**
+     * O código da disciplina.
+     */
     private String codigoDisciplina;
+    /**
+     * O nome da disciplina.
+     */
     private String nomeDisciplina;
+    /**
+     * A nota da primeira unidade.
+     */
     private String primeiraUnidade;
+    /**
+     * A nota da segunda unidade.
+     */
     private String segundaUnidade;
+    /**
+     * A nota de recuperação.
+     */
     private String notaRecuperacao;
+    /**
+     * A nota final.
+     */
     private String notaFinal;
+    /**
+     * O número de faltas.
+     */
     private String numeroFaltas;
+    /**
+     * A situação do aluno na disciplina.
+     * Exemplo: Aprovado, Reprovado.
+     */
     private String situacao;
 
     /**
-     * Instancia uma nova Notas.
+     * Construtor padrão.
      */
     public Notas() {
     }
 
     /**
-     * Instancia uma nova Notas.
+     * Construtor com parâmetros.
      *
      * @param codigoDisciplina o código da disciplina
      * @param nomeDisciplina   o nome da disciplina

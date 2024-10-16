@@ -40,8 +40,16 @@ public class SyncController {
     /**
      * O serviço de sincronização.
      */
-    @Inject
-    SyncService syncService;
+    private final SyncService syncService;
+
+    /**
+     * Construtor da classe.
+     *
+     * @param syncService o serviço de sincronização
+     */
+    public SyncController(SyncService syncService) {
+        this.syncService = syncService;
+    }
 
     /**
      * Sincroniza os dados do usuário e salva no Firebase.

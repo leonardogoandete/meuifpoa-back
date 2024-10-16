@@ -6,20 +6,68 @@ import java.util.ArrayList;
  * Classe que representa o perfil de um docente.
  */
 public class Perfil{
+    /**
+     * O nome do docente.
+     */
     private String nomeDocente;
+    /**
+     * A matrícula do docente.
+     */
     private String matricula;
+    /**
+     * O CPF do docente.
+     */
     private String cpf;
+    /**
+     * O nome do curso do docente.
+     * Exemplo: Sistemas para Internet.
+     */
     private String curso;
+    /**
+     * O nível do curso do docente.
+     * Exemplo: Técnico, Graduação, Mestrado.
+     */
     private String nivel;
+    /**
+     * A situação do docente no curso.
+     * Exemplo: Ativo, Inativo, Trancado, Formando.
+     */
     private String status;
+    /**
+     * O ano de ingresso do docente.
+     */
     private String anoIngresso;
+    /**
+     * O email do docente.
+     */
     private String email;
+    /**
+     * A imagem de perfil do docente em formato base64.
+     */
     private String imgPerfil;
+    /**
+     * A carga horária obrigatória pendente.
+     */
     private String chObrigatoriaPendente;
+    /**
+     * A carga horária optativa pendente.
+     */
     private String chOptativaPendente;
+    /**
+     * A carga horária total do currículo.
+     */
     private String chTotalCurriculo;
+    /**
+     * A carga horária complementar pendente.
+     */
     private String chComplementarPendente;
+    /**
+     * Percentual de integralização do currículo.
+     */
     private String integralizado;
+    /**
+     * Lista de notas do docente.
+     */
     private ArrayList<Notas> notas;
 
     /**

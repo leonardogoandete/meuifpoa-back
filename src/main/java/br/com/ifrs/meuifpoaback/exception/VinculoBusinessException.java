@@ -10,7 +10,7 @@ import java.util.Collections;
  */
 public class VinculoBusinessException extends WebApplicationException {
     /**
-     * Instancia uma nova VinculoBusinessException.
+     * Construtor com a mensagem de erro.
      *
      * @param message a mensagem de erro
      */
