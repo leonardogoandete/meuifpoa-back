@@ -93,7 +93,7 @@ public class NoticiaController {
     @PermitAll
     public Response obterTodasNoticias(){
         try{
-            List<Noticia> noticias = noticiaService.obterNoticias(50,null);
+            List<Noticia> noticias = noticiaService.obterNoticias(0,null);
             logger.log(Level.INFO, "Consultando todas as notícias");
             return Response.status(Response.Status.OK)
                     .entity(noticias)
