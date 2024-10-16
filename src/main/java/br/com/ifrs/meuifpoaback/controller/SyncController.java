@@ -2,6 +2,7 @@ package br.com.ifrs.meuifpoaback.controller;
 
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.model.Login;
+import br.com.ifrs.meuifpoaback.model.Noticia;
 import br.com.ifrs.meuifpoaback.model.Perfil;
 import br.com.ifrs.meuifpoaback.service.SyncService;
 import jakarta.inject.Inject;
@@ -14,6 +15,11 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.HashMap;
@@ -46,8 +52,23 @@ public class SyncController {
      */
     @POST
     @Operation(summary = "Sincronizar dados do usuário e salvar no Firebase")
+    @APIResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Perfil.class)
+            )
+    )
     @RolesAllowed("*")
-    public Response sincronizar(@Context SecurityContext securityContext, Login login) {
+    public Response sincronizar(
+            @Context SecurityContext securityContext,
+            @RequestBody(required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            example = "{\"senha\":\"123456\"}",
+                            schema = @Schema(implementation = Login.class)
+                    )
+            ) Login login) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
         try {

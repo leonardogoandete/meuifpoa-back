@@ -3,6 +3,8 @@ package br.com.ifrs.meuifpoaback.controller;
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
 import br.com.ifrs.meuifpoaback.model.DocumentoRequest;
+import br.com.ifrs.meuifpoaback.model.DocumentoResponse;
+import br.com.ifrs.meuifpoaback.model.Login;
 import br.com.ifrs.meuifpoaback.service.DocumentoService;
 import io.quarkus.security.Authenticated;
 import javax.annotation.security.RolesAllowed;
@@ -17,6 +19,10 @@ import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.HashMap;
@@ -52,8 +58,24 @@ public class DocumentoController {
      */
     @POST
     @Operation(summary = "Obter documento PDF em base64")
+    @APIResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = DocumentoResponse.class)
+            )
+    )
     @RolesAllowed("*")
-    public Response getDocumento(@Context SecurityContext securityContext, DocumentoRequest documentoRequest) {
+    public Response getDocumento(
+            @Context SecurityContext securityContext,
+            @RequestBody(required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            example = "{\"tipo\":\"historico\",\"senha\":\"123456\"}",
+                            schema = @Schema(implementation = DocumentoRequest.class)
+                    )
+            )
+            DocumentoRequest documentoRequest) {
         String userId = securityContext.getUserPrincipal().getName();
         Map<String, String> response = new HashMap<>();
         try {

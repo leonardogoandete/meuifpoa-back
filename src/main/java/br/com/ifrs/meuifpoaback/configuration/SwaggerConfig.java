@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.servers.Server;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Meu IFPOA API",
+                description = "API do aplicativo Meu IFPOA",
                 version = "1.0.0"
         ),
         servers = {

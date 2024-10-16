@@ -7,6 +7,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import br.com.ifrs.meuifpoaback.model.Noticia;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -39,9 +44,25 @@ public class NoticiaController {
      * @return a resposta contendo a lista de notícias
      */
     @POST
-    @Operation(summary = "Obter notícias")
+    @Operation(summary = "Obter notícias utilizando parametros")
+    @APIResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Noticia.class)
+            )
+    )
     @PermitAll
-    public Response obterNoticiasComFiltro(@QueryParam("limit") int limit, @QueryParam("filter") String filter){
+    public Response obterNoticiasComFiltro(
+            @Parameter(required = false,
+                    schema = @Schema(type = SchemaType.INTEGER),
+                    description = "O limite de notícias a serem retornadas"
+            ) @QueryParam("limit") int limit,
+            @Parameter(required = false,
+                    schema = @Schema(type = SchemaType.STRING),
+                    description = "O filtro a ser aplicado nas notícias"
+            )
+            @QueryParam("filter") String filter){
         try{
             List<Noticia> noticias = noticiaService.obterNoticias(limit, filter);
             logger.log(Level.INFO, "Consultando notícias");
@@ -62,6 +83,13 @@ public class NoticiaController {
     */
     @GET
     @Operation(summary = "Obter todas as notícias")
+    @APIResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Noticia.class)
+            )
+    )
     @PermitAll
     public Response obterTodasNoticias(){
         try{
@@ -77,6 +105,4 @@ public class NoticiaController {
                     .build();
         }
     }
-
-
 }
