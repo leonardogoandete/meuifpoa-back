@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"br.com.ifrs.meuifpoaback.configuration"},{"l":"br.com.ifrs.meuifpoaback.controller"},{"l":"br.com.ifrs.meuifpoaback.exception"},{"l":"br.com.ifrs.meuifpoaback.model"},{"l":"br.com.ifrs.meuifpoaback.service"},{"l":"br.com.ifrs.meuifpoaback.utils"}];updateSearchResults();
