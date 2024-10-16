@@ -15,6 +15,9 @@ $dokka.location:br.com.ifrs.meuifpoaback.configuration/FirebaseTokenFilter/filte
 $dokka.location:br.com.ifrs.meuifpoaback.configuration/SwaggerConfig///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.configuration/-swagger-config/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.configuration/SwaggerConfig/SwaggerConfig/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.configuration/-swagger-config/-swagger-config.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller////PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/AuthController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-auth-controller/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/AuthController/AuthController/#br.com.ifrs.meuifpoaback.service.FirebaseAuthService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-auth-controller/-auth-controller.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/AuthController/login/#br.com.ifrs.meuifpoaback.model.FirebaseAuthRequest/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-auth-controller/login.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController/DocumentoController/#br.com.ifrs.meuifpoaback.service.DocumentoService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/-documento-controller.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController/getDocumento/#jakarta.ws.rs.core.SecurityContext#br.com.ifrs.meuifpoaback.model.DocumentoRequest/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/get-documento.html
@@ -38,6 +41,10 @@ $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoRequest///PointingToDecl
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoRequest/DocumentoRequest/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-request/-documento-request.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoResponse///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-response/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoResponse/DocumentoResponse/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-response/-documento-response.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthRequest///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-request/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthRequest/FirebaseAuthRequest/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-request/-firebase-auth-request.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthResponse///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-response/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthResponse/FirebaseAuthResponse/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-response/-firebase-auth-response.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/Login///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-login/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/Login/Login/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-login/-login.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/Login/Login/#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-login/-login.html
@@ -114,6 +121,9 @@ $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService///PointingToDe
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/DocumentoService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/-documento-service.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/downloadPdfAsBase64/#java.lang.String#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/download-pdf-as-base64.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/performLogin/#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/perform-login.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService/FirebaseAuthService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/-firebase-auth-service.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService/login/#java.lang.String#java.lang.String#boolean/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/login.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/NoticiaService///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-noticia-service/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/NoticiaService/NoticiaService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-noticia-service/-noticia-service.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/NoticiaService/obterNoticias/#int#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-noticia-service/obter-noticias.html
