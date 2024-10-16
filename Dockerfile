@@ -12,7 +12,7 @@ RUN ./mvnw dependency:go-offline
 COPY ./src/main/ ./src/main/
 
 # Empacota a aplicação como um Uber Jar
-RUN ./mvnw package -Dquarkus.package.type=uber-jar
+RUN ./mvnw package -Dquarkus.profile=prod -Dquarkus.package.type=uber-jar
 
 FROM eclipse-temurin:21-jre-alpine AS app
 #Trocar timezone
