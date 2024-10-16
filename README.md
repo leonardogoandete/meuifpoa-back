@@ -63,12 +63,12 @@ Serve como api para obter informações de documentos, notícias e notas de alun
         - `senha`: Senha do SIGAA
         - `header Authorization`: Token de autenticação do Firebase.
       
-- **POST /sincronizar**: Endpoint para sincronização de alunos.
+- **POST /sync**: Endpoint para sincronização de alunos.
     - **Parâmetros**:
         - `senha`: Senha do SIGAA
         - `header Authorization`: Token de autenticação do Firebase.
          
-- **POST /noticia**: Endpoint para obter notícias.
+- **POST /noticias**: Endpoint para obter notícias.
     - **Parâmetros**:
         - `limit`: Limite de notícias a serem retornadas.
         - `filter`: Filtro de notícias (ex: `ifrs`, `campus`, `ensino`, `pesquisa`, `extensao`).
@@ -80,11 +80,19 @@ Serve como api para obter informações de documentos, notícias e notas de alun
 curl -X POST http://localhost:8080/documento -H "Authorization: Bearer <token>" -d "{"tipo":"atestadoMatricula","senha":"giropops"}"
 
 # Sinconizar aluno
-curl -X POST http://localhost:8080/sincronizar -H "Authorization: Bearer <token>" -d "{"senha":"giropops"}"
+curl -X POST http://localhost:8080/sync -H "Authorization: Bearer <token>" -d "{"senha":"giropops"}"
 
 # Obter notícias
 curl -X POST http://localhost:8080/noticias
 ```
+
+## Documentação
+- **Documentação da API**: [https://app.poa.ifrs.edu.br/meuifpoa/q/swagger-ui/](https://app.poa.ifrs.edu.br/meuifpoa/q/swagger-ui/)
+- **Documentação do Firebase**: [https://firebase.google.com/docs](https://firebase.google.com/docs)
+- **Documentação do Quarkus**: [https://quarkus.io/guides](https://quarkus.io/guides)
+- **Documentação do JSoup**: [https://jsoup.org/cookbook/](https://jsoup.org/cookbook/)
+- **Documentação do OkHttp**: [https://square.github.io/okhttp/](https://square.github.io/okhttp/)
+- **Documentação local do projeto**: [docs/](docs/)
 
 ## Licença
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
