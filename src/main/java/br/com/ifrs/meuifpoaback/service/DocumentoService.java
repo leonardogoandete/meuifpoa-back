@@ -165,6 +165,18 @@ public class DocumentoService {
             if (tipo.equals("atestadoMatricula")) {
 
                 Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
+
+                Element head = documentAtestadoMatricula.head();
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/sigaa/cssBundles/gzip_1549375585/bundles/css/sigaa.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/shared/css/ufrn.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/sigaa/css/atestado_matricula.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/shared/cssBundles/gzip_1664710823/bundles/css/sigaa_base.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/shared/cssBundles/gzip_947336466/css/ufrn_relatorio.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/shared/cssBundles/gzip_17793674/css/ufrn_print.css' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/sigaa/a4j/s/3_3_3.Finalorg/richfaces/renderkit/html/css/basic_classes.xcss/DATB/eAF7sqpgb-jyGdIAFrMEaw__.jsf' type='text/css' />");
+                head.append("<link rel='stylesheet' href='https://sig.ifrs.edu.br/sigaa/a4j/s/3_3_3.Finalorg/richfaces/renderkit/html/css/extended_classes.xcss/DATB/eAF7sqpgb-jyGdIAFrMEaw__.jsf' type='text/css' />");
+
+
                 // Atualiza os elementos com base no script
                 atualizaElementosVindosDoScript(documentAtestadoMatricula);
 
