@@ -8,10 +8,12 @@ import br.com.ifrs.meuifpoaback.exception.VinculoBusinessException;
 import br.com.ifrs.meuifpoaback.model.DocumentoResponse;
 import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
@@ -22,10 +24,13 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Classe que fornece serviços relacionados a documentos.
  */
+@Slf4j
 @ApplicationScoped
 public class DocumentoService {
 
@@ -142,7 +147,7 @@ public class DocumentoService {
         FormBody formBody = new FormBody.Builder()
                 .add("menu:form_menu_discente", "menu:form_menu_discente")
                 .add("id", "11278")
-                .add("jscook_action", getJscookAction(tipo))
+                .add("jscook_action", obtemTipoAcaoFromulario(tipo))
                 .add("javax.faces.ViewState", "j_id1")
                 .build();
 
@@ -158,7 +163,13 @@ public class DocumentoService {
 
             // Para o tipo "atestadoMatricula", converte o HTML para PDF e retorna como Base64
             if (tipo.equals("atestadoMatricula")) {
+
                 Document documentAtestadoMatricula = Jsoup.parse(postResponse.body().string());  // Converte o HTML para um documento Jsoup
+                // Atualiza os elementos com base no script
+                atualizaElementosVindosDoScript(documentAtestadoMatricula);
+
+                logger.info("Html atualizado com sucesso:\n" + documentAtestadoMatricula.html());
+
 
                 Element statusElement = documentAtestadoMatricula.selectFirst("td:contains(Status:) + td");
 
@@ -197,13 +208,12 @@ public class DocumentoService {
 
 
     /**
-     * Retorna a ação do JSCook para o tipo de documento especificado.
+     * Obtém a ação do formulário com base no tipo de documento.
      *
      * @param tipo Tipo do documento.
-     * @return Ação do JSCook.
-     * @throws IllegalArgumentException Se o tipo de documento for inválido.
+     * @return Ação do formulário.
      */
-    private String getJscookAction(String tipo) {
+    private String obtemTipoAcaoFromulario(String tipo) {
         if (tipo == null) {
             throw new IllegalArgumentException("Tipo de documento nulo para getJscookAction");
         }
@@ -237,6 +247,61 @@ public class DocumentoService {
 
         cookieStore.clear();
         logger.info("Cookies limpos após o processo.");
+    }
+
+    /**
+     * Atualiza os elementos no documento com base no script.
+     *
+     * @param doc Documento Jsoup.
+     */
+    private static void atualizaElementosVindosDoScript(Document doc) {
+        Element relatorioDiv = doc.getElementById("relatorio");
+
+        if (relatorioDiv != null) {
+            // Busca os scripts dentro dessa div
+            Elements scripts = relatorioDiv.getElementsByTag("script");
+
+            for (Element script : scripts) {
+                String scriptContent = script.html();
+                // Usa uma expressão regular para extrair os IDs e os valores de innerHTML
+                Pattern pattern = Pattern.compile("getElementById\\('\\s*(.+?)\\s*'\\)\\s*;?\\s*if\\s*\\(elem\\)\\s*elem.innerHTML\\s*=\\s*'(.+?)'\\s*;");
+                Matcher matcher = pattern.matcher(scriptContent);
+
+                // Itera sobre todos os matches no script
+                while (matcher.find()) {
+                    String idElemento = matcher.group(1);   // O ID do elemento
+                    String novoValor = matcher.group(2);    // O valor do innerHTML
+
+                    // Atualiza o elemento no documento
+                    boolean updated = atualizaElementoComBaseNoId(doc, idElemento, novoValor);
+                    if (!updated) {
+                        logger.warning("Falha ao atualizar elemento com ID: " + idElemento);
+                    }
+                }
+            }
+            scripts.remove();
+        } else {
+            logger.warning("Div com id 'relatorio' não encontrada.");
+        }
+    }
+
+    /**
+     * Atualiza o elemento no documento com base no ID.
+     *
+     * @param doc       Documento Jsoup.
+     * @param idElemento ID do elemento.
+     * @param novoValor Novo valor do elemento.
+     * @return true se o elemento foi atualizado com sucesso, false caso contrário.
+     */
+    private static boolean atualizaElementoComBaseNoId(Document doc, String idElemento, String novoValor) {
+        Element elem = doc.getElementById(idElemento);
+        if (elem != null) {
+            elem.text(novoValor);  // Atualiza o valor do elemento
+            return true;
+        } else {
+            logger.warning("Elemento não encontrado: " + idElemento);
+            return false;
+        }
     }
 
 }

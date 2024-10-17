@@ -130,6 +130,9 @@ $dokka.location:br.com.ifrs.meuifpoaback.service/NoticiaService/obterNoticias/#i
 $dokka.location:br.com.ifrs.meuifpoaback.service/SyncService///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-sync-service/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/SyncService/SyncService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-sync-service/-sync-service.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/SyncService/sincronizar/#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-sync-service/sincronizar.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/Teste///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-teste/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/Teste/Teste/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-teste/-teste.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/Teste/main/#java.lang.String[]/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-teste/main.html
 $dokka.location:br.com.ifrs.meuifpoaback.utils////PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.utils/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.utils/FirestoreUtils///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.utils/-firestore-utils/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.utils/FirestoreUtils/FirestoreUtils/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.utils/-firestore-utils/-firestore-utils.html
