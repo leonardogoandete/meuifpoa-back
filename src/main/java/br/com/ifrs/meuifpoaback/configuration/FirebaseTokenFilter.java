@@ -31,7 +31,9 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) {
         logger.info("Interceptando requisição para autenticação");
 
-        if (requestContext.getUriInfo().getPath().contains("noticias") || requestContext.getUriInfo().getPath().contains("auth")) {
+        if (requestContext.getUriInfo().getPath().contains("noticias")
+                || requestContext.getUriInfo().getPath().contains("auth")
+                || requestContext.getUriInfo().getPath().contains("editais")) {
             logger.info("Endpoint liberado: " + requestContext.getUriInfo().getPath());
             return;
         }

@@ -21,6 +21,10 @@ $dokka.location:br.com.ifrs.meuifpoaback.controller/AuthController/login/#br.com
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController/DocumentoController/#br.com.ifrs.meuifpoaback.service.DocumentoService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/-documento-controller.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/DocumentoController/getDocumento/#jakarta.ws.rs.core.SecurityContext#br.com.ifrs.meuifpoaback.model.DocumentoRequest/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-documento-controller/get-documento.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/EditalController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-edital-controller/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/EditalController/EditalController/#br.com.ifrs.meuifpoaback.service.EditalService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-edital-controller/-edital-controller.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/EditalController/obterEditalComFiltro/#int#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-edital-controller/obter-edital-com-filtro.html
+$dokka.location:br.com.ifrs.meuifpoaback.controller/EditalController/obterTodasNoticias/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-edital-controller/obter-todas-noticias.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-noticia-controller/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController/NoticiaController/#br.com.ifrs.meuifpoaback.service.NoticiaService/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-noticia-controller/-noticia-controller.html
 $dokka.location:br.com.ifrs.meuifpoaback.controller/NoticiaController/obterNoticiasComFiltro/#int#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.controller/-noticia-controller/obter-noticias-com-filtro.html
@@ -41,6 +45,15 @@ $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoRequest///PointingToDecl
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoRequest/DocumentoRequest/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-request/-documento-request.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoResponse///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-response/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/DocumentoResponse/DocumentoResponse/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-documento-response/-documento-response.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/Edital/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/-edital.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/Edital/#java.lang.String#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/-edital.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/getDataPublicacaoEdital/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/get-data-publicacao-edital.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/getLink/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/get-link.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/getTitulo/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/get-titulo.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/setDataPublicacaoEdital/#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/set-data-publicacao-edital.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/setLink/#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/set-link.html
+$dokka.location:br.com.ifrs.meuifpoaback.model/Edital/setTitulo/#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-edital/set-titulo.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthRequest///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-request/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthRequest/FirebaseAuthRequest/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-request/-firebase-auth-request.html
 $dokka.location:br.com.ifrs.meuifpoaback.model/FirebaseAuthResponse///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.model/-firebase-auth-response/index.html
@@ -121,6 +134,9 @@ $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService///PointingToDe
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/DocumentoService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/-documento-service.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/downloadPdfAsBase64/#java.lang.String#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/download-pdf-as-base64.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/DocumentoService/performLogin/#java.lang.String#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-documento-service/perform-login.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/EditalService///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-edital-service/index.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/EditalService/EditalService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-edital-service/-edital-service.html
+$dokka.location:br.com.ifrs.meuifpoaback.service/EditalService/obterEditais/#int#java.lang.String/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-edital-service/obter-editais.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService///PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/index.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService/FirebaseAuthService/#/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/-firebase-auth-service.html
 $dokka.location:br.com.ifrs.meuifpoaback.service/FirebaseAuthService/login/#java.lang.String#java.lang.String#boolean/PointingToDeclaration/meuifpoaback/br.com.ifrs.meuifpoaback.service/-firebase-auth-service/login.html
