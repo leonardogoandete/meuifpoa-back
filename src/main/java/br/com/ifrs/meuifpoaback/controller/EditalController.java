@@ -52,7 +52,7 @@ public class EditalController {
      * @return a resposta contendo a lista de notícias
      */
     @POST
-    @Operation(summary = "Obter notícias utilizando parametros")
+    @Operation(summary = "Obter editais utilizando parametros")
     @APIResponse(
             responseCode = "200",
             content = @Content(
