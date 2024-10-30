@@ -1,8 +1,8 @@
 package br.com.ifrs.meuifpoaback.service;
 
+import br.com.ifrs.meuifpoaback.client.SigaaClient;
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
-import br.com.ifrs.meuifpoaback.model.Notas;
-import br.com.ifrs.meuifpoaback.model.Perfil;
+import br.com.ifrs.meuifpoaback.model.*;
 import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
@@ -11,7 +11,12 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.WebApplicationException;
 import okhttp3.*;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,6 +44,19 @@ public class SyncService {
     private boolean sincronizado;
     private final List<Notas> notas = new ArrayList<>();
 
+    @ConfigProperty(name = "sigaaApi.grant_type")
+    String clientCredentials;
+
+    @ConfigProperty(name = "sigaaApi.client_id")
+    String clientId;
+
+    @ConfigProperty(name = "sigaaApi.client_secret")
+    String clientSecret;
+
+    @Inject
+    @RestClient
+    SigaaClient sigaaClient;
+
 
     /**
      * Construtor do serviço de sincronização.
@@ -63,12 +81,34 @@ public class SyncService {
 
     public Perfil sincronizar(String uid, String senha) throws IOException {
         sincronizado = false; // Inicializa como não sincronizado
-        String cpf = firestoreUtils.getCpfFromFirestore(uid);
+        String email = firestoreUtils.getEmailFromFirestore(uid);
+        String matricula = email.split("@")[0];
+
+        ObterToken obterToken = new ObterToken(clientCredentials, clientId, clientSecret);
+        // Obter o CPF da API do Sigaa
+        RespostaToken token = null;
+
+        try {
+            token = sigaaClient.getToken(obterToken);
+            logger.info("Token obtido: " + token.getAccessToken());
+        } catch (WebApplicationException e) {
+            String responseBody = e.getResponse().readEntity(String.class);
+            logger.severe("Erro ao obter o token: " + responseBody);
+            throw e;
+        } catch (Exception e) {
+            logger.severe("Erro inesperado ao obter o token: " + e);
+            throw e;
+        }
+
+        Map<String, AlunoSigaa> alunoMap = sigaaClient.getAluno(matricula, "Bearer "+ token.getAccessToken());
+        String cpf = alunoMap.values().iterator().next().getLogin();
+
+
         Perfil perfil;
 
         if (cpf == null) {
-            logger.warning("CPF não encontrado para o UID: " + uid);
-            throw new UnauthorizedException("CPF não encontrado para o UID: " + uid);
+            logger.warning("CPF não encontrado para o matricula: " + matricula);
+            throw new UnauthorizedException("CPF não encontrado para o matricula: " + matricula);
         }
 
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
@@ -79,7 +119,7 @@ public class SyncService {
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            perfil = coletarDadosPerfil(cpf);
+            perfil = coletarDadosPerfil(cpf,email);
 
             // Busque as notas existentes no Firestore
             ArrayList<Notas> notasExistentes = obterNotasExistentesDoFirestore(uid);
@@ -271,7 +311,7 @@ public class SyncService {
      * @return Objeto Perfil contendo os dados do usuário.
      * @throws IOException Se ocorrer um erro de I/O.
      */
-    private Perfil coletarDadosPerfil(String cpf) throws IOException {
+    private Perfil coletarDadosPerfil(String cpf,String email) throws IOException {
         Request getRequest = new Request.Builder()
                 .url("https://sig.ifrs.edu.br/sigaa/portais/discente/discente.jsf")
                 .get()
@@ -281,7 +321,7 @@ public class SyncService {
             if (!response.isSuccessful()) {
                 throw new IOException("Erro ao carregar a página de perfil: " + response);
             }
-            return parsePerfilFromHtml(response.body().string(), cpf);
+            return parsePerfilFromHtml(response.body().string(), cpf, email);
         }
     }
 
@@ -293,7 +333,7 @@ public class SyncService {
  * @return Objeto Perfil extraído.
  * @throws IOException Se ocorrer um erro de I/O.
  */
-    private Perfil parsePerfilFromHtml(String html, String cpf) throws IOException {
+    private Perfil parsePerfilFromHtml(String html, String cpf, String email) throws IOException {
         Document doc = Jsoup.parse(html);
         String nomeDocente = doc.selectFirst(".info-docente .nome").text();
         String matricula = doc.selectFirst("td:contains(Matrícula:) + td").text();
@@ -308,20 +348,20 @@ public class SyncService {
         String imgSrc = doc.selectFirst("#perfil-docente .foto img").attr("src");
 
         String fotoBase64 = baixarImagemEConverterParaBase64(imgSrc);
-        String email = firestoreUtils.getEmailFromFirestore(cpf);
+        //String email = firestoreUtils.getEmailFromFirestore(cpf);
         String integralizado = calculaIntegralizacao(chObrigatoriaPendente, chOptativaPendente, chTotalCurriculo, chComplementarPendente);
 
 
 
         return new Perfil(
                 nomeDocente,
+                email,
                 matricula,
                 cpf,
                 curso,
                 nivel,
                 status,
                 anoIngresso,
-                email,
                 fotoBase64,
                 chObrigatoriaPendente,
                 chOptativaPendente,

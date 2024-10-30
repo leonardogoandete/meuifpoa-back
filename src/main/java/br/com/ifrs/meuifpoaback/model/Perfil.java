@@ -10,6 +10,11 @@ public class Perfil{
      * O nome do docente.
      */
     private String nomeDocente;
+
+    /**
+     * O email do docente.
+     */
+    private String email;
     /**
      * A matrícula do docente.
      */
@@ -37,10 +42,6 @@ public class Perfil{
      * O ano de ingresso do docente.
      */
     private String anoIngresso;
-    /**
-     * O email do docente.
-     */
-    private String email;
     /**
      * A imagem de perfil do docente em formato base64.
      */
@@ -80,6 +81,7 @@ public class Perfil{
      * Construtor com parâmetros.
      *
      * @param nomeDocente o nome do docente
+     * @param email o email do docente
      * @param matricula a matrícula do docente
      * @param cpf o CPF do docente
      * @param curso o curso do docente
@@ -89,8 +91,9 @@ public class Perfil{
      * @param email o email do docente
      * @param imgPerfil a URL da imagem do docente
      */
-    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgPerfil){
+    public Perfil(String nomeDocente, String email, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String imgPerfil){
         this.nomeDocente = nomeDocente;
+        this.email = email;
         this.matricula = matricula;
         this.cpf = cpf;
         this.curso = curso;
@@ -105,6 +108,7 @@ public class Perfil{
      * Construtor com todos os parâmetros.
      *
      * @param nomeDocente o nome do docente
+     * @param email o email do docente
      * @param matricula a matrícula do docente
      * @param cpf o CPF do docente
      * @param curso o curso do docente
@@ -120,15 +124,15 @@ public class Perfil{
      * @param integralizado se o currículo está integralizado
      * @param notas as notas do docente
      */
-    public Perfil(String nomeDocente, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String email, String imgPerfil, String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente, String integralizado, ArrayList<Notas> notas) {
+    public Perfil(String nomeDocente, String email, String matricula, String cpf, String curso, String nivel, String status, String anoIngresso, String imgPerfil, String chObrigatoriaPendente, String chOptativaPendente, String chTotalCurriculo, String chComplementarPendente, String integralizado, ArrayList<Notas> notas) {
         this.nomeDocente = nomeDocente;
+        this.email = email;
         this.matricula = matricula;
         this.cpf = cpf;
         this.curso = curso;
         this.nivel = nivel;
         this.status = status;
         this.anoIngresso = anoIngresso;
-        this.email = email;
         this.imgPerfil = imgPerfil;
         this.chObrigatoriaPendente = chObrigatoriaPendente;
         this.chOptativaPendente = chOptativaPendente;
@@ -155,6 +159,24 @@ public class Perfil{
      */
     public void setNomeDocente(String nomeDocente) {
         this.nomeDocente = nomeDocente;
+    }
+
+    /**
+     * Define o email do docente.
+     *
+     * @param email o email do docente
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Obtém o email do docente.
+     *
+     * @return o email do docente
+     */
+    public String getEmail() {
+        return email;
     }
 
     /**
@@ -263,24 +285,6 @@ public class Perfil{
      */
     public void setAnoIngresso(String anoIngresso) {
         this.anoIngresso = anoIngresso;
-    }
-
-    /**
-     * Obtém o email do docente.
-     *
-     * @return o email do docente
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Define o email do docente.
-     *
-     * @param email o email do docente
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**

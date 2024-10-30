@@ -5,7 +5,7 @@
   <artifactId>meuifpoaback</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
-    <compiler-plugin.version>3.12.1</compiler-plugin.version>
+    <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <maven.compiler.release>21</maven.compiler.release>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -13,7 +13,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.10.0</quarkus.platform.version>
+    <quarkus.platform.version>3.3.1</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.2.5</surefire-plugin.version>
   </properties>
@@ -48,7 +48,14 @@
       <artifactId>flying-saucer-pdf-itext5</artifactId>
       <version>9.1.22</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client</artifactId>
+    </dependency>
     <!-- iText PDF library (version 5) -->
     <dependency>
       <groupId>com.itextpdf</groupId>
@@ -59,7 +66,6 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.12.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -155,12 +161,6 @@
       <artifactId>kotlin-as-java-plugin</artifactId>
       <version>1.9.20</version>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>mockwebserver</artifactId>
-      <version>4.9.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

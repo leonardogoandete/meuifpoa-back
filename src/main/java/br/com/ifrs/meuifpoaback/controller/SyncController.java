@@ -1,5 +1,6 @@
 package br.com.ifrs.meuifpoaback.controller;
 
+import br.com.ifrs.meuifpoaback.configuration.FirebaseSecurityContext;
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.model.Login;
 import br.com.ifrs.meuifpoaback.model.Noticia;

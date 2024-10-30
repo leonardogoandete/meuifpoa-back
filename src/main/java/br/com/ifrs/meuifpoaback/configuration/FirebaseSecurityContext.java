@@ -14,12 +14,18 @@ public class FirebaseSecurityContext implements SecurityContext {
     private final String uid;
 
     /**
+     * O email do usuário no Firebase.
+     */
+    private String email;
+
+    /**
      * Construtor que recebe o UID do usuário.
      *
      * @param uid o UID do usuário
      */
-    public FirebaseSecurityContext(String uid) {
+    public FirebaseSecurityContext(String uid, String email) {
         this.uid = uid;
+        this.email = email;
     }
 
     /**
@@ -61,5 +67,23 @@ public class FirebaseSecurityContext implements SecurityContext {
     @Override
     public String getAuthenticationScheme() {
         return "JWT";
+    }
+
+    /**
+     * Obtém o email do usuário.
+     *
+     * @return o email do usuário
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Define o email do usuário.
+     *
+     * @param email o email do usuário
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

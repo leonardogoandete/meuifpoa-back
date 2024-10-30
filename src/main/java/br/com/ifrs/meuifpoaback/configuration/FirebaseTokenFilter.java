@@ -1,6 +1,7 @@
 package br.com.ifrs.meuifpoaback.configuration;
 
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.annotation.Priority;
@@ -33,6 +34,7 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
 
         if (requestContext.getUriInfo().getPath().contains("noticias")
                 || requestContext.getUriInfo().getPath().contains("auth")
+                || requestContext.getUriInfo().getPath().contains("/test")
                 || requestContext.getUriInfo().getPath().contains("editais")) {
             logger.info("Endpoint liberado: " + requestContext.getUriInfo().getPath());
             return;
@@ -53,11 +55,12 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
             // Verifica o token do Firebase
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
             String uid = decodedToken.getUid();
+            String email = decodedToken.getEmail();
 
             logger.info("Token válido para o UID: " + uid);
 
             // Anexa o UID ao contexto de segurança
-            requestContext.setSecurityContext(new FirebaseSecurityContext(uid));
+            requestContext.setSecurityContext(new FirebaseSecurityContext(uid, email));
 
         } catch (Exception e) {
             logger.severe("Token JWT inválido: " + e.getMessage());
