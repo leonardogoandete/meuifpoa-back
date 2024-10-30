@@ -53,6 +53,10 @@ jobs:
 
       - name: Aplicando variáveis de ambiente
         run: kubectl set env deployment/meuifrspoa-deployment API_TOKEN=${{ secrets.API_TOKEN }}
+             kubectl set env deployment/meuifrspoa-deployment GRANT_TYPE=${{ secrets.GRANT_TYPE }}
+             kubectl set env deployment/meuifrspoa-deployment CLIENT_ID=${{ secrets.CLIENT_ID }}
+             kubectl set env deployment/meuifrspoa-deployment CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+             
 
       - name: Rollout deployment
         run: kubectl rollout restart deployment meuifrspoa-deployment
