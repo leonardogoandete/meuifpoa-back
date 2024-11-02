@@ -423,6 +423,9 @@ public class SyncService {
      * @throws IOException Se ocorrer um erro de I/O.
      */
     private String baixarImagemEConverterParaBase64(String imgUrl) throws IOException {
+        if (!imgUrl.startsWith("http")) {
+            imgUrl = "https://sig.ifrs.edu.br" + imgUrl;  // Adiciona o domínio base para URLs relativos
+        }
         Request request = new Request.Builder()
                 .url(imgUrl)
                 .get()
