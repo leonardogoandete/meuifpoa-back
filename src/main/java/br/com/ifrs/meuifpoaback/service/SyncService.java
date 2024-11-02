@@ -144,6 +144,7 @@ public class SyncService {
             atualizarPerfilNoFirestore(uid, perfil);
 
         } catch (ExecutionException | InterruptedException e) {
+            logger.log(Level.SEVERE, "Erro ao obter notas existentes do Firestore", e);
             throw new RuntimeException(e);
         } finally {
             limparCookies();
@@ -198,6 +199,7 @@ public class SyncService {
         try (Response response = client.newCall(postLoginRequest).execute()) {
             if (!response.isSuccessful()) {
                 sincronizado = false;
+                logger.severe("Erro ao realizar o login: " + response);
                 throw new IOException("Erro ao realizar o login: " + response);
             }
             String responseBody = response.body().string();
@@ -217,6 +219,7 @@ public class SyncService {
         try (Response response = client.newCall(postRequest).execute()) {
             if (!response.isSuccessful()) {
                 sincronizado = false;
+                logger.severe("Erro ao realizar o POST para obter notas: " + response);
                 throw new IOException("Erro ao realizar o POST para obter notas: " + response);
             }
             return parseNotasFromHtml(response.body().string());
@@ -329,6 +332,7 @@ public class SyncService {
 
         try (Response response = client.newCall(getRequest).execute()) {
             if (!response.isSuccessful()) {
+                logger.severe("Erro ao carregar a página de perfil: " + response);
                 throw new IOException("Erro ao carregar a página de perfil: " + response);
             }
             return parsePerfilFromHtml(response.body().string(), cpf, email);
