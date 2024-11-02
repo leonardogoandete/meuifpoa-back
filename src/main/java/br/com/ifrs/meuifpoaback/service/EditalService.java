@@ -21,6 +21,7 @@ import java.net.http.HttpResponse;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Serviço responsável por obter editais do site do IFRS.
@@ -28,6 +29,8 @@ import java.util.List;
 @Slf4j
 @ApplicationScoped
 public class EditalService {
+
+    private static final Logger logger = Logger.getLogger(EditalService.class.getName());
     /**
      * Obtém uma lista de editais do site do IFRS.
      *
@@ -48,6 +51,7 @@ public class EditalService {
             scrapingInformacoesHtml(response, editais);
 
         } catch (IOException | InterruptedException | URISyntaxException e) {
+            logger.severe("Erro ao obter as editais." + e.getMessage());
             System.out.println("Erro ao obter as editais." + e.getMessage());
         }
         return editais;
@@ -87,6 +91,7 @@ public class EditalService {
 
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
+            logger.severe("Erro ao realizar a solicitação HTTP." + e.getMessage());
             throw new RuntimeException("Erro ao realizar a solicitação HTTP." + e.getMessage());
         }
 
@@ -122,6 +127,7 @@ public class EditalService {
                     .build();
 
         } catch (Exception e) {
+            logger.severe("Erro ao criar o HttpClient ignorando SSL." + e.getMessage());
             throw new RuntimeException("Erro ao criar o HttpClient ignorando SSL.", e);
         }
     }

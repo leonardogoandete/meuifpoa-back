@@ -1,11 +1,12 @@
 package br.com.ifrs.meuifpoaback.exception;
 
+import br.com.ifrs.meuifpoaback.utils.FirestoreUtils;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.jboss.logging.Logger;
 
 import java.util.Collections;
+import java.util.logging.Logger;
 
 /**
  * A classe GlobalExceptionHandler é responsável por tratar exceções não tratadas em todo o aplicativo.
@@ -13,11 +14,11 @@ import java.util.Collections;
 @Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
 
-    private static final Logger LOG = Logger.getLogger(GlobalExceptionHandler.class);
+    private static final java.util.logging.Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
 
     @Override
     public Response toResponse(Throwable exception) {
-        LOG.error("Ocorreu uma exceção não tratada: ", exception);
+        logger.severe("Ocorreu uma exceção não tratada: " + exception.getMessage());
 
         if (exception instanceof UnauthorizedException) {
             return Response.status(Response.Status.UNAUTHORIZED)

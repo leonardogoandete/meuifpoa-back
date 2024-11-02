@@ -90,6 +90,12 @@ public class DocumentoService {
 
             // Baixar o documento com base no tipo (historico, ementas, etc.)
             return new DocumentoResponse(baixarDocumento(uid, tipo));
+        } catch (VinculoBusinessException e) {
+            logger.warning("Usuário não possui vínculo ativo: " + uid);
+            throw e;
+        } catch (Exception e) {
+            logger.severe("Erro ao baixar o documento: " + e.getMessage());
+            throw new IOException("Erro ao baixar o documento", e);
         } finally {
             // Garantir que os cookies sejam limpos após o processo
             limparCookies();
@@ -126,6 +132,9 @@ public class DocumentoService {
             String responseBody = response.body().string();
             response.close();
             return !responseBody.contains("Usuário e/ou senha inválidos");
+        }catch (IOException e){
+            logger.severe("Erro ao realizar login: " + e.getMessage());
+            throw new IOException("Erro ao realizar login", e);
         }
     }
 
@@ -139,6 +148,7 @@ public class DocumentoService {
      */
     protected String baixarDocumento(String uid, String tipo) throws IOException {
         if (uid == null || uid.isEmpty() || tipo == null || tipo.isEmpty()) {
+            logger.severe("Argumentos nulos para baixarDocumento");
             throw new IllegalArgumentException("Argumentos nulos para baixarDocumento");
         }
 
@@ -158,6 +168,7 @@ public class DocumentoService {
 
         try (Response postResponse = client.newCall(postRequest).execute()) {
             if (!postResponse.isSuccessful()) {
+                logger.severe("Erro ao realizar o POST: " + postResponse);
                 throw new IOException("Erro ao realizar o POST: " + postResponse);
             }
 
@@ -205,7 +216,7 @@ public class DocumentoService {
                     // Converte o PDF para Base64
                     return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.severe("Erro ao renderizar o PDF: " + e.getMessage());
                     throw new IOException("Erro ao renderizar o PDF", e);
                 }
             }
@@ -214,6 +225,9 @@ public class DocumentoService {
             logger.info("Documento baixado com sucesso.");
             try (InputStream inputStream = postResponse.body().byteStream()) {
                 return Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+            }catch (IOException e){
+                logger.severe("Erro ao baixar o documento: " + e.getMessage());
+                throw new IOException("Erro ao baixar o documento", e);
             }
         }
     }
@@ -227,6 +241,7 @@ public class DocumentoService {
      */
     private String obtemTipoAcaoFromulario(String tipo) {
         if (tipo == null) {
+            logger.severe("Tipo de documento nulo para getJscookAction");
             throw new IllegalArgumentException("Tipo de documento nulo para getJscookAction");
         }
 

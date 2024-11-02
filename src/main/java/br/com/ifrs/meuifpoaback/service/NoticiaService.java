@@ -21,6 +21,8 @@ import java.net.http.HttpResponse;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Serviço responsável por obter notícias do site do IFRS.
@@ -28,6 +30,9 @@ import java.util.List;
 @Slf4j
 @ApplicationScoped
 public class NoticiaService {
+
+    private static final Logger logger = Logger.getLogger(NoticiaService.class.getName());
+
     /**
      * Obtém uma lista de notícias do site do IFRS.
      *
@@ -48,6 +53,7 @@ public class NoticiaService {
             scrapingInformacoesHtml(response, noticias);
 
         } catch (IOException | InterruptedException | URISyntaxException e) {
+            logger.log(Level.SEVERE, "Erro ao obter as notícias.", e);
             System.out.println("Erro ao obter as notícias." + e.getMessage());
         }
         return noticias;
@@ -87,6 +93,7 @@ public class NoticiaService {
 
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao realizar a solicitação HTTP.", e);
             throw new RuntimeException("Erro ao realizar a solicitação HTTP." + e.getMessage());
         }
 
@@ -122,6 +129,7 @@ public class NoticiaService {
                     .build();
 
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao criar o HttpClient ignorando SSL.", e);
             throw new RuntimeException("Erro ao criar o HttpClient ignorando SSL.", e);
         }
     }
