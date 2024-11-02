@@ -43,7 +43,6 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
 
 
         String authHeader = requestContext.getHeaderString("Authorization");
-        logger.info("Cabeçalho Authorization: " + authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             logger.severe("Token JWT ausente ou inválido.");
