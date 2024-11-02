@@ -433,6 +433,7 @@ public class SyncService {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
+                logger.severe("Erro ao baixar a imagem: " + response);
                 throw new IOException("Erro ao baixar a imagem: " + response);
             }
 
