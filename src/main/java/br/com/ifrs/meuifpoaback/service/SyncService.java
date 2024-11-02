@@ -16,7 +16,6 @@ import jakarta.ws.rs.WebApplicationException;
 import okhttp3.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,6 +38,9 @@ public class SyncService {
 
     private final Firestore db = FirestoreClient.getFirestore();
     private final FirestoreUtils firestoreUtils = new FirestoreUtils();
+
+    private RespostaToken tokenAtual;
+    private long tokenExpiracao;
 
     private final OkHttpClient client;
     private boolean sincronizado;
@@ -78,12 +80,20 @@ public class SyncService {
                 .build();
     }
 
-
+    /**
+     * Sincroniza os dados do perfil do usuário no SIGAA.
+     *
+     * @param uid   Identificador do usuário.
+     * @param senha Senha do usuário.
+     * @return Perfil do usuário sincronizado com os dados do SIGAA.
+     * @throws IOException Em caso de erro de entrada/saída.
+     */
     public Perfil sincronizar(String uid, String senha) throws IOException {
         sincronizado = false; // Inicializa como não sincronizado
         String email = firestoreUtils.getEmailFromFirestore(uid);
         String matricula = email.split("@")[0];
 
+        // Obter o token de acesso
         ObterToken obterToken = new ObterToken(clientCredentials, clientId, clientSecret);
         // Obter o CPF da API do Sigaa
         RespostaToken token = null;

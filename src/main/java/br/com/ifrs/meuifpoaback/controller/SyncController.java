@@ -1,12 +1,9 @@
 package br.com.ifrs.meuifpoaback.controller;
 
-import br.com.ifrs.meuifpoaback.configuration.FirebaseSecurityContext;
 import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.model.Login;
-import br.com.ifrs.meuifpoaback.model.Noticia;
 import br.com.ifrs.meuifpoaback.model.Perfil;
 import br.com.ifrs.meuifpoaback.service.SyncService;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -18,7 +15,6 @@ import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
