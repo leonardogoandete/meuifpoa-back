@@ -89,67 +89,85 @@ public class SyncService {
      * @throws IOException Em caso de erro de entrada/saída.
      */
     public Perfil sincronizar(String uid, String senha) throws IOException {
-        sincronizado = false; // Inicializa como não sincronizado
+        sincronizado = false;  // Inicializa como não sincronizado
         String email = firestoreUtils.getEmailFromFirestore(uid);
         String matricula = email.split("@")[0];
 
-        // Obter o token de acesso
-        ObterToken obterToken = new ObterToken(clientCredentials, clientId, clientSecret);
-        // Obter o CPF da API do Sigaa
-        RespostaToken token = null;
-
-        try {
-            token = sigaaClient.getToken(obterToken);
-            logger.info("Token obtido: " + token.getAccessToken());
-        } catch (WebApplicationException e) {
-            String responseBody = e.getResponse().readEntity(String.class);
-            logger.severe("Erro ao obter o token: " + responseBody);
-            throw e;
-        } catch (Exception e) {
-            logger.severe("Erro inesperado ao obter o token: " + e);
-            throw e;
-        }
-
-        Map<String, AlunoSigaa> alunoMap = sigaaClient.getAluno(matricula, "Bearer "+ token.getAccessToken());
-        String cpf = alunoMap.values().iterator().next().getLogin();
-
-
-        Perfil perfil;
+        String accessToken = obterTokenAcesso();
+        String cpf = obterCpfPorMatricula(matricula, accessToken);
 
         if (cpf == null) {
-            logger.warning("CPF não encontrado para o matricula: " + matricula);
-            throw new UnauthorizedException("CPF não encontrado para o matricula: " + matricula);
+            String msg = "CPF não encontrado para a matrícula: " + matricula;
+            logger.warning(msg);
+            throw new UnauthorizedException(msg);
         }
 
         logger.info("Iniciando sincronização com o SIGAA para o CPF: " + cpf);
 
         try {
             if (!realizarLogin(cpf, senha)) {
-                logger.severe("Falha ao realizar login no SIGAA");
                 throw new UnauthorizedException("Falha ao realizar login no SIGAA");
             }
 
-            perfil = coletarDadosPerfil(cpf,email);
+            Perfil perfil = coletarDadosPerfil(cpf, email);
 
-            // Busque as notas existentes no Firestore
-            ArrayList<Notas> notasExistentes = obterNotasExistentesDoFirestore(uid);
+            // Atualiza as notas do perfil
+            atualizarNotasNoPerfil(uid, perfil);
 
-            // Obtenha as novas notas
-            List<Notas> novasNotas = obterNotas();
-
-            // Atualize a lista de notas no perfil, sem duplicação
-            perfil.setNotas(atualizarNotasExistentes(notasExistentes, novasNotas));
-
-            // Atualize o perfil no Firestore
+            // Salva o perfil atualizado no Firestore
             atualizarPerfilNoFirestore(uid, perfil);
 
+            return perfil;
         } catch (ExecutionException | InterruptedException e) {
-            logger.log(Level.SEVERE, "Erro ao obter notas existentes do Firestore", e);
+            logger.log(Level.SEVERE, "Erro ao sincronizar perfil e notas", e);
             throw new RuntimeException(e);
         } finally {
             limparCookies();
         }
-        return perfil;
+    }
+
+    /**
+     * Obtém o token de acesso, renovando-o se necessário.
+     */
+    private String obterTokenAcesso() {
+        if (tokenAtual == null || System.currentTimeMillis() >= tokenExpiracao) {
+            ObterToken obterToken = new ObterToken(clientCredentials, clientId, clientSecret);
+            try {
+                tokenAtual = sigaaClient.getToken(obterToken);
+                tokenExpiracao = System.currentTimeMillis() + (tokenAtual.getExpiresIn() * 1000);
+                logger.info("Token renovado: " + tokenAtual.getAccessToken());
+            } catch (WebApplicationException e) {
+                String responseBody = e.getResponse().readEntity(String.class);
+                logger.severe("Erro ao obter o token: " + responseBody);
+                throw e;
+            } catch (Exception e) {
+                logger.severe("Erro inesperado ao obter o token: " + e);
+                throw e;
+            }
+        }
+        return tokenAtual.getAccessToken();
+    }
+
+    /**
+     * Obtém o CPF do aluno usando a matrícula.
+     */
+    private String obterCpfPorMatricula(String matricula, String accessToken) {
+        try {
+            Map<String, AlunoSigaa> alunoMap = sigaaClient.getAluno(matricula, "Bearer " + accessToken);
+            return alunoMap.values().iterator().next().getLogin();
+        } catch (Exception e) {
+            logger.severe("Erro ao obter CPF para a matrícula: " + matricula);
+            throw e;
+        }
+    }
+
+    /**
+     * Atualiza as notas no perfil, obtendo novas notas e evitando duplicações.
+     */
+    private void atualizarNotasNoPerfil(String uid, Perfil perfil) throws ExecutionException, InterruptedException, IOException {
+        List<Notas> notasExistentes = obterNotasExistentesDoFirestore(uid);
+        List<Notas> novasNotas = obterNotas();
+        perfil.setNotas(atualizarNotasExistentes(notasExistentes, novasNotas));
     }
 
     /**
