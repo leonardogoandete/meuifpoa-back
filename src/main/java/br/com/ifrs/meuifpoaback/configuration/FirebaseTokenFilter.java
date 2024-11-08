@@ -57,8 +57,6 @@ public class FirebaseTokenFilter implements ContainerRequestFilter {
             String uid = decodedToken.getUid();
             String email = decodedToken.getEmail();
 
-            logger.info("Token válido para o UID: " + uid);
-
             // Anexa o UID ao contexto de segurança
             requestContext.setSecurityContext(new FirebaseSecurityContext(uid, email));
 

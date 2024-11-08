@@ -84,13 +84,13 @@ public class SyncService {
      * Sincroniza os dados do perfil do usuário no SIGAA.
      *
      * @param uid   Identificador do usuário.
+     * @param email Email do usuário.
      * @param senha Senha do usuário.
      * @return Perfil do usuário sincronizado com os dados do SIGAA.
      * @throws IOException Em caso de erro de entrada/saída.
      */
-    public Perfil sincronizar(String uid, String senha) throws IOException {
+    public Perfil sincronizar(String uid, String email, String senha) throws IOException {
         sincronizado = false;  // Inicializa como não sincronizado
-        String email = firestoreUtils.getEmailFromFirestore(uid);
         String matricula = email.split("@")[0];
 
         String accessToken = obterTokenAcesso();

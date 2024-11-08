@@ -4,6 +4,7 @@ import br.com.ifrs.meuifpoaback.exception.UnauthorizedException;
 import br.com.ifrs.meuifpoaback.model.Login;
 import br.com.ifrs.meuifpoaback.model.Perfil;
 import br.com.ifrs.meuifpoaback.service.SyncService;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -12,6 +13,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -33,7 +35,8 @@ import java.util.logging.Logger;
 public class SyncController {
 
     private static final Logger logger = Logger.getLogger(SyncController.class.getName());
-
+    @Inject
+    JsonWebToken jwt;
     /**
      * O serviço de sincronização.
      */
@@ -74,7 +77,9 @@ public class SyncController {
                             schema = @Schema(implementation = Login.class)
                     )
             ) Login login) {
-        String userId = securityContext.getUserPrincipal().getName();
+        String userId = jwt.getClaim("user_id");
+        String email = jwt.getClaim("email");
+
         Map<String, String> response = new HashMap<>();
         try {
             // Valida o login
@@ -83,7 +88,7 @@ public class SyncController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
 
-            Perfil perfil = syncService.sincronizar(userId, login.getSenha());
+            Perfil perfil = syncService.sincronizar(userId, email, login.getSenha());
             // Executa a sincronização
             if (perfil != null) {
                 response.put("mensagem", "Sincronização realizada com sucesso!");
