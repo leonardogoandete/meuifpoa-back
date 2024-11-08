@@ -2,9 +2,7 @@ package br.com.ifrs.meuifpoaback.controller;
 
 
 import br.com.ifrs.meuifpoaback.model.Edital;
-import br.com.ifrs.meuifpoaback.model.Noticia;
 import br.com.ifrs.meuifpoaback.service.EditalService;
-import br.com.ifrs.meuifpoaback.service.NoticiaService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -99,10 +97,10 @@ public class EditalController {
             )
     )
     @PermitAll
-    public Response obterTodasNoticias(){
+    public Response obterTodosEditais(){
         try{
             List<Edital> editais = editalService.obterEditais(0,null);
-            logger.log(Level.INFO, "Consultando todas as notícias");
+            logger.log(Level.INFO, "Consultando todas ao editais");
             return Response.status(Response.Status.OK)
                     .entity(editais)
                     .build();
