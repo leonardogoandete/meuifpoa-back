@@ -40,6 +40,11 @@ public class Notas{
     private String situacao;
 
     /**
+     * O semestre cursado da disciplina.
+     */
+    private String semestre;
+
+    /**
      * Construtor padrão.
      */
     public Notas() {
@@ -56,8 +61,9 @@ public class Notas{
      * @param notaFinal        a nota final
      * @param numeroFaltas     o número de faltas
      * @param situacao         a situação do aluno na disciplina
+     * @param semestre         o semestre cursado da disciplina
      */
-    public Notas(String codigoDisciplina, String nomeDisciplina, String primeiraUnidade, String segundaUnidade, String notaRecuperacao, String notaFinal, String numeroFaltas, String situacao) {
+    public Notas(String codigoDisciplina, String nomeDisciplina, String primeiraUnidade, String segundaUnidade, String notaRecuperacao, String notaFinal, String numeroFaltas, String situacao, String semestre) {
         this.codigoDisciplina = codigoDisciplina;
         this.nomeDisciplina = nomeDisciplina;
         this.primeiraUnidade = primeiraUnidade;
@@ -66,6 +72,7 @@ public class Notas{
         this.notaFinal = notaFinal;
         this.numeroFaltas = numeroFaltas;
         this.situacao = situacao;
+        this.semestre = semestre;
     }
 
     /**
@@ -225,6 +232,26 @@ public class Notas{
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    /**
+     * Obtém o semestre cursado da disciplina.
+     *
+     * @return o semestre cursado da disciplina
+     */
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    /**
+     * Define o semestre cursado da disciplina.
+     *
+     * @param semestre o semestre cursado da disciplina
+     */
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
     }
 }
 

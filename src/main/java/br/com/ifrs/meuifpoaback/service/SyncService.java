@@ -276,9 +276,10 @@ public class SyncService {
         Elements tabelas = doc.select("table.tabelaRelatorio");
 
         for (Element tabela : tabelas) {
+            String semestre = tabela.selectFirst("caption").text();
             Elements linhas = tabela.select("tbody tr");
             for (Element linha : linhas) {
-                Notas nota = parseNotaFromElement(linha);
+                Notas nota = parseNotaFromElement(linha, semestre);
                 if (nota != null) {
                     notas.add(nota);
                 }
@@ -293,7 +294,7 @@ public class SyncService {
      * @param linha Elemento HTML representando uma linha da tabela.
      * @return Objeto Notas extraído ou null em caso de erro.
      */
-    private Notas parseNotaFromElement(Element linha) {
+    private Notas parseNotaFromElement(Element linha, String semestre) {
         try {
             return new Notas(
                     linha.select("td:nth-child(1)").text(),
@@ -303,7 +304,8 @@ public class SyncService {
                     linha.select("td:nth-child(5)").text(),
                     linha.select("td:nth-child(6)").text(),
                     linha.select("td:nth-child(7)").text(),
-                    linha.select("td:nth-child(8)").text()
+                    linha.select("td:nth-child(8)").text(),
+                    semestre
             );
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao parsear nota", e);
