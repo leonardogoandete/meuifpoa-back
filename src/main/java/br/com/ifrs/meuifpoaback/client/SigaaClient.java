@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * A interface SigaaClient representa o cliente REST para a API do SIGAA.
  */
-@RegisterRestClient(baseUri = "https://dev8e.ifrs.edu.br")
+@RegisterRestClient(configKey = "sigaa-api")
 public interface SigaaClient {
     /**
      * Obtém o token de acesso.
