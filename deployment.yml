@@ -56,9 +56,18 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          env:
+            - name: API_TOKEN
+              value: "${{ secrets.API_TOKEN }}"  
+            - name: GRANT_TYPE
+              value: "${{ secrets.GRANT_TYPE }}"
+            - name: CLIENT_ID
+              value: "${{ secrets.CLIENT_ID }}"
+            - name: CLIENT_SECRET
+              value: "${{ secrets.CLIENT_SECRET }}"
           resources:
             limits:
-              memory: "200Mi"
+              memory: "256Mi"
               cpu: "200m"
             requests:
               memory: "100Mi"
