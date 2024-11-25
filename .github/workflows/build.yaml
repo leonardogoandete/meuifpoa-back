@@ -38,9 +38,6 @@ jobs:
       - name: Checkout gh-repo
         uses: actions/checkout@v3
 
-      - name: List
-        run: ls -la
-
       - name: Setup kubectl
         env:
           K8S_CONFIG: ${{ secrets.K8S_CONFIG }}
@@ -49,7 +46,7 @@ jobs:
           echo "${K8S_CONFIG}" | base64 --decode > $HOME/.kube/config
 
       - name: Aplicando deployment
-        run: kubectl apply -f deployment.yaml
+        run: kubectl apply -f deployment.yml
 
       - name: Aplicando variáveis de ambiente
         run: |
