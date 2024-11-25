@@ -42,14 +42,8 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${K8S_CONFIG}" | base64 --decode > $HOME/.kube/config
 
-      - name: Setup deployment
-        env:
-          K8S_DEPLOYMENT: ${{ secrets.K8S_DEPLOYMENT }}
-        run: |
-          echo "${K8S_DEPLOYMENT}" | base64 --decode > $HOME/deployment.yaml
-
       - name: Aplicando deployment
-        run: kubectl apply -f $HOME/deployment.yaml
+        run: kubectl apply -f deployment.yaml
 
       - name: Aplicando variáveis de ambiente
         run: |
