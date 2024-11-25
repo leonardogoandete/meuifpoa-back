@@ -58,13 +58,13 @@ spec:
             - containerPort: 8080
           env:
             - name: API_TOKEN
-              value: "${{ secrets.API_TOKEN }}"  
+              value: ${{ secrets.API_TOKEN }}
             - name: GRANT_TYPE
-              value: "${{ secrets.GRANT_TYPE }}"
+              value: ${{ secrets.GRANT_TYPE }}
             - name: CLIENT_ID
-              value: "${{ secrets.CLIENT_ID }}"
+              value: ${{ secrets.CLIENT_ID }}
             - name: CLIENT_SECRET
-              value: "${{ secrets.CLIENT_SECRET }}"
+              value: ${{ secrets.CLIENT_SECRET }}
           resources:
             limits:
               memory: "256Mi"
