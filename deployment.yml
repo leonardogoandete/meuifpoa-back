@@ -35,6 +35,17 @@ spec:
       port: 80
       targetPort: 8080
   type: ClusterIP
+---  
+apiVersion: v1
+kind: Secret
+metadata:
+  name: meuifrspoa-secrets
+type: Opaque
+data:
+  API_TOKEN: base64(API_TOKEN)
+  GRANT_TYPE: base64(GRANT_TYPE)
+  CLIENT_ID: base64(CLIENT_ID)
+  CLIENT_SECRET: base64(CLIENT_SECRET)
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,15 +67,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          env:
-            - name: API_TOKEN
-              value: ${{ secrets.API_TOKEN }}
-            - name: GRANT_TYPE
-              value: ${{ secrets.GRANT_TYPE }}
-            - name: CLIENT_ID
-              value: ${{ secrets.CLIENT_ID }}
-            - name: CLIENT_SECRET
-              value: ${{ secrets.CLIENT_SECRET }}
+          envFrom:
+            - secretRef:
+                name: meuifrspoa-secrets
           resources:
             limits:
               memory: "256Mi"
