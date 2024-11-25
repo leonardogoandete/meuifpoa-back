@@ -35,16 +35,6 @@ spec:
       port: 80
       targetPort: 8080
   type: ClusterIP
----  
-apiVersion: v1
-kind: Secret
-metadata:
-  name: meuifrspoa-secrets
-type: Opaque
-data:
-  GRANT_TYPE: base64(GRANT_TYPE)
-  CLIENT_ID: base64(CLIENT_ID)
-  CLIENT_SECRET: base64(CLIENT_SECRET)
 ---
 apiVersion: apps/v1
 kind: Deployment
