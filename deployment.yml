@@ -42,7 +42,6 @@ metadata:
   name: meuifrspoa-secrets
 type: Opaque
 data:
-  API_TOKEN: base64(API_TOKEN)
   GRANT_TYPE: base64(GRANT_TYPE)
   CLIENT_ID: base64(CLIENT_ID)
   CLIENT_SECRET: base64(CLIENT_SECRET)
