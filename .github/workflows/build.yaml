@@ -2,7 +2,7 @@ name: Build Imagem
 on:
   push:
     branches:
-      - main
+      - okhttp3
 
 jobs:
   gerando-imagem-docker:
@@ -13,8 +13,8 @@ jobs:
       - name: Checkout gh-repo
         uses: actions/checkout@v3
 
-      - name: Build do projeto
-        run: docker build -t leogoandete/app-ifrsback .
+      - name: Build da imagem Docker
+        run: docker build -t leogoandete/app-ifrsback-jsoup .
 
       - name: Autenticando no docker registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -24,4 +24,31 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Enviando a imagem para o Dockerhub
-        run: docker push leogoandete/app-ifrsback
+        run: docker push leogoandete/app-ifrsback-jsoup
+
+  aplicando-deployment:
+    name: Aplicando deployment
+    runs-on: ubuntu-latest
+    needs: gerando-imagem-docker
+
+    steps:
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v1
+      
+      - name: Checkout gh-repo
+        uses: actions/checkout@v3
+
+      - name: Setup kubectl
+        env:
+          K8S_CONFIG: ${{ secrets.K8S_CONFIG }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${K8S_CONFIG}" | base64 --decode > $HOME/.kube/config
+
+      - name: Aplicando deployment
+        run: kubectl apply -f deployment.yml
+
+      - name: Aguardando Deployment finalizar
+        run: kubectl rollout status deployment/meuifrspoa-deployment
+
+

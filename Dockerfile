@@ -12,29 +12,17 @@ RUN ./mvnw dependency:go-offline
 COPY ./src/main/ ./src/main/
 
 # Empacota a aplicação como um Uber Jar
-RUN ./mvnw package -Dquarkus.package.type=uber-jar
+RUN ./mvnw package -Dquarkus.profile=prod -Dquarkus.package.type=uber-jar
 
-# Etapa 2: Configuração do ambiente de execução (runtime)
-FROM mcr.microsoft.com/playwright:v1.43.0-jammy AS app
-
-# Instalar o JRE (Java Runtime Environment)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    openjdk-21-jre && \
-    rm -rf /var/lib/apt/lists/*
-
-# Adicionar um grupo e um usuário não-root
-RUN addgroup appgroup && \
-    adduser --ingroup appgroup appuser --disabled-password --gecos ""
-
-# Mudar para o usuário não-root
+FROM eclipse-temurin:21-jre-alpine AS app
+#Trocar timezone
+RUN apk add --no-cache tzdata
+ENV API_TOKEN=""
+ENV TZ=America/Sao_Paulo
+RUN addgroup -S appgroup && \
+    adduser -S appuser -G appgroup
 USER appuser
-
-# Copia o Jar gerado na etapa de build
 COPY --from=build /app/target/*.jar /app/app.jar
 
-# Expor a porta 8080
 EXPOSE 8080
-
-# Comando de entrada para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar", "-Dquarkus.profile=prod"]

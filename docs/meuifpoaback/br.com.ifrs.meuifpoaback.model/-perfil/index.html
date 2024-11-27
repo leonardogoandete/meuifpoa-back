@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Perfil</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            meuifpoaback
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="meuifpoaback/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="meuifpoaback::br.com.ifrs.meuifpoaback.model/Perfil///PointingToDeclaration//1105011405">
+  <div class="breadcrumbs"><a href="../../../index.html">meuifpoaback</a><span class="delimiter">/</span><a href="../index.html">br.com.ifrs.meuifpoaback.model</a><span class="delimiter">/</span><span class="current">Perfil</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Perfil</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">class </span><a href="index.html">Perfil</a></div><p class="paragraph">Classe que representa o perfil de um docente.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1119662062%2FConstructors%2F1105011405" anchor-label="Perfil" id="-1119662062%2FConstructors%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-perfil.html"><span><span>Perfil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1119662062%2FConstructors%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="-perfil.html"><span class="token function">Perfil</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Construtor padrão.</div><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="-perfil.html"><span class="token function">Perfil</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nomeDocente<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> email<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> matricula<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> cpf<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> curso<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nivel<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> status<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> anoIngresso<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> imgPerfil</span></span><span class="token punctuation">)</span></div><div class="brief ">Construtor com parâmetros.</div><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="-perfil.html"><span class="token function">Perfil</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nomeDocente<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> email<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> matricula<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> cpf<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> curso<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nivel<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> status<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> anoIngresso<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> imgPerfil<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chObrigatoriaPendente<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chOptativaPendente<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chTotalCurriculo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chComplementarPendente<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> integralizado<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="../-notas/index.html">Notas</a><span class="token operator">&gt;</span> notas</span></span><span class="token punctuation">)</span></div><div class="brief ">Construtor com todos os parâmetros.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1335277188%2FProperties%2F1105011405" anchor-label="anoIngresso" id="1335277188%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1335277188%2FProperties%2F1105011405"><span>ano</span><wbr></wbr><span><span>Ingresso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1335277188%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#1335277188%2FProperties%2F1105011405">anoIngresso</a></div><div class="brief ">O ano de ingresso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1223650407%2FProperties%2F1105011405" anchor-label="chComplementarPendente" id="-1223650407%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1223650407%2FProperties%2F1105011405"><span>ch</span><wbr></wbr><span>Complementar</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1223650407%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1223650407%2FProperties%2F1105011405">chComplementarPendente</a></div><div class="brief ">A carga horária complementar pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-69862859%2FProperties%2F1105011405" anchor-label="chObrigatoriaPendente" id="-69862859%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-69862859%2FProperties%2F1105011405"><span>ch</span><wbr></wbr><span>Obrigatoria</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-69862859%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-69862859%2FProperties%2F1105011405">chObrigatoriaPendente</a></div><div class="brief ">A carga horária obrigatória pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1174701470%2FProperties%2F1105011405" anchor-label="chOptativaPendente" id="-1174701470%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1174701470%2FProperties%2F1105011405"><span>ch</span><wbr></wbr><span>Optativa</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1174701470%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1174701470%2FProperties%2F1105011405">chOptativaPendente</a></div><div class="brief ">A carga horária optativa pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1089669299%2FProperties%2F1105011405" anchor-label="chTotalCurriculo" id="-1089669299%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1089669299%2FProperties%2F1105011405"><span>ch</span><wbr></wbr><span>Total</span><wbr></wbr><span><span>Curriculo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1089669299%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1089669299%2FProperties%2F1105011405">chTotalCurriculo</a></div><div class="brief ">A carga horária total do currículo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1796437735%2FProperties%2F1105011405" anchor-label="cpf" id="1796437735%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1796437735%2FProperties%2F1105011405"><span><span>cpf</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1796437735%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#1796437735%2FProperties%2F1105011405">cpf</a></div><div class="brief ">O CPF do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1335053180%2FProperties%2F1105011405" anchor-label="curso" id="-1335053180%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1335053180%2FProperties%2F1105011405"><span><span>curso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1335053180%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1335053180%2FProperties%2F1105011405">curso</a></div><div class="brief ">O nome do curso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="648989060%2FProperties%2F1105011405" anchor-label="email" id="648989060%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#648989060%2FProperties%2F1105011405"><span><span>email</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="648989060%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#648989060%2FProperties%2F1105011405">email</a></div><div class="brief ">O email do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-820329007%2FProperties%2F1105011405" anchor-label="integralizado" id="-820329007%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-820329007%2FProperties%2F1105011405"><span><span>integralizado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-820329007%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-820329007%2FProperties%2F1105011405">integralizado</a></div><div class="brief ">Percentual de integralização do currículo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1155469214%2FProperties%2F1105011405" anchor-label="matricula" id="-1155469214%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1155469214%2FProperties%2F1105011405"><span><span>matricula</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1155469214%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1155469214%2FProperties%2F1105011405">matricula</a></div><div class="brief ">A matrícula do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1667405790%2FProperties%2F1105011405" anchor-label="nivel" id="1667405790%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1667405790%2FProperties%2F1105011405"><span><span>nivel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1667405790%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#1667405790%2FProperties%2F1105011405">nivel</a></div><div class="brief ">O nível do curso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1627733817%2FProperties%2F1105011405" anchor-label="nomeDocente" id="-1627733817%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1627733817%2FProperties%2F1105011405"><span>nome</span><wbr></wbr><span><span>Docente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1627733817%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1627733817%2FProperties%2F1105011405">nomeDocente</a></div><div class="brief ">O nome do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1588795653%2FProperties%2F1105011405" anchor-label="notas" id="-1588795653%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1588795653%2FProperties%2F1105011405"><span><span>notas</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1588795653%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="../-notas/index.html">Notas</a><span class="token operator">&gt;</span> <a href="index.html#-1588795653%2FProperties%2F1105011405">notas</a></div><div class="brief ">Lista de notas do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1831986552%2FProperties%2F1105011405" anchor-label="status" id="-1831986552%2FProperties%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1831986552%2FProperties%2F1105011405"><span><span>status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1831986552%2FProperties%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#-1831986552%2FProperties%2F1105011405">status</a></div><div class="brief ">A situação do docente no curso.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-408446764%2FFunctions%2F1105011405" anchor-label="getAnoIngresso" id="-408446764%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-ano-ingresso.html"><span>get</span><wbr></wbr><span>Ano</span><wbr></wbr><span><span>Ingresso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-408446764%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-ano-ingresso.html"><span class="token function">getAnoIngresso</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o ano de ingresso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1333649591%2FFunctions%2F1105011405" anchor-label="getChComplementarPendente" id="-1333649591%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-ch-complementar-pendente.html"><span>get</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Complementar</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1333649591%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-ch-complementar-pendente.html"><span class="token function">getChComplementarPendente</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a carga horária complementar pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="757872773%2FFunctions%2F1105011405" anchor-label="getChObrigatoriaPendente" id="757872773%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-ch-obrigatoria-pendente.html"><span>get</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Obrigatoria</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="757872773%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-ch-obrigatoria-pendente.html"><span class="token function">getChObrigatoriaPendente</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a carga horária obrigatória pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="803626514%2FFunctions%2F1105011405" anchor-label="getChOptativaPendente" id="803626514%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-ch-optativa-pendente.html"><span>get</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Optativa</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="803626514%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-ch-optativa-pendente.html"><span class="token function">getChOptativaPendente</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a carga horária optativa pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-524482819%2FFunctions%2F1105011405" anchor-label="getChTotalCurriculo" id="-524482819%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-ch-total-curriculo.html"><span>get</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Total</span><wbr></wbr><span><span>Curriculo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-524482819%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-ch-total-curriculo.html"><span class="token function">getChTotalCurriculo</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a carga horária total do currículo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1343465783%2FFunctions%2F1105011405" anchor-label="getCpf" id="1343465783%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-cpf.html"><span>get</span><wbr></wbr><span><span>Cpf</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1343465783%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-cpf.html"><span class="token function">getCpf</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o CPF do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1445565140%2FFunctions%2F1105011405" anchor-label="getCurso" id="1445565140%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-curso.html"><span>get</span><wbr></wbr><span><span>Curso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1445565140%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-curso.html"><span class="token function">getCurso</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o curso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-865359916%2FFunctions%2F1105011405" anchor-label="getEmail" id="-865359916%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-email.html"><span>get</span><wbr></wbr><span><span>Email</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-865359916%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-email.html"><span class="token function">getEmail</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o email do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-117556799%2FFunctions%2F1105011405" anchor-label="getimgPerfil" id="-117556799%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="getimg-perfil.html"><span>getimg</span><wbr></wbr><span><span>Perfil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-117556799%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="getimg-perfil.html"><span class="token function">getimgPerfil</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a URL da imagem do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1501801439%2FFunctions%2F1105011405" anchor-label="getIntegralizado" id="-1501801439%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-integralizado.html"><span>get</span><wbr></wbr><span><span>Integralizado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1501801439%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-integralizado.html"><span class="token function">getIntegralizado</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém se o currículo está integralizado.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1604724402%2FFunctions%2F1105011405" anchor-label="getMatricula" id="1604724402%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-matricula.html"><span>get</span><wbr></wbr><span><span>Matricula</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1604724402%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-matricula.html"><span class="token function">getMatricula</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém a matrícula do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="153056814%2FFunctions%2F1105011405" anchor-label="getNivel" id="153056814%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-nivel.html"><span>get</span><wbr></wbr><span><span>Nivel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="153056814%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-nivel.html"><span class="token function">getNivel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o nível do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="923509527%2FFunctions%2F1105011405" anchor-label="getNomeDocente" id="923509527%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-nome-docente.html"><span>get</span><wbr></wbr><span>Nome</span><wbr></wbr><span><span>Docente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="923509527%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-nome-docente.html"><span class="token function">getNomeDocente</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o nome do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1191822667%2FFunctions%2F1105011405" anchor-label="getNotas" id="1191822667%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-notas.html"><span>get</span><wbr></wbr><span><span>Notas</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1191822667%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="../-notas/index.html">Notas</a><span class="token operator">&gt;</span> <a href="get-notas.html"><span class="token function">getNotas</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém as notas do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1532164552%2FFunctions%2F1105011405" anchor-label="getStatus" id="-1532164552%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-status.html"><span>get</span><wbr></wbr><span><span>Status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1532164552%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-status.html"><span class="token function">getStatus</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Obtém o status do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1602361819%2FFunctions%2F1105011405" anchor-label="setAnoIngresso" id="1602361819%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ano-ingresso.html"><span>set</span><wbr></wbr><span>Ano</span><wbr></wbr><span><span>Ingresso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1602361819%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-ano-ingresso.html"><span class="token function">setAnoIngresso</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> anoIngresso</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o ano de ingresso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="108624056%2FFunctions%2F1105011405" anchor-label="setChComplementarPendente" id="108624056%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ch-complementar-pendente.html"><span>set</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Complementar</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="108624056%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-ch-complementar-pendente.html"><span class="token function">setChComplementarPendente</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chComplementarPendente</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a carga horária complementar pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="409000076%2FFunctions%2F1105011405" anchor-label="setChObrigatoriaPendente" id="409000076%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ch-obrigatoria-pendente.html"><span>set</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Obrigatoria</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="409000076%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-ch-obrigatoria-pendente.html"><span class="token function">setChObrigatoriaPendente</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chObrigatoriaPendente</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a carga horária obrigatória pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1347166335%2FFunctions%2F1105011405" anchor-label="setChOptativaPendente" id="-1347166335%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ch-optativa-pendente.html"><span>set</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Optativa</span><wbr></wbr><span><span>Pendente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1347166335%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-ch-optativa-pendente.html"><span class="token function">setChOptativaPendente</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chOptativaPendente</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a carga horária optativa pendente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-815161492%2FFunctions%2F1105011405" anchor-label="setChTotalCurriculo" id="-815161492%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ch-total-curriculo.html"><span>set</span><wbr></wbr><span>Ch</span><wbr></wbr><span>Total</span><wbr></wbr><span><span>Curriculo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-815161492%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-ch-total-curriculo.html"><span class="token function">setChTotalCurriculo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> chTotalCurriculo</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a carga horária total do currículo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-784019394%2FFunctions%2F1105011405" anchor-label="setCpf" id="-784019394%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-cpf.html"><span>set</span><wbr></wbr><span><span>Cpf</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-784019394%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-cpf.html"><span class="token function">setCpf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> cpf</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o CPF do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1722856229%2FFunctions%2F1105011405" anchor-label="setCurso" id="-1722856229%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-curso.html"><span>set</span><wbr></wbr><span><span>Curso</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1722856229%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-curso.html"><span class="token function">setCurso</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> curso</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o curso do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="986145243%2FFunctions%2F1105011405" anchor-label="setEmail" id="986145243%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-email.html"><span>set</span><wbr></wbr><span><span>Email</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="986145243%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-email.html"><span class="token function">setEmail</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> email</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o email do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1951951928%2FFunctions%2F1105011405" anchor-label="setimgPerfil" id="-1951951928%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="setimg-perfil.html"><span>setimg</span><wbr></wbr><span><span>Perfil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1951951928%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="setimg-perfil.html"><span class="token function">setimgPerfil</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> imgPerfil</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a URL da imagem do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="563415080%2FFunctions%2F1105011405" anchor-label="setIntegralizado" id="563415080%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-integralizado.html"><span>set</span><wbr></wbr><span><span>Integralizado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="563415080%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-integralizado.html"><span class="token function">setIntegralizado</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> integralizado</span></span><span class="token punctuation">)</span></div><div class="brief ">Define se o currículo está integralizado.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1289846457%2FFunctions%2F1105011405" anchor-label="setMatricula" id="1289846457%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-matricula.html"><span>set</span><wbr></wbr><span><span>Matricula</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1289846457%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-matricula.html"><span class="token function">setMatricula</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> matricula</span></span><span class="token punctuation">)</span></div><div class="brief ">Define a matrícula do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1109967819%2FFunctions%2F1105011405" anchor-label="setNivel" id="-1109967819%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-nivel.html"><span>set</span><wbr></wbr><span><span>Nivel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1109967819%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-nivel.html"><span class="token function">setNivel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nivel</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o nível do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="638008862%2FFunctions%2F1105011405" anchor-label="setNomeDocente" id="638008862%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-nome-docente.html"><span>set</span><wbr></wbr><span>Nome</span><wbr></wbr><span><span>Docente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="638008862%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-nome-docente.html"><span class="token function">setNomeDocente</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> nomeDocente</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o nome do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1350107448%2FFunctions%2F1105011405" anchor-label="setNotas" id="1350107448%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-notas.html"><span>set</span><wbr></wbr><span><span>Notas</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1350107448%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-notas.html"><span class="token function">setNotas</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="../-notas/index.html">Notas</a><span class="token operator">&gt;</span> notas</span></span><span class="token punctuation">)</span></div><div class="brief ">Define as notas do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1402467929%2FFunctions%2F1105011405" anchor-label="setStatus" id="-1402467929%2FFunctions%2F1105011405" data-filterable-set="meuifpoaback/JVM"></a>
+          <div class="table-row" data-filterable-current="meuifpoaback/JVM" data-filterable-set="meuifpoaback/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-status.html"><span>set</span><wbr></wbr><span><span>Status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1402467929%2FFunctions%2F1105011405"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="meuifpoaback/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span>void <a href="set-status.html"><span class="token function">setStatus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> status</span></span><span class="token punctuation">)</span></div><div class="brief ">Define o status do docente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
