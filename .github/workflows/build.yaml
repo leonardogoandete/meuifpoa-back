@@ -2,7 +2,7 @@ name: Build Imagem
 on:
   push:
     branches:
-      - okhttp3
+      - main
 
 jobs:
   gerando-imagem-docker:
