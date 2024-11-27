@@ -121,3 +121,6 @@ mvn javadoc:javadoc
 - **Documentação do JSoup**: [https://jsoup.org/cookbook/](https://jsoup.org/cookbook/)
 - **Documentação do OkHttp**: [https://square.github.io/okhttp/](https://square.github.io/okhttp/)
 - **Documentação local do projeto**: [docs/](docs/)
+
+## Licença
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
