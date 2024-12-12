@@ -8,6 +8,8 @@ Serve como api para obter informações de documentos, notícias e notas de alun
 - **Java**
 - **Quarkus**
 - **Maven**
+- **Jsoup**
+- **OkHttp**
 
 ## Estrutura do Projeto
 ### Diretórios
@@ -48,13 +50,16 @@ Serve como api para obter informações de documentos, notícias e notas de alun
     sigaa-api/mp-rest/url=<URL da API do SIGAA>
     sigaa-api/mp-rest/scope=javax.inject.Singleton
     ```
+5. **Configurar credencial do Google SDK Admin**
+    - Configurar a conta Google para utilizar o firebase conforme link [https://firebase.google.com/docs/admin/setup?hl=pt-br#initialize-sdk](https://firebase.google.com/docs/admin/setup?hl=pt-br#initialize-sdk).
+    - Após obter o arquivo json, codifica-lo em base64 e utilizar no projeto com a variavél de ambiente `FIREBASE_CREDENTIALS` ou definir no `application.properties`.
 
-5. **Compilar o projeto**:
+7. **Compilar o projeto**:
     ```sh
     mvn clean install
     ```
 
-6. **Executar o projeto**:
+8. **Executar o projeto**:
     ```sh
     mvn quarkus:dev
     ```
