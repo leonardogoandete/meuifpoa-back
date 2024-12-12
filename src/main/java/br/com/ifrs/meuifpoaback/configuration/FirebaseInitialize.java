@@ -1,6 +1,5 @@
 package br.com.ifrs.meuifpoaback.configuration;
 
-import br.com.ifrs.meuifpoaback.controller.DocumentoController;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -8,6 +7,7 @@ import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
@@ -26,9 +26,14 @@ public class FirebaseInitialize {
      * @param ev evento de inicialização
      */
     void onStart(@Observes StartupEvent ev) {
-        try{
-            // Carrega o arquivo de credenciais do Firebase
-            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
+        try {
+            // Carrega as credenciais do Firebase a partir da variável de ambiente
+            String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
+            if (firebaseCredentials == null || firebaseCredentials.isEmpty()) {
+                throw new IllegalStateException("A variável de ambiente FIREBASE_CREDENTIALS não está definida.");
+            }
+
+            InputStream serviceAccount = new ByteArrayInputStream(firebaseCredentials.getBytes());
 
             // Configura as opções do Firebase
             FirebaseOptions options = new FirebaseOptions.Builder()
@@ -38,9 +43,13 @@ public class FirebaseInitialize {
 
             // Inicializa o Firebase com as opções configuradas
             FirebaseApp.initializeApp(options);
-        }catch (IOException e){
+
+            logger.info("Firebase inicializado com sucesso.");
+        } catch (IOException e) {
             logger.severe("Erro ao inicializar o Firebase: " + e.getMessage());
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            logger.severe("Erro na configuração do Firebase: " + e.getMessage());
         }
     }
 }
