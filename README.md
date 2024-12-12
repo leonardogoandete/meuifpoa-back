@@ -109,6 +109,13 @@ curl -X POST http://localhost:8080/noticias -d "{"filter":"ifrs"}"
 
 ```
 
+## Gerando imagem docker
+- Necessário ter o docker disponivel no ambiente.
+- Executar o build da imagem utilizando o arquivo `Dockerfile` disponivel na raiz do projeto.
+  ```sh
+  docker build -t <nome-imagem>:<tag-imagem> .
+  ```
+
 ## Documentação javadoc
 Casos deseje gerar a documentação javadoc, execute um dos comandos abaixo:
 ```sh
