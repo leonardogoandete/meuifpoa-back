@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Kubectl tool installer
-        uses: Azure/setup-kubectl@v1
+        uses: Azure/setup-kubectl@v5
       
       - name: Checkout gh-repo
         uses: actions/checkout@v3
