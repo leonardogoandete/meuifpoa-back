@@ -1,6 +1,9 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy documentação GH Pages
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -30,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
