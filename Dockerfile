@@ -7,7 +7,7 @@ COPY mvnw /app/mvnw
 COPY pom.xml /app/pom.xml
 
 # Baixa as dependências para a compilação
-RUN ./mvnw dependency
+RUN ./mvnw package
 
 COPY ./src/main/ ./src/main/
 
